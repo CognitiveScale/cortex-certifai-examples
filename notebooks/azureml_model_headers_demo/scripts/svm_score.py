@@ -1,8 +1,9 @@
 import os
 import json
 import numpy as np
-import joblib
+from sklearn.externals import joblib
 import traceback
+
 
 def init():
     global model

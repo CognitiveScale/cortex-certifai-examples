@@ -1,0 +1,12 @@
+name: certifai-azure-model-env
+dependencies:
+  - python=3.6.2
+  - pip
+  - scikit-learn=0.20.3
+  - numpy=1.16.2
+  - pandas
+  - ipython
+  - jupyter
+  - matplotlib
+  - pip:
+    - azureml-sdk==1.4.0
