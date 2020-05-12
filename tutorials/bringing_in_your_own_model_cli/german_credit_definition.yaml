@@ -1,0 +1,35 @@
+dataset_schema:
+  outcome_column: outcome
+datasets:
+- dataset_id: evaluation
+  delimiter: ','
+  file_type: csv
+  has_header: true
+  quote_character: '"'
+  url: data/german_credit_eval.csv
+evaluation:
+  evaluation_dataset_id: evaluation
+  evaluation_types:
+  - fairness
+  - explainability
+  - robustness
+  fairness_grouping_features:
+  - name: age
+  - name: status
+  name: test_user_case
+  prediction_description: Determine whether a loan should be granted
+  prediction_values:
+  - favorable: true
+    name: Loan granted
+    value: 1
+  - favorable: false
+    name: Loan denied
+    value: 2
+model_use_case:
+  model_use_case_id: test_user_case
+  name: test_user_case
+  task_type: binary-classification
+models:
+- model_id: local
+  name: local
+  predict_endpoint: http://localhost:5111/german_credit_logit/predict
