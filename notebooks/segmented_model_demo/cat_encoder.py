@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict,Any
 
 from sklearn import preprocessing
 from sklearn.preprocessing import Normalizer
@@ -31,9 +31,9 @@ class CatEncoder:
     def transformed_features(self):
         return self._transformed_column_names
 
-    def cat_indexes_of_feature(self, feature: str) -> List[int]:
-        result = []
+    def cat_indexes_of_feature(self, feature: str) -> Dict[str,Dict[str,Any]]:
+        result = {}
         for idx, feat in enumerate(self._transformed_column_names):
             if feat.startswith(f"{feature}_"):
-                result.append(idx)
+                result[feat] = {'idx':idx, 'model': None}
         return result
