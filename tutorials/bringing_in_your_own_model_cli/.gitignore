@@ -1,0 +1,5 @@
+__pycache__
+*.pkl
+.ipynb_checkpoints
+.idea
+.DS_Store

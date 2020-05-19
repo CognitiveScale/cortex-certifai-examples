@@ -31,6 +31,9 @@ model_use_case:
   name: test_user_case
   task_type: binary-classification
 models:
-- model_id: local
-  name: local
+- model_id: logistic_regression
+  name: logistic_regression
   predict_endpoint: http://mymodel/predict
+  prediction_value_order:
+  - 1
+  - 2
