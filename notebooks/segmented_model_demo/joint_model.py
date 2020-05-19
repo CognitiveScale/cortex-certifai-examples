@@ -1,17 +1,19 @@
-from typing import Dict
+from typing import List, Tuple
+
+from certifai.common.hosted_model import IHostedModel
 
 import numpy as np
 
 
 class JointModel:
-    def __init__(self, segment_models_idx_mapping: Dict[str,Dict]):
+    def __init__(self, segment_models_idx_mapping: List[Tuple[int, IHostedModel]]):
         self.segment_models_idx_mapping = segment_models_idx_mapping
 
     def predict(self, X):
         result = np.empty(len(X), dtype='int')
         accounted = 0
-        for _, idx_model_mapping in self.segment_models_idx_mapping.items():
-            seg_idxs = np.where(X[:, idx_model_mapping['idx']] > 0.5)[0]
+        for col_idx, model in self.segment_models_idx_mapping:
+            seg_idxs = np.where(X[:, col_idx] > 0.5)[0]
             accounted += len(seg_idxs)
-            result[seg_idxs] = idx_model_mapping['model'].predict(X[seg_idxs])
+            result[seg_idxs] = model.predict(X[seg_idxs])
         return result

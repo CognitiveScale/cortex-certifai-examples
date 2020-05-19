@@ -31,9 +31,10 @@ class CatEncoder:
     def transformed_features(self):
         return self._transformed_column_names
 
-    def cat_indexes_of_feature(self, feature: str) -> Dict[str,Dict[str,Any]]:
+    def cat_indexes_of_feature(self, feature: str) -> Dict[str, int]:
         result = {}
         for idx, feat in enumerate(self._transformed_column_names):
-            if feat.startswith(f"{feature}_"):
-                result[feat] = {'idx':idx, 'model': None}
+            feature_prefix = f"{feature}_"
+            if feat.startswith(feature_prefix):
+                result[feat[len(feature_prefix):]] = idx
         return result
