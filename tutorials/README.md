@@ -11,19 +11,6 @@ This directory contains self contained tutorials which walk through various part
 
 The end result will be a scan definition file which contains the meta data from our scan, which can be used for running scans in the CLI and in Part 2 of this tutorial.
 
-### Bringing In Your Own Model to Certifai Part 2
-
-This tutorial continues from part 1 and assumes it has been completed as a prerequisite
-
-This walkthrough will demonstrate how to package and expose a model as a web service using S2i. After that step is complete, the local model will be used to run a Certifai Scan through the CLI with the Scan Definition file.
-
-Prerequisites:
-
-* Certifai Toolkit 
-* Scan Definition file (from part 1)
-* A model of your choice
-* Train (if applicable) and Predict functions for the model
-
 ### Documentation 
 These tutorials have docs to be followed along, which can be found at: https://cognitivescale.github.io/cortex-certifai/docs/about
 
