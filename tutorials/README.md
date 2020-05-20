@@ -1,9 +1,19 @@
 # Cortex Certifai Tutorials 
 This directory contains self contained tutorials which walk through various parts of Certifai *outside* of a notebook environment.
 
-### Bringing In Your Own Model CLI
+### Bringing In Your Own Model to Certifai Part 1
 
-This tutorial continues from part 1 located in the *notebooks* folder. 
+ Bringing In Your Own Model to Certifai example demonstrates how to create a scan in Certifai using your own model. In this example the model being used is Logistic Regression. We will show how to configure the model to be used in Certifai, and run a scan on it with key evaluation metrics:
+
+ * Fairness
+ * Explainability
+ * Robustness
+
+The end result will be a scan definition file which contains the meta data from our scan, which can be used for running scans in the CLI and in Part 2 of this tutorial.
+
+### Bringing In Your Own Model to Certifai Part 2
+
+This tutorial continues from part 1 and assumes it has been completed as a prerequisite
 
 This walkthrough will demonstrate how to package and expose a model as a web service using S2i. After that step is complete, the local model will be used to run a Certifai Scan through the CLI with the Scan Definition file.
 
@@ -12,7 +22,7 @@ Prerequisites:
 * Certifai Toolkit 
 * Scan Definition file (from part 1)
 * A model of your choice
-* Train and Predict functions for the model
+* Train (if applicable) and Predict functions for the model
 
 ### Documentation 
 These tutorials have docs to be followed along, which can be found at: https://cognitivescale.github.io/cortex-certifai/docs/about
