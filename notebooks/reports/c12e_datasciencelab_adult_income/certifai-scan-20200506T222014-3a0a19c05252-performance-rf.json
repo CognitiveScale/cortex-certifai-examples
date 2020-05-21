@@ -1,0 +1,44 @@
+{
+    "scan": {
+        "scan_id": "3a0a19c05252",
+        "evaluation_type": "performance",
+        "started": "2020-05-06T22:20:14",
+        "ended": "2020-05-06T22:20:14",
+        "name": "Baseline evaluation of 3 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 4 candidate models."
+    },
+    "model_use_case": {
+        "name": "Finance: Income Prediction",
+        "model_use_case_id": "c12e/datasciencelab/adult_income",
+        "performance_metrics": [
+            {
+                "name": "Accuracy",
+                "metric": "Accuracy"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents attributes of a de-identified individual. The learning task is predicting the income bracket which has two possible values \">50K\" and \"<=50K\" .\n\nThis dataset was sourced from UCI: https://archive.ics.uci.edu/ml/datasets/census+income\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "rf",
+        "name": "Random Forest Classifier",
+        "predict_endpoint": "http://127.0.0.1:5111/adult_income_rf/predict",
+        "performance_metric_values": [
+            {
+                "value": 0.84,
+                "name": "Accuracy"
+            }
+        ],
+        "description": "Scikit-learn RandomForestClassifier using gini criterion"
+    },
+    "status": "Completed",
+    "performance_metrics": [
+        {
+            "name": "Accuracy",
+            "value": 0.84,
+            "score": 84.0
+        }
+    ]
+}

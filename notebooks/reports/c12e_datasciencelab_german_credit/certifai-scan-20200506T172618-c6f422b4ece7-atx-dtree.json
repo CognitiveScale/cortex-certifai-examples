@@ -1,0 +1,65 @@
+{
+    "scan": {
+        "scan_id": "c6f422b4ece7",
+        "evaluation_type": "atx",
+        "started": "2020-05-06T17:03:09",
+        "ended": "2020-05-06T17:14:06",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 4 candidate models."
+    },
+    "model_use_case": {
+        "name": "Banking: Loan Approval",
+        "model_use_case_id": "c12e/datasciencelab/german_credit",
+        "performance_metrics": [
+            {
+                "name": "Accuracy",
+                "metric": "Accuracy"
+            },
+            {
+                "name": "Recall",
+                "metric": "Recall"
+            },
+            {
+                "name": "Precision",
+                "metric": "Precision"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a person who takes a credit loan from a bank. The learning task is to classify each person as either a good or bad credit risk according to the set of attributes.\n\nThis dataset was sourced from Kaggle: https://www.kaggle.com/uciml/german-credit\n\nThe original source is: https://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "dtree",
+        "name": "Decision Tree",
+        "predict_endpoint": "http://127.0.0.1:5111/german_credit_dtree/predict",
+        "description": "Scikit-learn DecisionTreeClassifier using entropy criterion"
+    },
+    "atx": 74.78576735309709,
+    "components_measured": [
+        "explainability",
+        "fairness",
+        "performance",
+        "robustness"
+    ],
+    "component_scores": {
+        "robustness": 48.08181593509006,
+        "fairness": 84.43104514396498,
+        "explainability": 99.296875,
+        "performance": 67.33333333333333
+    },
+    "aspect_weights": {
+        "robustness": 1.0,
+        "fairness": 1.0,
+        "explainability": 1.0,
+        "performance": 1.0
+    },
+    "aspect_types": {
+        "robustness": "",
+        "fairness": "burden",
+        "explanation": "counterfactual",
+        "explainability": "counterfactual",
+        "performance": "Accuracy"
+    },
+    "status": "Completed"
+}

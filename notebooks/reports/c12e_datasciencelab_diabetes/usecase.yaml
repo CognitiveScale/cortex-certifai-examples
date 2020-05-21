@@ -1,0 +1,27 @@
+created: 20200506T174403
+model_use_case:
+  atx_performance_metric_name: Accuracy
+  author: info@cognitivescale.com
+  description: 'In this use case, each entry in the dataset represents a patient.
+    The learning task is to predict whether or not a patient has diabetes, based on
+    certain diagnostic measurements included in the dataset.
+
+
+    Several constraints were placed on the selection of these instances from a larger
+    database. In particular, all patients here are females at least 21 years old of
+    Pima Indian heritage.
+
+
+    This dataset was sourced from Kaggle: https://www.kaggle.com/uciml/pima-indians-diabetes-database
+
+
+    It is originally from the National Institute of Diabetes and Digestive and Kidney
+    Diseases.
+
+    '
+  model_use_case_id: c12e/datasciencelab/diabetes
+  name: 'HealthCare: Disease Prediction'
+  performance_metrics:
+  - metric: Accuracy
+    name: Accuracy
+  task_type: binary-classification

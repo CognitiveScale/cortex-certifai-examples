@@ -1,0 +1,91 @@
+scan:
+  output:
+    path: ../local_reports
+
+model_use_case:
+  atx_performance_metric_name: R-squared
+  author: info@cognitivescale.com
+  description: 'In this use case, each entry in the dataset represents an auto insurance
+    claim. The learning task is to predict the final settled claim amount.
+
+
+    This dataset was originally sourced from Emcien: https://www.sixtusdakurah.com/resources/The_Application_of_Regularization_in_Modelling_Insurance_Claims.pdf
+
+    '
+  model_use_case_id: c12e/datasciencelab/auto_insurance
+  name: 'Insurance: Auto Insurance Claims'
+  performance_metrics:
+  - metric: R-squared
+    name: R-squared
+  task_type: regression
+
+evaluation:
+  description: This evaluation compares the robustness, accuracy, fairness and explanations
+    for 4 candidate models.
+  evaluation_dataset_id: eval
+  evaluation_types:
+  - robustness
+  - fairness
+  - explanation
+  - explainability
+  - performance
+  explanation_dataset_id: explan
+  test_dataset_id: test
+  fairness_grouping_features:
+    - name: Marital Status
+    - name: Gender
+  favorable_outcome_value: increased
+  feature_restrictions:
+  - feature_name: Gender
+    restriction_string: no changes
+  name: Baseline evaluation of 4 models
+  prediction_description: Amount of Settled Claim
+  prediction_favorability: ordered
+  regression_standard_deviation: 0.5
+
+models:
+- author: ''
+  description: Scikit-learn linear regression using Lasso with L1 regularization
+  model_id: linl1
+  name: L1 Linear Regression
+  predict_endpoint: http://127.0.0.1:5111/auto_insurance_linl1/predict
+- author: ''
+  description: Scikit-learn linear regression using Lasso with L2 regularization
+  model_id: linl2
+  name: L2 Linear Regression
+  predict_endpoint: http://127.0.0.1:5111/auto_insurance_linl2/predict
+- author: ''
+  description: Scikit-learn RandomForestRegressor
+  model_id: rf
+  name: Random Forest Regressor
+  predict_endpoint: http://127.0.0.1:5111/auto_insurance_rf/predict
+- author: ''
+  description: Scikit-learn SVR regression
+  model_id: svr
+  name: Support Vector Regression
+  predict_endpoint: http://127.0.0.1:5111/auto_insurance_svr/predict
+
+datasets:
+- dataset_id: eval
+  description: 1000 row representative sample of the full dataset
+  file_type: csv
+  has_header: true
+  name: Evaluation dataset
+  url: file:../datasets/auto_insurance_eval.csv
+- dataset_id: explan
+  description: ''
+  file_type: csv
+  has_header: true
+  name: 100 row explanation dataset
+  url: file:../datasets/auto_insurance_explan.csv
+- dataset_id: test
+  description: 2741 row test dataset
+  file_type: csv
+  has_header: true
+  name: Test dataset
+  url: file:../datasets/auto_insurance_test.csv
+
+
+dataset_schema:
+  outcome_column: Total Claim Amount
+

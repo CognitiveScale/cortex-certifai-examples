@@ -1,0 +1,322 @@
+{
+    "scan": {
+        "scan_id": "ca495e5ef260",
+        "evaluation_type": "robustness",
+        "started": "2020-05-06T18:39:15",
+        "ended": "2020-05-06T18:41:17",
+        "name": "Baseline evaluation of 3 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 3 candidate models."
+    },
+    "model_use_case": {
+        "name": "Insurance: Auto Insurance Claims",
+        "model_use_case_id": "c12e/datasciencelab/auto_insurance",
+        "performance_metrics": [
+            {
+                "metric": "R-squared",
+                "name": "R-squared"
+            }
+        ],
+        "atx_performance_metric_name": "R-squared",
+        "task_type": "regression",
+        "description": "In this use case, each entry in the dataset represents an auto insurance claim. The learning task is to predict the final settled claim amount.\n\nThis dataset was originally sourced from Emcien: https://www.sixtusdakurah.com/resources/The_Application_of_Regularization_in_Modelling_Insurance_Claims.pdf\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "svr",
+        "name": "Support Vector Regression",
+        "predict_endpoint": "http://127.0.0.1:5111/auto_insurance_svr/predict",
+        "description": "Scikit-learn SVR regression"
+    },
+    "dataset": {
+        "dataset_id": "eval",
+        "url": "file:../datasets/auto_insurance_eval.csv",
+        "checksum_type": "md5",
+        "checksum": "1a7fd6582bbe22c9ee84bdf516f45d4b",
+        "num_features": 20,
+        "rows": 1000,
+        "name": "Evaluation dataset",
+        "description": "1000 row representative sample of the full dataset"
+    },
+    "dataset_schema": {
+        "outcome_column": "Total Claim Amount",
+        "feature_schemas": [
+            {
+                "type": "CAT",
+                "category_values": [
+                    "IA",
+                    "KS",
+                    "MO",
+                    "NE",
+                    "OK"
+                ],
+                "name": "State Code",
+                "index": 0
+            },
+            {
+                "type": "FLOAT",
+                "min": 212.1313061,
+                "max": 7322.595652,
+                "spread": 250.37569064999974,
+                "spread_type": "mad",
+                "name": "Claim Amount",
+                "index": 1
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Basic",
+                    "Extended",
+                    "Premium"
+                ],
+                "name": "Coverage",
+                "index": 2
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Bachelor",
+                    "College",
+                    "Doctor",
+                    "High School or Below",
+                    "Master"
+                ],
+                "name": "Education",
+                "index": 3
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Disabled",
+                    "Employed",
+                    "Medical Leave",
+                    "Retired",
+                    "Unemployed"
+                ],
+                "name": "EmploymentStatus",
+                "index": 4
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "F",
+                    "M"
+                ],
+                "name": "Gender",
+                "index": 5
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 99845,
+                "spread": 27340.5,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Income",
+                "index": 6
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Rural",
+                    "Suburban",
+                    "Urban"
+                ],
+                "name": "Location Code",
+                "index": 7
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Divorced",
+                    "Married",
+                    "Single"
+                ],
+                "name": "Marital Status",
+                "index": 8
+            },
+            {
+                "type": "INT",
+                "min": 61,
+                "max": 297,
+                "spread": 20.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Monthly Premium Auto",
+                "index": 9
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 35,
+                "spread": 8.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Months Since Last Claim",
+                "index": 10
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 99,
+                "spread": 25.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Months Since Policy Inception",
+                "index": 11
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "heuristically_inferred": true,
+                "name": "Number of Open Complaints",
+                "index": 12
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                ],
+                "heuristically_inferred": true,
+                "name": "Number of Policies",
+                "index": 13
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Corporate L1",
+                    "Corporate L2",
+                    "Corporate L3",
+                    "Personal L1",
+                    "Personal L2",
+                    "Personal L3",
+                    "Special L1",
+                    "Special L2",
+                    "Special L3"
+                ],
+                "name": "Policy",
+                "index": 14
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Collision",
+                    "Hail",
+                    "Other",
+                    "Scratch/Dent"
+                ],
+                "name": "Claim Reason",
+                "index": 15
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Agent",
+                    "Branch",
+                    "Call Center",
+                    "Web"
+                ],
+                "name": "Sales Channel",
+                "index": 16
+            },
+            {
+                "type": "FLOAT",
+                "min": 0.38210700000000003,
+                "max": 2452.894264,
+                "spread": 149.00085999999982,
+                "spread_type": "mad",
+                "name": "Total Claim Amount",
+                "index": 17
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Four-Door Car",
+                    "Luxury Car",
+                    "Luxury SUV",
+                    "SUV",
+                    "Sports Car",
+                    "Two-Door Car"
+                ],
+                "name": "Vehicle Class",
+                "index": 18
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Large",
+                    "Medsize",
+                    "Small"
+                ],
+                "name": "Vehicle Size",
+                "index": 19
+            }
+        ]
+    },
+    "status": "Completed",
+    "engine_stats": {
+        "num_predict_calls": 2263,
+        "mean_prediction_time_ms": 82.1720163499779,
+        "mean_batch_size": 1929.9801148917365,
+        "num_counterfactuals": 128,
+        "mean_generation_count": 16.6796875,
+        "hyperparameters": {
+            "tournsize": 3,
+            "population": 4000,
+            "indpb": 0.05,
+            "CXPB": 0.5,
+            "MUTPB": 0.2,
+            "generation": 180,
+            "evolution": 100,
+            "N_CYCLES": 1,
+            "early_stopping_delta": 0.0001,
+            "early_stopping_epochs": 3,
+            "percent_class_seeding": 5,
+            "sampling_Z": 1.96,
+            "sampling_boundary": 0.1,
+            "sampling_min_n": 100,
+            "2pt_orig_weight": 0.025,
+            "shrinkage_weight": 0.5,
+            "annealing_weight": 0.45,
+            "annealing_rate": 1.25,
+            "elitism": 0.04,
+            "dimensional_normalization": true,
+            "num_counterfactuals": 1,
+            "shap_init_with_eval": true,
+            "shap_num_samples": 500
+        },
+        "runtime_secs": 120.85450577735901,
+        "per cf mean GA init count": 1.0,
+        "per cf mean GA init time": 286.733421875,
+        "per cf mean GA mutation time": 155.644140625,
+        "per cf mean GA crossover time": 156.8341328125,
+        "per cf mean GA selection time": 342.2034062500002,
+        "per cf mean eval time": 1419.1500937500002,
+        "per cf mean prediction time": 1452.7755703125,
+        "per cf mean diversity selection time": 0.0
+    },
+    "detailed_scores": {
+        "CERScore": 0.7484168448713185,
+        "NCERScore": 0.04380999098723048,
+        "Normalization": 17.08324580777621
+    },
+    "robustness": {
+        "score": 52.692129010478816,
+        "score_confidence_95_lower": 46.813430651794384,
+        "score_confidence_95_upper": 58.53702748499528
+    }
+}

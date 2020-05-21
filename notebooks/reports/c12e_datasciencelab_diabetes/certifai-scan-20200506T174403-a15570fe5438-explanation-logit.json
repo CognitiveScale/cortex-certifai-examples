@@ -1,0 +1,5696 @@
+{
+    "scan": {
+        "scan_id": "a15570fe5438",
+        "evaluation_type": "explanation",
+        "started": "2020-05-06T17:32:12",
+        "ended": "2020-05-06T17:33:09",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy and explanations for 4 candidate models. Fairness is not applicable to this use case."
+    },
+    "model_use_case": {
+        "name": "HealthCare: Disease Prediction",
+        "model_use_case_id": "c12e/datasciencelab/diabetes",
+        "performance_metrics": [
+            {
+                "name": "Accuracy",
+                "metric": "Accuracy"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a patient. The learning task is to predict whether or not a patient has diabetes, based on certain diagnostic measurements included in the dataset.\n\nSeveral constraints were placed on the selection of these instances from a larger database. In particular, all patients here are females at least 21 years old of Pima Indian heritage.\n\nThis dataset was sourced from Kaggle: https://www.kaggle.com/uciml/pima-indians-diabetes-database\n\nIt is originally from the National Institute of Diabetes and Digestive and Kidney Diseases.\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "logit",
+        "name": "Logistic Regression",
+        "predict_endpoint": "http://127.0.0.1:5111/diabetes_logit/predict",
+        "performance_metric_values": [
+            {
+                "name": "Accuracy",
+                "value": 0.76796
+            }
+        ],
+        "description": "Scikit-learn LogisticRegression classifier using lbfgs solver"
+    },
+    "dataset": {
+        "dataset_id": "explan",
+        "url": "file:../datasets/diabetes_explan.csv",
+        "checksum_type": "md5",
+        "checksum": "bacbdf1adc34284c8b2809400053dad4",
+        "num_features": 9,
+        "rows": 100,
+        "name": "100 row explanation dataset"
+    },
+    "dataset_schema": {
+        "outcome_column": "Outcome",
+        "feature_schemas": [
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 17,
+                "spread": 2.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Pregnancies",
+                "index": 0
+            },
+            {
+                "type": "INT",
+                "min": 44,
+                "max": 199,
+                "spread": 20.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Glucose",
+                "index": 1
+            },
+            {
+                "type": "INT",
+                "min": 24,
+                "max": 122,
+                "spread": 8.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "BloodPressure",
+                "index": 2
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 99,
+                "spread": 11.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "SkinThickness",
+                "index": 3
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 846,
+                "spread": 48.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Insulin",
+                "index": 4
+            },
+            {
+                "type": "FLOAT",
+                "min": 18.2,
+                "max": 67.1,
+                "spread": 4.65,
+                "spread_type": "mad",
+                "name": "BMI",
+                "index": 5
+            },
+            {
+                "type": "FLOAT",
+                "min": 0.078,
+                "max": 2.42,
+                "spread": 0.16949999999999998,
+                "spread_type": "mad",
+                "name": "DiabetesPedigreeFunction",
+                "index": 6
+            },
+            {
+                "type": "INT",
+                "min": 21,
+                "max": 81,
+                "spread": 7.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Age",
+                "index": 7
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    0,
+                    1
+                ],
+                "heuristically_inferred": true,
+                "name": "Outcome",
+                "index": 8
+            }
+        ]
+    },
+    "model_schema": {
+        "feature_schemas": [
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 17,
+                "spread": 2.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Pregnancies",
+                "index": 0
+            },
+            {
+                "type": "INT",
+                "min": 44,
+                "max": 199,
+                "spread": 20.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Glucose",
+                "index": 1
+            },
+            {
+                "type": "INT",
+                "min": 24,
+                "max": 122,
+                "spread": 8.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "BloodPressure",
+                "index": 2
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 99,
+                "spread": 11.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "SkinThickness",
+                "index": 3
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 846,
+                "spread": 48.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Insulin",
+                "index": 4
+            },
+            {
+                "type": "FLOAT",
+                "min": 18.2,
+                "max": 67.1,
+                "spread": 4.65,
+                "spread_type": "mad",
+                "name": "BMI",
+                "index": 5
+            },
+            {
+                "type": "FLOAT",
+                "min": 0.078,
+                "max": 2.42,
+                "spread": 0.16949999999999998,
+                "spread_type": "mad",
+                "name": "DiabetesPedigreeFunction",
+                "index": 6
+            },
+            {
+                "type": "INT",
+                "min": 21,
+                "max": 81,
+                "spread": 7.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Age",
+                "index": 7
+            }
+        ]
+    },
+    "status": "Completed",
+    "engine_stats": {
+        "num_predict_calls": 1254,
+        "mean_prediction_time_ms": 18.337052631578945,
+        "mean_batch_size": 2143.8987240829347,
+        "num_counterfactuals": 100,
+        "mean_generation_count": 11.54,
+        "hyperparameters": {
+            "tournsize": 3,
+            "population": 4000,
+            "indpb": 0.05,
+            "CXPB": 0.5,
+            "MUTPB": 0.2,
+            "generation": 180,
+            "evolution": 100,
+            "N_CYCLES": 1,
+            "early_stopping_delta": 0.0001,
+            "early_stopping_epochs": 3,
+            "percent_class_seeding": 5,
+            "sampling_Z": 1.96,
+            "sampling_boundary": 0.1,
+            "sampling_min_n": 100,
+            "2pt_orig_weight": 0.025,
+            "shrinkage_weight": 0.5,
+            "annealing_weight": 0.45,
+            "annealing_rate": 1.25,
+            "elitism": 0.04,
+            "dimensional_normalization": true,
+            "num_counterfactuals": 1,
+            "shap_init_with_eval": true,
+            "shap_num_samples": 500
+        },
+        "runtime_secs": 57.3491587638855,
+        "per cf mean GA init count": 1.0,
+        "per cf mean GA init time": 308.6776300000001,
+        "per cf mean GA mutation time": 134.61646000000002,
+        "per cf mean GA crossover time": 163.20109,
+        "per cf mean GA selection time": 329.1918099999999,
+        "per cf mean eval time": 428.4377400000001,
+        "per cf mean prediction time": 229.94663999999997,
+        "per cf mean diversity selection time": 0.0
+    },
+    "detailed_scores": {
+        "CERScore": 1.9894380310116153,
+        "NCERScore": 0.14268193787084368,
+        "Normalization": 13.943166603277168
+    },
+    "feature_restrictions": [
+        {
+            "feature_name": "Age",
+            "restriction_string": "no changes"
+        },
+        {
+            "feature_name": "Pregnancies",
+            "restriction_string": "no changes"
+        }
+    ],
+    "prediction_description": "Does the patient have diabetes?",
+    "prediction_favorability": "explicit",
+    "prediction_values": [
+        {
+            "name": "Patient does not have diabetes",
+            "value": 0,
+            "favorable": true
+        },
+        {
+            "name": "Patient has diabetes",
+            "value": 1,
+            "favorable": false
+        }
+    ],
+    "explanation_types": [
+        "counterfactual"
+    ],
+    "explanations": [
+        {
+            "inputFeatures": [
+                1,
+                149,
+                68,
+                29,
+                127,
+                29.3,
+                0.349,
+                42
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        154,
+                        68,
+                        29,
+                        127,
+                        29.3,
+                        0.349,
+                        42
+                    ],
+                    "prediction": 1,
+                    "fitness": 4.0,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 0.7846360206604004,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -5,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 5",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                148,
+                72,
+                35,
+                0,
+                33.6,
+                0.627,
+                50
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        116,
+                        72,
+                        35,
+                        0,
+                        33.6,
+                        0.627,
+                        50
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.625,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2214200496673584,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        32,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 32",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                106,
+                64,
+                35,
+                119,
+                30.5,
+                1.4,
+                34
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        114,
+                        64,
+                        35,
+                        119,
+                        30.5,
+                        1.4,
+                        34
+                    ],
+                    "prediction": 1,
+                    "fitness": 2.5,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.234388828277588,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -8,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 8",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                7,
+                102,
+                74,
+                40,
+                105,
+                37.2,
+                0.204,
+                45
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        7,
+                        126,
+                        74,
+                        40,
+                        105,
+                        37.2,
+                        0.204,
+                        45
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.8333333333333334,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2690680027008057,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -24,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 24",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                116,
+                70,
+                28,
+                0,
+                27.4,
+                0.204,
+                21
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        176,
+                        70,
+                        28,
+                        0,
+                        27.4,
+                        0.204,
+                        21
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3333333333333333,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3749730587005615,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -60,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 60",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                146,
+                70,
+                38,
+                360,
+                28.0,
+                0.337,
+                29
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        165,
+                        70,
+                        38,
+                        360,
+                        28.0,
+                        0.3452650466033269,
+                        29
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.00124019929633,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.9305009841918945,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -19,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        -0.008265046603326887,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 19",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "Increase 'DiabetesPedigreeFunction' by 0.008265046603326887",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                3,
+                83,
+                58,
+                31,
+                18,
+                34.3,
+                0.336,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        3,
+                        147,
+                        58,
+                        31,
+                        18,
+                        34.3,
+                        0.336,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3125,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 0.7218470573425293,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -64,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 64",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                8,
+                155,
+                62,
+                26,
+                495,
+                34.0,
+                0.5429999999999999,
+                46
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        8,
+                        120,
+                        62,
+                        26,
+                        495,
+                        33.78508855654094,
+                        0.5429999999999999,
+                        46
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.5567254476719425,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.78597092628479,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        35,
+                        0,
+                        0,
+                        0,
+                        0.21491144345905866,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 35",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Decrease 'BMI' by 0.21491144345905866",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                80,
+                80,
+                36,
+                0,
+                39.8,
+                0.177,
+                28
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        135,
+                        80,
+                        36,
+                        0,
+                        39.8,
+                        0.177,
+                        28
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.36363636363636365,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2897508144378662,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -55,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 55",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                125,
+                70,
+                24,
+                110,
+                24.3,
+                0.221,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        181,
+                        70,
+                        24,
+                        110,
+                        24.3,
+                        0.221,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.35714285714285715,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.746830940246582,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -56,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 56",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                124,
+                60,
+                32,
+                0,
+                35.8,
+                0.514,
+                21
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        139,
+                        60,
+                        32,
+                        0,
+                        35.8,
+                        0.514,
+                        21
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.3333333333333333,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.1075000762939453,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -15,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 15",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                4,
+                83,
+                86,
+                19,
+                0,
+                29.3,
+                0.317,
+                34
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        4,
+                        160,
+                        86,
+                        19,
+                        0,
+                        29.3,
+                        0.317,
+                        34
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.2597402597402597,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.9412660598754883,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -77,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 77",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                3,
+                106,
+                72,
+                0,
+                0,
+                25.8,
+                0.207,
+                27
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        3,
+                        174,
+                        72,
+                        0,
+                        0,
+                        25.8,
+                        0.207,
+                        27
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.29411764705882354,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.549673318862915,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -68,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 68",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                7,
+                107,
+                74,
+                0,
+                0,
+                29.6,
+                0.254,
+                31
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        7,
+                        152,
+                        74,
+                        0,
+                        0,
+                        29.8,
+                        0.254,
+                        31
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.4361078546307151,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.68727707862854,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -45,
+                        0,
+                        0,
+                        0,
+                        -0.1999999999999993,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 45",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Increase 'BMI' by 0.1999999999999993",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                110,
+                74,
+                29,
+                125,
+                32.4,
+                0.698,
+                27
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        143,
+                        74,
+                        29,
+                        125,
+                        32.4,
+                        0.698,
+                        27
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.6060606060606061,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4860739707946777,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -33,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 33",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                9,
+                123,
+                70,
+                44,
+                94,
+                33.1,
+                0.374,
+                40
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        9,
+                        126,
+                        70,
+                        44,
+                        94,
+                        33.1,
+                        0.374,
+                        40
+                    ],
+                    "prediction": 1,
+                    "fitness": 6.666666666666667,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.1889281272888184,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -3,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 3",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                12,
+                100,
+                84,
+                33,
+                105,
+                30.0,
+                0.488,
+                46
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        12,
+                        126,
+                        84,
+                        33,
+                        105,
+                        30.0,
+                        0.49559839070973305,
+                        46
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.7435893689455321,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.6783339977264404,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -26,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        -0.0075983907097330605,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 26",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "Increase 'DiabetesPedigreeFunction' by 0.0075983907097330605",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                122,
+                86,
+                0,
+                0,
+                34.7,
+                0.29,
+                33
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        148,
+                        86,
+                        0,
+                        0,
+                        34.7,
+                        0.29,
+                        33
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.7692307692307692,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.6458120346069336,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -26,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 26",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                147,
+                85,
+                54,
+                0,
+                42.8,
+                0.375,
+                24
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        137,
+                        85,
+                        54,
+                        0,
+                        42.8,
+                        0.375,
+                        24
+                    ],
+                    "prediction": 0,
+                    "fitness": 2.0,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3353979587554932,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        10,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 10",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                8,
+                197,
+                74,
+                0,
+                0,
+                25.9,
+                1.1909999999999998,
+                39
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        8,
+                        121,
+                        74,
+                        0,
+                        0,
+                        25.9,
+                        1.1909999999999998,
+                        39
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.2631578947368421,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3217909336090088,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        76,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 76",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                84,
+                64,
+                22,
+                66,
+                35.8,
+                0.545,
+                21
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        147,
+                        64,
+                        22,
+                        66,
+                        35.8,
+                        0.545,
+                        21
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.31746031746031744,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.1926929950714111,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -63,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 63",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                93,
+                60,
+                0,
+                0,
+                35.3,
+                0.263,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        152,
+                        60,
+                        0,
+                        0,
+                        35.3,
+                        0.263,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3389830508474576,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.6970021724700928,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -59,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 59",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                112,
+                78,
+                50,
+                140,
+                39.4,
+                0.175,
+                24
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        147,
+                        78,
+                        50,
+                        140,
+                        39.4,
+                        0.175,
+                        24
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.5714285714285714,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.5489869117736816,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -35,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 35",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                166,
+                74,
+                0,
+                0,
+                26.6,
+                0.304,
+                66
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        139,
+                        74,
+                        0,
+                        0,
+                        26.6,
+                        0.304,
+                        66
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.7407407407407407,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4586522579193115,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        27,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 27",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                93,
+                60,
+                25,
+                92,
+                28.7,
+                0.532,
+                22
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        159,
+                        60,
+                        25,
+                        92,
+                        28.7,
+                        0.532,
+                        22
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.30303030303030304,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.6418118476867676,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -66,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 66",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                114,
+                88,
+                0,
+                0,
+                27.8,
+                0.247,
+                66
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        145,
+                        88,
+                        0,
+                        0,
+                        27.8,
+                        0.247,
+                        66
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.6451612903225806,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3820929527282715,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -31,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 31",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                118,
+                58,
+                36,
+                94,
+                33.3,
+                0.261,
+                23
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        153,
+                        58,
+                        36,
+                        94,
+                        33.3,
+                        0.261,
+                        23
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.5714285714285714,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.353811264038086,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -35,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 35",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                127,
+                80,
+                37,
+                210,
+                36.3,
+                0.804,
+                23
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        141,
+                        80,
+                        37,
+                        210,
+                        36.3,
+                        0.804,
+                        23
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.4285714285714286,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.6600110530853271,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -14,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 14",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                180,
+                78,
+                63,
+                14,
+                59.4,
+                2.42,
+                25
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        57,
+                        78,
+                        63,
+                        14,
+                        44.707626439442265,
+                        2.42,
+                        25
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.10741542114913237,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.527745008468628,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        123,
+                        0,
+                        0,
+                        0,
+                        14.692373560557733,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 123",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Decrease 'BMI' by 14.692373560557733",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                112,
+                66,
+                22,
+                0,
+                25.0,
+                0.307,
+                24
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        171,
+                        66,
+                        22,
+                        0,
+                        25.0,
+                        0.307,
+                        24
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3389830508474576,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 0.9041430950164795,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -59,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 59",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                10,
+                115,
+                98,
+                0,
+                0,
+                24.0,
+                1.022,
+                34
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        10,
+                        142,
+                        98,
+                        0,
+                        0,
+                        24.0,
+                        1.022,
+                        34
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.7407407407407407,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4685750007629395,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -27,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 27",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                108,
+                72,
+                43,
+                75,
+                36.1,
+                0.263,
+                33
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        137,
+                        72,
+                        43,
+                        75,
+                        36.1,
+                        0.263,
+                        33
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.6896551724137931,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.7696518898010254,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -29,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 29",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                116,
+                74,
+                0,
+                0,
+                25.6,
+                0.201,
+                30
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        169,
+                        74,
+                        0,
+                        0,
+                        25.6,
+                        0.201,
+                        30
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.37735849056603776,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.6733276844024658,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -53,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 53",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                111,
+                64,
+                39,
+                0,
+                34.2,
+                0.26,
+                24
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        140,
+                        64,
+                        39,
+                        0,
+                        34.2,
+                        0.26,
+                        24
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.6896551724137931,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.611604928970337,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -29,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 29",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                96,
+                74,
+                18,
+                67,
+                33.6,
+                0.997,
+                43
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        114,
+                        74,
+                        18,
+                        67,
+                        33.6,
+                        0.997,
+                        43
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.1111111111111112,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3446240425109863,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -18,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 18",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                135,
+                94,
+                46,
+                145,
+                40.6,
+                0.284,
+                26
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        152,
+                        94,
+                        46,
+                        145,
+                        40.6,
+                        0.284,
+                        26
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.1764705882352942,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.646090030670166,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -17,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 17",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                10,
+                148,
+                84,
+                48,
+                237,
+                37.6,
+                1.001,
+                51
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        10,
+                        91,
+                        84,
+                        48,
+                        237,
+                        37.6,
+                        1.001,
+                        51
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.3508771929824561,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.719222068786621,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        57,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 57",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                154,
+                74,
+                32,
+                193,
+                29.3,
+                0.8390000000000001,
+                39
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        129,
+                        74,
+                        32,
+                        193,
+                        29.3,
+                        0.8390000000000001,
+                        39
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.8,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.524442195892334,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        25,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 25",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                4,
+                171,
+                72,
+                0,
+                0,
+                43.6,
+                0.479,
+                26
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        4,
+                        120,
+                        72,
+                        0,
+                        0,
+                        43.6,
+                        0.479,
+                        26
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.3921568627450981,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4510891437530518,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        51,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 51",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                162,
+                62,
+                0,
+                0,
+                24.3,
+                0.17800000000000002,
+                50
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        152,
+                        62,
+                        0,
+                        0,
+                        24.3,
+                        0.17800000000000002,
+                        50
+                    ],
+                    "prediction": 0,
+                    "fitness": 2.0,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3995692729949951,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        10,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 10",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                3,
+                120,
+                70,
+                30,
+                135,
+                42.9,
+                0.452,
+                30
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        3,
+                        121,
+                        70,
+                        30,
+                        135,
+                        42.9,
+                        0.45357877598384555,
+                        30
+                    ],
+                    "prediction": 1,
+                    "fitness": 16.859337255211727,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.0158448219299316,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -1,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        -0.0015787759838455373,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 1",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "Increase 'DiabetesPedigreeFunction' by 0.0015787759838455373",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                4,
+                146,
+                85,
+                27,
+                100,
+                28.9,
+                0.18899999999999997,
+                27
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        4,
+                        170,
+                        85,
+                        27,
+                        100,
+                        28.9,
+                        0.18899999999999997,
+                        27
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.8333333333333334,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.8565130233764648,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -24,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 24",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                4,
+                111,
+                72,
+                47,
+                207,
+                37.1,
+                1.39,
+                56
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        4,
+                        84,
+                        72,
+                        47,
+                        207,
+                        37.1,
+                        1.39,
+                        56
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.7407407407407407,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3512449264526367,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        27,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 27",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                10,
+                90,
+                85,
+                32,
+                0,
+                34.9,
+                0.825,
+                56
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        10,
+                        101,
+                        85,
+                        32,
+                        0,
+                        34.9,
+                        0.825,
+                        56
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.8181818181818181,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3820910453796387,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -11,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 11",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                139,
+                80,
+                35,
+                160,
+                31.6,
+                0.361,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        154,
+                        80,
+                        35,
+                        160,
+                        31.6,
+                        0.361,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.3333333333333333,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3439819812774658,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -15,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 15",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                107,
+                76,
+                0,
+                0,
+                45.3,
+                0.6859999999999999,
+                24
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        122,
+                        76,
+                        0,
+                        0,
+                        45.3,
+                        0.6859999999999999,
+                        24
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.3333333333333333,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.586726188659668,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -15,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 15",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                81,
+                72,
+                18,
+                40,
+                26.6,
+                0.28300000000000003,
+                24
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        186,
+                        72,
+                        18,
+                        40,
+                        26.6,
+                        0.28300000000000003,
+                        24
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.19047619047619047,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.0465121269226074,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -105,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 105",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                106,
+                70,
+                37,
+                148,
+                39.4,
+                0.605,
+                22
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        135,
+                        70,
+                        37,
+                        148,
+                        39.4,
+                        0.605,
+                        22
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.6896551724137931,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.8132760524749756,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -29,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 29",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                137,
+                40,
+                35,
+                168,
+                43.1,
+                2.2880000000000003,
+                33
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        57,
+                        40,
+                        35,
+                        168,
+                        39.10953527023595,
+                        2.2880000000000003,
+                        33
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.20363970349117386,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.6033239364624023,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        80,
+                        0,
+                        0,
+                        0,
+                        3.9904647297640494,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 80",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Decrease 'BMI' by 3.9904647297640494",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                107,
+                88,
+                0,
+                0,
+                36.8,
+                0.727,
+                31
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        128,
+                        88,
+                        0,
+                        0,
+                        36.8,
+                        0.727,
+                        31
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.9523809523809523,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.5111660957336426,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -21,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 21",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                67,
+                76,
+                0,
+                0,
+                45.3,
+                0.19399999999999998,
+                46
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        126,
+                        76,
+                        0,
+                        0,
+                        45.3,
+                        0.19399999999999998,
+                        46
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3389830508474576,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.6452748775482178,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -59,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 59",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                12,
+                106,
+                80,
+                0,
+                0,
+                23.6,
+                0.13699999999999998,
+                44
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        12,
+                        154,
+                        80,
+                        0,
+                        0,
+                        23.673293242637584,
+                        0.13699999999999998,
+                        44
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.41394806487827235,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.2976996898651123,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -48,
+                        0,
+                        0,
+                        0,
+                        -0.07329324263758252,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 48",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Increase 'BMI' by 0.07329324263758252",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                129,
+                74,
+                26,
+                205,
+                33.2,
+                0.591,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        148,
+                        74,
+                        26,
+                        205,
+                        33.2,
+                        0.591,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.0526315789473684,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.401569128036499,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -19,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 19",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                57,
+                60,
+                0,
+                0,
+                21.7,
+                0.735,
+                67
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        147,
+                        60,
+                        0,
+                        0,
+                        21.7,
+                        0.735,
+                        67
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.2222222222222222,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.0087769031524658,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -90,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 90",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                143,
+                78,
+                0,
+                0,
+                45.0,
+                0.19,
+                47
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        115,
+                        78,
+                        0,
+                        0,
+                        45.0,
+                        0.19,
+                        47
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.7142857142857143,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.7894058227539062,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        28,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 28",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                4,
+                154,
+                62,
+                31,
+                284,
+                32.8,
+                0.237,
+                23
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        4,
+                        152,
+                        62,
+                        31,
+                        284,
+                        32.8,
+                        0.237,
+                        23
+                    ],
+                    "prediction": 0,
+                    "fitness": 10.0,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.6706089973449707,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        2,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 2",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                134,
+                58,
+                20,
+                291,
+                26.4,
+                0.35200000000000004,
+                21
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        173,
+                        58,
+                        20,
+                        291,
+                        26.4,
+                        0.35200000000000004,
+                        21
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.5128205128205129,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.3547019958496094,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -39,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 39",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                106,
+                76,
+                0,
+                0,
+                37.5,
+                0.19699999999999998,
+                26
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        154,
+                        76,
+                        0,
+                        0,
+                        37.5,
+                        0.19699999999999998,
+                        26
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.4166666666666667,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.677440881729126,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -48,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 48",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                109,
+                88,
+                30,
+                0,
+                32.5,
+                0.855,
+                38
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        140,
+                        88,
+                        30,
+                        0,
+                        32.5,
+                        0.855,
+                        38
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.6451612903225806,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.5989248752593994,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -31,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 31",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                108,
+                62,
+                10,
+                278,
+                25.3,
+                0.8809999999999999,
+                22
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        154,
+                        62,
+                        10,
+                        278,
+                        25.486566016832686,
+                        0.8809999999999999,
+                        22
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.4273281982397496,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.4331259727478027,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -46,
+                        0,
+                        0,
+                        0,
+                        -0.18656601683268548,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 46",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Increase 'BMI' by 0.18656601683268548",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                98,
+                58,
+                33,
+                190,
+                34.0,
+                0.43,
+                43
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        124,
+                        58,
+                        33,
+                        190,
+                        34.0,
+                        0.43,
+                        43
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.7692307692307692,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.234595775604248,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -26,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 26",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                130,
+                82,
+                0,
+                0,
+                39.1,
+                0.956,
+                37
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        110,
+                        82,
+                        0,
+                        0,
+                        39.1,
+                        0.956,
+                        37
+                    ],
+                    "prediction": 0,
+                    "fitness": 1.0,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2076749801635742,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        20,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 20",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                151,
+                90,
+                46,
+                0,
+                42.1,
+                0.371,
+                21
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        143,
+                        90,
+                        46,
+                        0,
+                        42.1,
+                        0.371,
+                        21
+                    ],
+                    "prediction": 0,
+                    "fitness": 2.5,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4079680442810059,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        8,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 8",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                84,
+                50,
+                23,
+                76,
+                30.4,
+                0.968,
+                21
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        131,
+                        50,
+                        23,
+                        76,
+                        30.4,
+                        0.968,
+                        21
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.425531914893617,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4577560424804688,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -47,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 47",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                89,
+                24,
+                19,
+                25,
+                27.8,
+                0.5589999999999999,
+                21
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        141,
+                        24,
+                        19,
+                        25,
+                        27.8,
+                        0.5589999999999999,
+                        21
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3846153846153846,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3909461498260498,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -52,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 52",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                8,
+                179,
+                72,
+                42,
+                130,
+                32.7,
+                0.7190000000000001,
+                36
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        8,
+                        120,
+                        72,
+                        42,
+                        130,
+                        32.7,
+                        0.7190000000000001,
+                        36
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.3389830508474576,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.1229419708251953,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        59,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 59",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                120,
+                80,
+                48,
+                200,
+                38.9,
+                1.162,
+                41
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        107,
+                        80,
+                        48,
+                        200,
+                        38.9,
+                        1.162,
+                        41
+                    ],
+                    "prediction": 0,
+                    "fitness": 1.5384615384615383,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.5339281558990479,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        13,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 13",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                3,
+                158,
+                70,
+                30,
+                328,
+                35.5,
+                0.344,
+                35
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        3,
+                        142,
+                        70,
+                        30,
+                        328,
+                        35.5,
+                        0.3391075818125828,
+                        35
+                    ],
+                    "prediction": 0,
+                    "fitness": 1.2064707988290633,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.1361379623413086,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        16,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.004892418187417147,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 16",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "Decrease 'DiabetesPedigreeFunction' by 0.004892418187417147",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                124,
+                74,
+                36,
+                0,
+                27.8,
+                0.1,
+                30
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        182,
+                        74,
+                        36,
+                        0,
+                        27.8,
+                        0.1,
+                        30
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3448275862068966,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.0710337162017822,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -58,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 58",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                3,
+                108,
+                62,
+                24,
+                0,
+                26.0,
+                0.223,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        3,
+                        167,
+                        62,
+                        24,
+                        0,
+                        26.0,
+                        0.223,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3389830508474576,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4296181201934814,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -59,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 59",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                7,
+                184,
+                84,
+                33,
+                0,
+                35.5,
+                0.355,
+                41
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        7,
+                        130,
+                        84,
+                        33,
+                        0,
+                        35.5,
+                        0.355,
+                        41
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.37037037037037035,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3033649921417236,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        54,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 54",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                158,
+                70,
+                0,
+                0,
+                29.8,
+                0.207,
+                63
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        137,
+                        70,
+                        0,
+                        0,
+                        29.8,
+                        0.207,
+                        63
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.9523809523809523,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.213454008102417,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        21,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 21",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                135,
+                68,
+                42,
+                250,
+                42.3,
+                0.365,
+                24
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        136,
+                        68,
+                        42,
+                        250,
+                        42.3,
+                        0.365,
+                        24
+                    ],
+                    "prediction": 1,
+                    "fitness": 20.0,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4219460487365723,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -1,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 1",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                125,
+                78,
+                31,
+                0,
+                27.6,
+                0.565,
+                49
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        137,
+                        78,
+                        31,
+                        0,
+                        27.6,
+                        0.565,
+                        49
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.6666666666666667,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.0895071029663086,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -12,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 12",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                87,
+                68,
+                34,
+                77,
+                37.6,
+                0.401,
+                24
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        142,
+                        68,
+                        34,
+                        77,
+                        37.6,
+                        0.401,
+                        24
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.36363636363636365,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.566917896270752,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -55,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 55",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                4,
+                110,
+                76,
+                20,
+                100,
+                28.4,
+                0.11800000000000001,
+                27
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        4,
+                        171,
+                        76,
+                        20,
+                        100,
+                        28.4,
+                        0.11800000000000001,
+                        27
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3278688524590164,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.8614137172698975,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -61,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 61",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                152,
+                82,
+                39,
+                272,
+                41.5,
+                0.27,
+                27
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        145,
+                        82,
+                        39,
+                        272,
+                        41.5,
+                        0.27,
+                        27
+                    ],
+                    "prediction": 0,
+                    "fitness": 2.857142857142857,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2501370906829834,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        7,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 7",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                3,
+                121,
+                52,
+                0,
+                0,
+                36.0,
+                0.127,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        3,
+                        144,
+                        52,
+                        0,
+                        0,
+                        36.0,
+                        0.127,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.8695652173913044,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4759187698364258,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -23,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 23",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                112,
+                72,
+                30,
+                176,
+                34.4,
+                0.528,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        148,
+                        72,
+                        30,
+                        176,
+                        34.4,
+                        0.528,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.5555555555555556,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.290597915649414,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -36,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 36",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                128,
+                64,
+                42,
+                0,
+                40.0,
+                1.101,
+                24
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        105,
+                        64,
+                        42,
+                        0,
+                        40.0,
+                        1.101,
+                        24
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.8695652173913044,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4441039562225342,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        23,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 23",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                105,
+                75,
+                0,
+                0,
+                23.3,
+                0.56,
+                53
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        154,
+                        75,
+                        0,
+                        0,
+                        23.721664702235955,
+                        0.5686695716080015,
+                        53
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.38582799805596996,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.7396728992462158,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -49,
+                        0,
+                        0,
+                        0,
+                        -0.42166470223595454,
+                        -0.008669571608001414,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 49",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Increase 'BMI' by 0.42166470223595454",
+                        "Increase 'DiabetesPedigreeFunction' by 0.008669571608001414",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                126,
+                60,
+                0,
+                0,
+                30.1,
+                0.349,
+                47
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        146,
+                        60,
+                        0,
+                        0,
+                        30.1,
+                        0.349,
+                        47
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.0,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.3278021812438965,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -20,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 20",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                116,
+                74,
+                29,
+                0,
+                32.3,
+                0.66,
+                35
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        132,
+                        74,
+                        29,
+                        0,
+                        32.3,
+                        0.66,
+                        35
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.25,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.475965976715088,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -16,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 16",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                7,
+                133,
+                84,
+                0,
+                0,
+                40.2,
+                0.696,
+                37
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        7,
+                        113,
+                        84,
+                        0,
+                        0,
+                        40.091658071076765,
+                        0.696,
+                        37
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.9772311593951059,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.0740671157836914,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        20,
+                        0,
+                        0,
+                        0,
+                        0.10834192892323813,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 20",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Decrease 'BMI' by 0.10834192892323813",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                119,
+                44,
+                47,
+                63,
+                35.5,
+                0.28,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        138,
+                        44,
+                        47,
+                        63,
+                        35.5,
+                        0.28,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 1.0526315789473684,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.4611399173736572,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -19,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 19",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                92,
+                62,
+                25,
+                41,
+                19.5,
+                0.48200000000000004,
+                25
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        179,
+                        62,
+                        25,
+                        41,
+                        19.5,
+                        0.48200000000000004,
+                        25
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.2298850574712644,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.5708949565887451,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -87,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 87",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                4,
+                96,
+                56,
+                17,
+                49,
+                20.8,
+                0.34,
+                26
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        4,
+                        175,
+                        56,
+                        17,
+                        49,
+                        20.8,
+                        0.34,
+                        26
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.2531645569620253,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.019646167755127,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -79,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 79",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                4,
+                90,
+                88,
+                47,
+                54,
+                37.7,
+                0.36200000000000004,
+                29
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        4,
+                        140,
+                        88,
+                        47,
+                        54,
+                        37.91425102599801,
+                        0.36200000000000004,
+                        29
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.39276133175899275,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.7868568897247314,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -50,
+                        0,
+                        0,
+                        0,
+                        -0.21425102599800994,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 50",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Increase 'BMI' by 0.21425102599800994",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                5,
+                103,
+                108,
+                37,
+                0,
+                39.2,
+                0.305,
+                65
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        5,
+                        125,
+                        108,
+                        37,
+                        0,
+                        39.2,
+                        0.305,
+                        65
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.9090909090909091,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2750108242034912,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -22,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 22",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                119,
+                66,
+                27,
+                0,
+                38.8,
+                0.259,
+                22
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        146,
+                        66,
+                        27,
+                        0,
+                        38.8,
+                        0.259,
+                        22
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.7407407407407407,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.542757272720337,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -27,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 27",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                2,
+                83,
+                65,
+                28,
+                66,
+                36.8,
+                0.629,
+                24
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        2,
+                        132,
+                        65,
+                        28,
+                        66,
+                        36.8,
+                        0.629,
+                        24
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.4081632653061224,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.5998952388763428,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -49,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 49",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                8,
+                99,
+                84,
+                0,
+                0,
+                35.4,
+                0.38799999999999996,
+                50
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        8,
+                        125,
+                        84,
+                        0,
+                        0,
+                        35.4,
+                        0.3904569969280477,
+                        50
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.7607481018863045,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.322777271270752,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -26,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        -0.002456996928047739,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 26",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "Increase 'DiabetesPedigreeFunction' by 0.002456996928047739",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                106,
+                70,
+                28,
+                135,
+                34.2,
+                0.142,
+                22
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        162,
+                        70,
+                        28,
+                        135,
+                        34.2,
+                        0.142,
+                        22
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.35714285714285715,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 0.8943600654602051,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -56,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 56",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                113,
+                64,
+                35,
+                0,
+                33.6,
+                0.5429999999999999,
+                21
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        144,
+                        64,
+                        35,
+                        0,
+                        33.82638840211113,
+                        0.5429999999999999,
+                        21
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.6255138291663701,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.0463922023773193,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -31,
+                        0,
+                        0,
+                        0,
+                        -0.22638840211112665,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 31",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Increase 'BMI' by 0.22638840211112665",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                6,
+                85,
+                78,
+                0,
+                0,
+                31.2,
+                0.382,
+                42
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        6,
+                        143,
+                        78,
+                        0,
+                        0,
+                        31.2,
+                        0.382,
+                        42
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.3448275862068966,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 0.9701271057128906,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -58,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 58",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                181,
+                78,
+                42,
+                293,
+                40.0,
+                1.258,
+                22
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        114,
+                        78,
+                        42,
+                        293,
+                        40.0,
+                        1.2504151959088206,
+                        22
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.29457266594147397,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.478024959564209,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        67,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.007584804091179453,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 67",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "Decrease 'DiabetesPedigreeFunction' by 0.007584804091179453",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                153,
+                82,
+                42,
+                485,
+                40.6,
+                0.687,
+                23
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        136,
+                        82,
+                        42,
+                        485,
+                        40.6,
+                        0.687,
+                        23
+                    ],
+                    "prediction": 0,
+                    "fitness": 1.1764705882352942,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2657208442687988,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        17,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 17",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                0,
+                105,
+                68,
+                22,
+                0,
+                20.0,
+                0.23600000000000002,
+                22
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        0,
+                        192,
+                        68,
+                        22,
+                        0,
+                        20.0,
+                        0.23600000000000002,
+                        22
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.2298850574712644,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 2.162792921066284,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -87,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 87",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                1,
+                96,
+                122,
+                0,
+                0,
+                22.4,
+                0.207,
+                27
+            ],
+            "inputPrediction": 0,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        1,
+                        195,
+                        122,
+                        0,
+                        0,
+                        28.31275732272873,
+                        0.207,
+                        27
+                    ],
+                    "prediction": 1,
+                    "fitness": 0.1605779072062357,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2599217891693115,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        -99,
+                        0,
+                        0,
+                        0,
+                        -5.91275732272873,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Increase 'Glucose' by 99",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "Increase 'BMI' by 5.91275732272873",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        },
+        {
+            "inputFeatures": [
+                15,
+                136,
+                70,
+                32,
+                110,
+                37.1,
+                0.153,
+                43
+            ],
+            "inputPrediction": 1,
+            "bestIndividuals": [
+                {
+                    "data": [
+                        15,
+                        109,
+                        70,
+                        32,
+                        110,
+                        37.1,
+                        0.153,
+                        43
+                    ],
+                    "prediction": 0,
+                    "fitness": 0.7407407407407407,
+                    "counterfactualClass": true,
+                    "executionTimeSecs": 1.2733187675476074,
+                    "error": "",
+                    "counterfactualType": "prediction changed",
+                    "diff": [
+                        0,
+                        27,
+                        0,
+                        0,
+                        0,
+                        0.0,
+                        0.0,
+                        0
+                    ],
+                    "message": [
+                        "'Pregnancies' remains unchanged",
+                        "Decrease 'Glucose' by 27",
+                        "'BloodPressure' remains unchanged",
+                        "'SkinThickness' remains unchanged",
+                        "'Insulin' remains unchanged",
+                        "'BMI' remains unchanged",
+                        "'DiabetesPedigreeFunction' remains unchanged",
+                        "'Age' remains unchanged"
+                    ]
+                }
+            ],
+            "additionalCFs": []
+        }
+    ]
+}

@@ -1,0 +1,63 @@
+{
+    "scan": {
+        "scan_id": "ad37ef1be4aa",
+        "evaluation_type": "atx",
+        "started": "2020-05-06T21:17:52",
+        "ended": "2020-05-06T21:22:40",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 4 candidate models."
+    },
+    "model_use_case": {
+        "name": "Banking: Predicting Customer Churn",
+        "model_use_case_id": "c12e/datasciencelab/customer_churn",
+        "performance_metrics": [
+            {
+                "metric": "Accuracy",
+                "name": "Accuracy"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a customer or previous customer of the bank. The learning task is to predict who is likely to quit as a customer.\n\nThis dataset was sourced from Kaggle: https://www.kaggle.com/adammaus/predicting-churn-for-bank-customers\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "rf",
+        "name": "Random Forest Classifier",
+        "predict_endpoint": "http://127.0.0.1:5111/customer_churn_rf/predict",
+        "performance_metric_values": [
+            {
+                "value": 0.8476,
+                "name": "Accuracy"
+            }
+        ],
+        "description": "Scikit-learn RandomForestClassifier using gini criterion"
+    },
+    "atx": 64.54832077681482,
+    "components_measured": [
+        "explainability",
+        "fairness",
+        "performance",
+        "robustness"
+    ],
+    "component_scores": {
+        "robustness": 62.234374725843566,
+        "fairness": 17.09734588141569,
+        "explainability": 94.1015625,
+        "performance": 84.76
+    },
+    "aspect_weights": {
+        "robustness": 1.0,
+        "fairness": 1.0,
+        "explainability": 1.0,
+        "performance": 1.0
+    },
+    "aspect_types": {
+        "robustness": "",
+        "fairness": "burden",
+        "explanation": "counterfactual",
+        "explainability": "counterfactual",
+        "performance": "Accuracy"
+    },
+    "status": "Completed"
+}

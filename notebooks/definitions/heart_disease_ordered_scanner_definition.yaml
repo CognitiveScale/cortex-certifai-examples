@@ -1,0 +1,112 @@
+scan:
+  output:
+    path: ../local_reports
+
+model_use_case:
+  atx_performance_metric_name: Accuracy
+  author: info@cognitivescale.com
+  description: 'In this use case, each entry in the dataset represents a patient.
+    The learning task is to predict whether or not a patient has heart disease
+    (angiographic disease status) based on certain diagnostic measurements
+    included in the dataset. Prediction values range from 0 to 4, with 0
+    indicating no heart disease and 1 to 4 indicating increasing heart disease
+    levels.
+
+    See https://rpubs.com/mbbrigitte/heartdisease.
+
+    The dataset source is from: https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data
+
+    The original dataset source is: http://archive.ics.uci.edu/ml/datasets/Heart+Disease
+
+    '
+  model_use_case_id: c12e/datasciencelab/heart_disease
+  name: "Healthcare: Heart Disease Prediction"
+  performance_metrics:
+  - metric: Accuracy
+    name: Accuracy
+  task_type: multiclass-classification
+
+models:
+- model_id: lr
+  name: Logistic Regression
+  description: Scikit-learn LogisticRegression classifier using lbfgs solver
+  predict_endpoint: http://127.0.0.1:5111/heart_disease_lr/predict
+  performance_metric_values:
+  - name: Accuracy
+    value: 0.5111111111111111
+  author: ''
+- model_id: rf
+  name: Random Forest
+  description: Scikit-learn K Random Forest Classifier
+  predict_endpoint: http://127.0.0.1:5111/heart_disease_rf/predict
+  performance_metric_values:
+  - name: Accuracy
+    value: 0.5333333333333333
+  author: ''
+- model_id: knn
+  name:  K Nearest Neighbors
+  description: Scikit-learn K Nearest Neighbors Classifier
+  predict_endpoint: http://127.0.0.1:5111/heart_disease_knn/predict
+  performance_metric_values:
+  - name: Accuracy
+    value: 0.5777777777777777
+  author: ''
+
+dataset_schema:
+  outcome_column: class_att
+  feature_schemas:
+  - feature_name: cp
+    data_type: categorical
+  - feature_name: restecg
+    data_type: categorical
+  - feature_name: slope
+    data_type: categorical
+  - feature_name: ca
+    data_type: categorical
+  - feature_name: thal
+    data_type: categorical
+
+datasets:
+- dataset_id: eval
+  description: 297 row dataset
+  file_type: csv
+  has_header: true
+  name: Evaluation dataset
+  url: file:../datasets/heart_disease_eval.csv
+- dataset_id: explan
+  description: ''
+  file_type: csv
+  has_header: true
+  name: 100 row explanation dataset
+  url: file:../datasets/heart_disease_explan.csv
+
+evaluation:
+  name: Baseline evaluation of 3 models
+  description: This evaluation compares the robustness, fairness, performance and explainability
+    for 3 candidate models.
+  evaluation_dataset_id: eval
+  explanation_dataset_id: explan
+  evaluation_types:
+   - robustness
+   - fairness
+   - explainability
+   - explanation
+   - performance
+  prediction_favorability: ordered
+  prediction_values:
+  - name: "Heart disease not detected"
+    value: 0
+  - name: "Stage 1: > 50% diameter narrowing in a major vessel"
+    value: 1
+  - name: "Stage 2: > 50% diameter narrowing in a major vessel"
+    value: 2
+  - name: "Stage 3: > 50% diameter narrowing in a major vessel"
+    value: 3
+  - name: "Stage 4: > 50% diameter narrowing in a major vessel"
+    value: 4
+  prediction_description: "Indicator of heart disease level (angiographic disease status)"
+  fairness_grouping_features:
+    - name: sex
+  feature_restrictions:
+    - feature_name: sex
+      restriction_string: no changes

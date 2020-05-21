@@ -1,0 +1,59 @@
+{
+    "scan": {
+        "scan_id": "a15570fe5438",
+        "evaluation_type": "atx",
+        "started": "2020-05-06T17:30:13",
+        "ended": "2020-05-06T17:34:30",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy and explanations for 4 candidate models. Fairness is not applicable to this use case."
+    },
+    "model_use_case": {
+        "name": "HealthCare: Disease Prediction",
+        "model_use_case_id": "c12e/datasciencelab/diabetes",
+        "performance_metrics": [
+            {
+                "name": "Accuracy",
+                "metric": "Accuracy"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a patient. The learning task is to predict whether or not a patient has diabetes, based on certain diagnostic measurements included in the dataset.\n\nSeveral constraints were placed on the selection of these instances from a larger database. In particular, all patients here are females at least 21 years old of Pima Indian heritage.\n\nThis dataset was sourced from Kaggle: https://www.kaggle.com/uciml/pima-indians-diabetes-database\n\nIt is originally from the National Institute of Diabetes and Digestive and Kidney Diseases.\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "logit",
+        "name": "Logistic Regression",
+        "predict_endpoint": "http://127.0.0.1:5111/diabetes_logit/predict",
+        "performance_metric_values": [
+            {
+                "name": "Accuracy",
+                "value": 0.76796
+            }
+        ],
+        "description": "Scikit-learn LogisticRegression classifier using lbfgs solver"
+    },
+    "atx": 73.84864603018379,
+    "components_measured": [
+        "explainability",
+        "performance",
+        "robustness"
+    ],
+    "component_scores": {
+        "robustness": 46.35150059055138,
+        "explainability": 98.3984375,
+        "performance": 76.79599999999999
+    },
+    "aspect_weights": {
+        "robustness": 1.0,
+        "explainability": 1.0,
+        "performance": 1.0
+    },
+    "aspect_types": {
+        "robustness": "",
+        "explanation": "counterfactual",
+        "explainability": "counterfactual",
+        "performance": "Accuracy"
+    },
+    "status": "Completed"
+}

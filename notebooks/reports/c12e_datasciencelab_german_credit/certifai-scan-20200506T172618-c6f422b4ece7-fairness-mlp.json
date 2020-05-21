@@ -1,0 +1,637 @@
+{
+    "scan": {
+        "scan_id": "c6f422b4ece7",
+        "evaluation_type": "fairness",
+        "started": "2020-05-06T17:16:36",
+        "ended": "2020-05-06T17:21:53",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 4 candidate models."
+    },
+    "model_use_case": {
+        "name": "Banking: Loan Approval",
+        "model_use_case_id": "c12e/datasciencelab/german_credit",
+        "performance_metrics": [
+            {
+                "name": "Accuracy",
+                "metric": "Accuracy"
+            },
+            {
+                "name": "Recall",
+                "metric": "Recall"
+            },
+            {
+                "name": "Precision",
+                "metric": "Precision"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a person who takes a credit loan from a bank. The learning task is to classify each person as either a good or bad credit risk according to the set of attributes.\n\nThis dataset was sourced from Kaggle: https://www.kaggle.com/uciml/german-credit\n\nThe original source is: https://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "mlp",
+        "name": "Multi-Layer Perceptron Classifier",
+        "predict_endpoint": "http://127.0.0.1:5111/german_credit_mlp/predict",
+        "description": "Scikit-learn neural network MLP Classifier with 2 hidden layers using adam stochastic gradient-based optimizer"
+    },
+    "dataset": {
+        "dataset_id": "eval",
+        "url": "file:../datasets/german_credit_eval.csv",
+        "checksum_type": "md5",
+        "checksum": "c35233d265a26a9acd6625ae12f82b46",
+        "num_features": 21,
+        "rows": 1000,
+        "name": "Evaluation dataset",
+        "description": "1000 row representative sample of the full dataset"
+    },
+    "dataset_schema": {
+        "outcome_column": "outcome",
+        "feature_schemas": [
+            {
+                "type": "CAT",
+                "category_values": [
+                    "... < 0 DM",
+                    "... >= 200 DM / salary assignments for at least 1 year",
+                    "0 <= ... < 200 DM",
+                    "no checking account"
+                ],
+                "name": "checkingstatus",
+                "index": 0
+            },
+            {
+                "type": "INT",
+                "min": 4,
+                "max": 72,
+                "spread": 6.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "duration",
+                "index": 1
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "all credits at this bank paid back duly",
+                    "critical account/ other credits existing (not at this bank)",
+                    "delay in paying off in the past",
+                    "existing credits paid back duly till now",
+                    "no credits taken/ all credits paid back duly"
+                ],
+                "name": "history",
+                "index": 2
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "business",
+                    "car (new)",
+                    "car (used)",
+                    "domestic appliances",
+                    "education",
+                    "furniture/equipment",
+                    "purpose - others",
+                    "radio/television",
+                    "repairs",
+                    "retraining"
+                ],
+                "name": "purpose",
+                "index": 3
+            },
+            {
+                "type": "INT",
+                "min": 250,
+                "max": 18424,
+                "spread": 1097.5,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "amount",
+                "index": 4
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    ".. >= 1000 DM",
+                    "... < 100 DM",
+                    "100 <= ... < 500 DM",
+                    "500 <= ... < 1000 DM",
+                    "unknown/ no savings account"
+                ],
+                "name": "savings",
+                "index": 5
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    ".. >= 7 years",
+                    "... < 1 year",
+                    "1 <= ... < 4 years",
+                    "4 <= ... < 7 years",
+                    "unemployed"
+                ],
+                "name": "employ",
+                "index": 6
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "heuristically_inferred": true,
+                "name": "installment",
+                "index": 7
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "female : divorced/separated/married",
+                    "male : divorced/separated",
+                    "male : married/widowed",
+                    "male : single"
+                ],
+                "name": "status",
+                "index": 8
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "co-applicant",
+                    "guarantor",
+                    "others - none"
+                ],
+                "name": "others",
+                "index": 9
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "heuristically_inferred": true,
+                "name": "residence",
+                "index": 10
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "building society savings agreement/ life insurance",
+                    "car or other, not in attribute 6",
+                    "real estate",
+                    "unknown / no property"
+                ],
+                "name": "property",
+                "index": 11
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "<= 25 years",
+                    "> 25 years"
+                ],
+                "name": "age",
+                "index": 12
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "bank",
+                    "none",
+                    "stores"
+                ],
+                "name": "otherplans",
+                "index": 13
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "for free",
+                    "own",
+                    "rent"
+                ],
+                "name": "housing",
+                "index": 14
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "heuristically_inferred": true,
+                "name": "cards",
+                "index": 15
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "management/ self-employed/highly qualified employee/ officer",
+                    "skilled employee / official",
+                    "unemployed/ unskilled - non-resident",
+                    "unskilled - resident"
+                ],
+                "name": "job",
+                "index": 16
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    1,
+                    2
+                ],
+                "heuristically_inferred": true,
+                "name": "liable",
+                "index": 17
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "phone - none",
+                    "phone - yes, registered under the customers name"
+                ],
+                "name": "telephone",
+                "index": 18
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "foreign - no",
+                    "foreign - yes"
+                ],
+                "name": "foreign",
+                "index": 19
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    1,
+                    2
+                ],
+                "heuristically_inferred": true,
+                "name": "outcome",
+                "index": 20
+            }
+        ]
+    },
+    "status": "Completed",
+    "engine_stats": {
+        "num_predict_calls": 2720,
+        "mean_prediction_time_ms": 198.29233602941162,
+        "mean_batch_size": 2157.548529411765,
+        "num_counterfactuals": 1000,
+        "mean_generation_count": 2.416,
+        "hyperparameters": {
+            "tournsize": 3,
+            "population": 4000,
+            "indpb": 0.05,
+            "CXPB": 0.5,
+            "MUTPB": 0.2,
+            "generation": 180,
+            "evolution": 100,
+            "N_CYCLES": 1,
+            "early_stopping_delta": 0.0001,
+            "early_stopping_epochs": 3,
+            "percent_class_seeding": 5,
+            "sampling_Z": 1.96,
+            "sampling_boundary": 0.1,
+            "sampling_min_n": 100,
+            "2pt_orig_weight": 0.025,
+            "shrinkage_weight": 0.5,
+            "annealing_weight": 0.45,
+            "annealing_rate": 1.25,
+            "elitism": 0.04,
+            "dimensional_normalization": true,
+            "num_counterfactuals": 1,
+            "shap_init_with_eval": true,
+            "shap_num_samples": 500
+        },
+        "runtime_secs": 303.491651058197,
+        "per cf mean GA init count": 0.304,
+        "per cf mean GA init time": 118.72225099999997,
+        "per cf mean GA mutation time": 26.619251000000023,
+        "per cf mean GA crossover time": 28.491462000000016,
+        "per cf mean GA selection time": 58.066020999999985,
+        "per cf mean eval time": 511.0781679999998,
+        "per cf mean prediction time": 539.3551539999996,
+        "per cf mean diversity selection time": 0.0
+    },
+    "detailed_scores": {
+        "CERScore": 1.0377992247132637,
+        "NCERScore": 0.0774835061670195,
+        "Normalization": 13.393808257414637,
+        "details": [
+            {
+                "feature": "age",
+                "groups": [
+                    {
+                        "label": "<= 25 years",
+                        "value": 0.09872159090909088,
+                        "value_confidence_95_lower": 0.08290378006872853,
+                        "value_confidence_95_upper": 0.11512431023351566,
+                        "values": [
+                            0.09872159090909088
+                        ],
+                        "values_confidence_95_lower": [
+                            0.08290378006872853
+                        ],
+                        "values_confidence_95_upper": [
+                            0.11512431023351566
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "> 25 years",
+                        "value": 0.0741181200969822,
+                        "value_confidence_95_lower": 0.06669667582294878,
+                        "value_confidence_95_upper": 0.0813071580057677,
+                        "values": [
+                            0.0741181200969822
+                        ],
+                        "values_confidence_95_lower": [
+                            0.06669667582294878
+                        ],
+                        "values_confidence_95_upper": [
+                            0.0813071580057677
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    }
+                ]
+            },
+            {
+                "feature": "status",
+                "groups": [
+                    {
+                        "label": "female : divorced/separated/married",
+                        "value": 0.0842793922520574,
+                        "value_confidence_95_lower": 0.07249121362092803,
+                        "value_confidence_95_upper": 0.09655564544170767,
+                        "values": [
+                            0.0842793922520574
+                        ],
+                        "values_confidence_95_lower": [
+                            0.07249121362092803
+                        ],
+                        "values_confidence_95_upper": [
+                            0.09655564544170767
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "male : divorced/separated",
+                        "value": 0.10583804835035639,
+                        "value_confidence_95_lower": 0.07385379995858356,
+                        "value_confidence_95_upper": 0.14026575550493547,
+                        "values": [
+                            0.10583804835035639
+                        ],
+                        "values_confidence_95_lower": [
+                            0.07385379995858356
+                        ],
+                        "values_confidence_95_upper": [
+                            0.14026575550493547
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "male : married/widowed",
+                        "value": 0.07397003745318352,
+                        "value_confidence_95_lower": 0.05482456140350877,
+                        "value_confidence_95_upper": 0.09444444444444444,
+                        "values": [
+                            0.07397003745318352
+                        ],
+                        "values_confidence_95_lower": [
+                            0.05482456140350877
+                        ],
+                        "values_confidence_95_upper": [
+                            0.09444444444444444
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "male : single",
+                        "value": 0.07377715016691413,
+                        "value_confidence_95_lower": 0.06503177111659349,
+                        "value_confidence_95_upper": 0.08288819286256643,
+                        "values": [
+                            0.07377715016691413
+                        ],
+                        "values_confidence_95_lower": [
+                            0.06503177111659349
+                        ],
+                        "values_confidence_95_upper": [
+                            0.08288819286256643
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "feature_fairness": [
+            {
+                "feature": "age",
+                "value": 85.84010481440023,
+                "value_confidence_95_lower": 77.00421454726342,
+                "value_confidence_95_upper": 95.20331553351696
+            },
+            {
+                "feature": "status",
+                "value": 87.85547988795003,
+                "value_confidence_95_lower": 78.12539858496221,
+                "value_confidence_95_upper": 95.08374976495041
+            }
+        ]
+    },
+    "feature_restrictions": [
+        {
+            "feature_name": "age",
+            "restriction_string": "no changes"
+        },
+        {
+            "feature_name": "status",
+            "restriction_string": "no changes"
+        }
+    ],
+    "prediction_description": "Will a loan be granted?",
+    "prediction_favorability": "explicit",
+    "prediction_values": [
+        {
+            "name": "Loan Granted",
+            "value": 1,
+            "favorable": true
+        },
+        {
+            "name": "Loan Denied",
+            "value": 2,
+            "favorable": false
+        }
+    ],
+    "fairness": {
+        "fairness_grouping_features": [
+            {
+                "name": "age"
+            },
+            {
+                "name": "status"
+            }
+        ],
+        "feature_fairness": [
+            {
+                "feature": "age",
+                "value": 85.84010481440023,
+                "value_confidence_95_lower": 77.00421454726342,
+                "value_confidence_95_upper": 95.20331553351696
+            },
+            {
+                "feature": "status",
+                "value": 87.85547988795003,
+                "value_confidence_95_lower": 78.12539858496221,
+                "value_confidence_95_upper": 95.08374976495041
+            }
+        ],
+        "detailed_fairness": [
+            {
+                "feature": "age",
+                "groups": [
+                    {
+                        "label": "<= 25 years",
+                        "value": 0.09872159090909088,
+                        "value_confidence_95_lower": 0.08290378006872853,
+                        "value_confidence_95_upper": 0.11512431023351566,
+                        "values": [
+                            0.09872159090909088
+                        ],
+                        "values_confidence_95_lower": [
+                            0.08290378006872853
+                        ],
+                        "values_confidence_95_upper": [
+                            0.11512431023351566
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "> 25 years",
+                        "value": 0.0741181200969822,
+                        "value_confidence_95_lower": 0.06669667582294878,
+                        "value_confidence_95_upper": 0.0813071580057677,
+                        "values": [
+                            0.0741181200969822
+                        ],
+                        "values_confidence_95_lower": [
+                            0.06669667582294878
+                        ],
+                        "values_confidence_95_upper": [
+                            0.0813071580057677
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    }
+                ]
+            },
+            {
+                "feature": "status",
+                "groups": [
+                    {
+                        "label": "female : divorced/separated/married",
+                        "value": 0.0842793922520574,
+                        "value_confidence_95_lower": 0.07249121362092803,
+                        "value_confidence_95_upper": 0.09655564544170767,
+                        "values": [
+                            0.0842793922520574
+                        ],
+                        "values_confidence_95_lower": [
+                            0.07249121362092803
+                        ],
+                        "values_confidence_95_upper": [
+                            0.09655564544170767
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "male : divorced/separated",
+                        "value": 0.10583804835035639,
+                        "value_confidence_95_lower": 0.07385379995858356,
+                        "value_confidence_95_upper": 0.14026575550493547,
+                        "values": [
+                            0.10583804835035639
+                        ],
+                        "values_confidence_95_lower": [
+                            0.07385379995858356
+                        ],
+                        "values_confidence_95_upper": [
+                            0.14026575550493547
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "male : married/widowed",
+                        "value": 0.07397003745318352,
+                        "value_confidence_95_lower": 0.05482456140350877,
+                        "value_confidence_95_upper": 0.09444444444444444,
+                        "values": [
+                            0.07397003745318352
+                        ],
+                        "values_confidence_95_lower": [
+                            0.05482456140350877
+                        ],
+                        "values_confidence_95_upper": [
+                            0.09444444444444444
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "male : single",
+                        "value": 0.07377715016691413,
+                        "value_confidence_95_lower": 0.06503177111659349,
+                        "value_confidence_95_upper": 0.08288819286256643,
+                        "values": [
+                            0.07377715016691413
+                        ],
+                        "values_confidence_95_lower": [
+                            0.06503177111659349
+                        ],
+                        "values_confidence_95_upper": [
+                            0.08288819286256643
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "score": 83.61697322596176,
+        "fairness_metric": "burden",
+        "score_confidence_95_lower": 76.00522813997081,
+        "score_confidence_95_upper": 90.91315410303298,
+        "secondary_scores": []
+    }
+}

@@ -1,0 +1,301 @@
+{
+    "scan": {
+        "scan_id": "a15570fe5438",
+        "evaluation_type": "explainability",
+        "started": "2020-05-06T17:42:37",
+        "ended": "2020-05-06T17:44:03",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy and explanations for 4 candidate models. Fairness is not applicable to this use case."
+    },
+    "model_use_case": {
+        "name": "HealthCare: Disease Prediction",
+        "model_use_case_id": "c12e/datasciencelab/diabetes",
+        "performance_metrics": [
+            {
+                "name": "Accuracy",
+                "metric": "Accuracy"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a patient. The learning task is to predict whether or not a patient has diabetes, based on certain diagnostic measurements included in the dataset.\n\nSeveral constraints were placed on the selection of these instances from a larger database. In particular, all patients here are females at least 21 years old of Pima Indian heritage.\n\nThis dataset was sourced from Kaggle: https://www.kaggle.com/uciml/pima-indians-diabetes-database\n\nIt is originally from the National Institute of Diabetes and Digestive and Kidney Diseases.\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "mlp",
+        "name": "Multi-Layer Perceptron Classifier",
+        "predict_endpoint": "http://127.0.0.1:5111/diabetes_mlp/predict",
+        "performance_metric_values": [
+            {
+                "name": "Accuracy",
+                "value": 0.70718
+            }
+        ],
+        "description": "Scikit-learn neural network MLP Classifier with 2 hidden layers using adam stochastic gradient-based optimizer"
+    },
+    "dataset": {
+        "dataset_id": "eval",
+        "url": "file:../datasets/diabetes_eval.csv",
+        "checksum_type": "md5",
+        "checksum": "da5573d7e6fea4ea05efaa79fd7c0b38",
+        "num_features": 9,
+        "rows": 724,
+        "name": "Full evaluation dataset",
+        "description": "Full dataset from Kaggle https://www.kaggle.com/uciml/pima-indians-diabetes-database"
+    },
+    "dataset_schema": {
+        "outcome_column": "Outcome",
+        "feature_schemas": [
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 17,
+                "spread": 2.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Pregnancies",
+                "index": 0
+            },
+            {
+                "type": "INT",
+                "min": 44,
+                "max": 199,
+                "spread": 20.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Glucose",
+                "index": 1
+            },
+            {
+                "type": "INT",
+                "min": 24,
+                "max": 122,
+                "spread": 8.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "BloodPressure",
+                "index": 2
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 99,
+                "spread": 11.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "SkinThickness",
+                "index": 3
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 846,
+                "spread": 48.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Insulin",
+                "index": 4
+            },
+            {
+                "type": "FLOAT",
+                "min": 18.2,
+                "max": 67.1,
+                "spread": 4.65,
+                "spread_type": "mad",
+                "name": "BMI",
+                "index": 5
+            },
+            {
+                "type": "FLOAT",
+                "min": 0.078,
+                "max": 2.42,
+                "spread": 0.16949999999999998,
+                "spread_type": "mad",
+                "name": "DiabetesPedigreeFunction",
+                "index": 6
+            },
+            {
+                "type": "INT",
+                "min": 21,
+                "max": 81,
+                "spread": 7.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Age",
+                "index": 7
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    0,
+                    1
+                ],
+                "heuristically_inferred": true,
+                "name": "Outcome",
+                "index": 8
+            }
+        ]
+    },
+    "status": "Completed",
+    "engine_stats": {
+        "num_predict_calls": 2186,
+        "mean_prediction_time_ms": 17.336190759377846,
+        "mean_batch_size": 2076.9034766697164,
+        "num_counterfactuals": 128,
+        "mean_generation_count": 16.078125,
+        "hyperparameters": {
+            "tournsize": 3,
+            "population": 4000,
+            "indpb": 0.05,
+            "CXPB": 0.5,
+            "MUTPB": 0.2,
+            "generation": 180,
+            "evolution": 100,
+            "N_CYCLES": 1,
+            "early_stopping_delta": 0.0001,
+            "early_stopping_epochs": 3,
+            "percent_class_seeding": 5,
+            "sampling_Z": 1.96,
+            "sampling_boundary": 0.1,
+            "sampling_min_n": 100,
+            "2pt_orig_weight": 0.025,
+            "shrinkage_weight": 0.5,
+            "annealing_weight": 0.45,
+            "annealing_rate": 1.25,
+            "elitism": 0.04,
+            "dimensional_normalization": true,
+            "num_counterfactuals": 1,
+            "shap_init_with_eval": true,
+            "shap_num_samples": 500
+        },
+        "runtime_secs": 86.36046409606934,
+        "per cf mean GA init count": 1.0,
+        "per cf mean GA init time": 287.28336718749995,
+        "per cf mean GA mutation time": 179.45012500000007,
+        "per cf mean GA crossover time": 212.94629687500012,
+        "per cf mean GA selection time": 428.7198984375,
+        "per cf mean eval time": 563.3276171875,
+        "per cf mean prediction time": 296.0696328124998,
+        "per cf mean diversity selection time": 0.0
+    },
+    "detailed_scores": {
+        "CERScore": 1.2875953597857437,
+        "NCERScore": 0.09197219785447791,
+        "Normalization": 13.999832447442742
+    },
+    "feature_restrictions": [
+        {
+            "feature_name": "Age",
+            "restriction_string": "no changes"
+        },
+        {
+            "feature_name": "Pregnancies",
+            "restriction_string": "no changes"
+        }
+    ],
+    "prediction_description": "Does the patient have diabetes?",
+    "prediction_favorability": "explicit",
+    "prediction_values": [
+        {
+            "name": "Patient does not have diabetes",
+            "value": 0,
+            "favorable": true
+        },
+        {
+            "name": "Patient has diabetes",
+            "value": 1,
+            "favorable": false
+        }
+    ],
+    "explanation_types": [
+        "counterfactual"
+    ],
+    "explainability": {
+        "histogram": [
+            {
+                "num_features": 1,
+                "percentage": 50.78125
+            },
+            {
+                "num_features": 2,
+                "percentage": 38.28125
+            },
+            {
+                "num_features": 3,
+                "percentage": 9.375
+            },
+            {
+                "num_features": 4,
+                "percentage": 1.5625
+            },
+            {
+                "num_features": 5,
+                "percentage": 0.0
+            },
+            {
+                "num_features": 6,
+                "percentage": 0.0
+            },
+            {
+                "num_features": 7,
+                "percentage": 0.0
+            },
+            {
+                "num_features": 8,
+                "percentage": 0.0
+            },
+            {
+                "num_features": 9,
+                "percentage": 0.0
+            },
+            {
+                "num_features": 10,
+                "percentage": 0.0
+            }
+        ],
+        "score": 93.046875,
+        "count_scores": [
+            {
+                "num_features": 1,
+                "value": 100
+            },
+            {
+                "num_features": 2,
+                "value": 90
+            },
+            {
+                "num_features": 3,
+                "value": 75
+            },
+            {
+                "num_features": 4,
+                "value": 50
+            },
+            {
+                "num_features": 5,
+                "value": 20
+            },
+            {
+                "num_features": 6,
+                "value": 0
+            },
+            {
+                "num_features": 7,
+                "value": 0
+            },
+            {
+                "num_features": 8,
+                "value": 0
+            },
+            {
+                "num_features": 9,
+                "value": 0
+            },
+            {
+                "num_features": 10,
+                "value": 0
+            }
+        ],
+        "explanation_type": "Counterfactual"
+    }
+}

@@ -1,0 +1,63 @@
+{
+    "scan": {
+        "scan_id": "7658b1bebf36",
+        "evaluation_type": "atx",
+        "started": "2020-05-06T20:55:03",
+        "ended": "2020-05-06T21:05:25",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 4 candidate models."
+    },
+    "model_use_case": {
+        "name": "Banking: Propensity to Buy",
+        "model_use_case_id": "c12e/datasciencelab/bank_marketing",
+        "performance_metrics": [
+            {
+                "metric": "Accuracy",
+                "name": "Accuracy"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a target of a previous marketing campaign. The learning task is to predict who will make a term deposit with the bank as a result of a similar campaign.\n\nThis dataset was sourced from Kaggle:  https://www.kaggle.com/janiobachmann/bank-marketing-dataset\n\nIt is originally from the UCI Machine Learning Repository.\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "mlp",
+        "name": "Multi-Layer Perceptron Classifier",
+        "predict_endpoint": "http://127.0.0.1:5111/bank_marketing_mlp/predict",
+        "performance_metric_values": [
+            {
+                "name": "Accuracy",
+                "value": 0.83547
+            }
+        ],
+        "description": "Scikit-learn neural network MLP Classifier"
+    },
+    "atx": 77.68228653567945,
+    "components_measured": [
+        "explainability",
+        "fairness",
+        "performance",
+        "robustness"
+    ],
+    "component_scores": {
+        "robustness": 67.48708551500637,
+        "fairness": 62.546623127711435,
+        "explainability": 97.1484375,
+        "performance": 83.54700000000001
+    },
+    "aspect_weights": {
+        "robustness": 1.0,
+        "fairness": 1.0,
+        "explainability": 1.0,
+        "performance": 1.0
+    },
+    "aspect_types": {
+        "robustness": "",
+        "fairness": "burden",
+        "explanation": "counterfactual",
+        "explainability": "counterfactual",
+        "performance": "Accuracy"
+    },
+    "status": "Completed"
+}

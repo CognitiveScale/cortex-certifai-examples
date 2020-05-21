@@ -1,0 +1,66 @@
+{
+    "scan": {
+        "scan_id": "c6f422b4ece7",
+        "evaluation_type": "performance",
+        "started": "2020-05-06T17:03:09",
+        "ended": "2020-05-06T17:03:09",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 4 candidate models."
+    },
+    "model_use_case": {
+        "name": "Banking: Loan Approval",
+        "model_use_case_id": "c12e/datasciencelab/german_credit",
+        "performance_metrics": [
+            {
+                "name": "Accuracy",
+                "metric": "Accuracy"
+            },
+            {
+                "name": "Recall",
+                "metric": "Recall"
+            },
+            {
+                "name": "Precision",
+                "metric": "Precision"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a person who takes a credit loan from a bank. The learning task is to classify each person as either a good or bad credit risk according to the set of attributes.\n\nThis dataset was sourced from Kaggle: https://www.kaggle.com/uciml/german-credit\n\nThe original source is: https://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "logit",
+        "name": "Logistic Regression",
+        "predict_endpoint": "http://127.0.0.1:5111/german_credit_logit/predict",
+        "description": "Scikit-learn LogisticRegression classifier using lbfgs solver"
+    },
+    "status": "Completed",
+    "dataset": {
+        "dataset_id": "test",
+        "url": "file:../datasets/german_credit_test.csv",
+        "checksum_type": "md5",
+        "checksum": "bd678f68f93945d24729ef508eece57f",
+        "num_features": 21,
+        "rows": 300,
+        "name": "Test dataset",
+        "description": "301 row test dataset"
+    },
+    "performance_metrics": [
+        {
+            "name": "Accuracy",
+            "value": 0.7433333333333333,
+            "score": 74.33333333333333
+        },
+        {
+            "name": "Recall",
+            "value": 0.8271028037383178,
+            "score": 82.71028037383178
+        },
+        {
+            "name": "Precision",
+            "value": 0.815668202764977,
+            "score": 81.5668202764977
+        }
+    ]
+}

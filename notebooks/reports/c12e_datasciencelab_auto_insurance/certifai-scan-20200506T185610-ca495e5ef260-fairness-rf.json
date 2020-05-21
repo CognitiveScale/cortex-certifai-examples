@@ -1,0 +1,574 @@
+{
+    "scan": {
+        "scan_id": "ca495e5ef260",
+        "evaluation_type": "fairness",
+        "started": "2020-05-06T18:24:25",
+        "ended": "2020-05-06T18:34:16",
+        "name": "Baseline evaluation of 3 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 3 candidate models."
+    },
+    "model_use_case": {
+        "name": "Insurance: Auto Insurance Claims",
+        "model_use_case_id": "c12e/datasciencelab/auto_insurance",
+        "performance_metrics": [
+            {
+                "metric": "R-squared",
+                "name": "R-squared"
+            }
+        ],
+        "atx_performance_metric_name": "R-squared",
+        "task_type": "regression",
+        "description": "In this use case, each entry in the dataset represents an auto insurance claim. The learning task is to predict the final settled claim amount.\n\nThis dataset was originally sourced from Emcien: https://www.sixtusdakurah.com/resources/The_Application_of_Regularization_in_Modelling_Insurance_Claims.pdf\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "rf",
+        "name": "Random Forest Regressor",
+        "predict_endpoint": "http://127.0.0.1:5111/auto_insurance_rf/predict",
+        "description": "Scikit-learn RandomForestRegressor"
+    },
+    "dataset": {
+        "dataset_id": "eval",
+        "url": "file:../datasets/auto_insurance_eval.csv",
+        "checksum_type": "md5",
+        "checksum": "1a7fd6582bbe22c9ee84bdf516f45d4b",
+        "num_features": 20,
+        "rows": 1000,
+        "name": "Evaluation dataset",
+        "description": "1000 row representative sample of the full dataset"
+    },
+    "dataset_schema": {
+        "outcome_column": "Total Claim Amount",
+        "feature_schemas": [
+            {
+                "type": "CAT",
+                "category_values": [
+                    "IA",
+                    "KS",
+                    "MO",
+                    "NE",
+                    "OK"
+                ],
+                "name": "State Code",
+                "index": 0
+            },
+            {
+                "type": "FLOAT",
+                "min": 212.1313061,
+                "max": 7322.595652,
+                "spread": 250.37569064999974,
+                "spread_type": "mad",
+                "name": "Claim Amount",
+                "index": 1
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Basic",
+                    "Extended",
+                    "Premium"
+                ],
+                "name": "Coverage",
+                "index": 2
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Bachelor",
+                    "College",
+                    "Doctor",
+                    "High School or Below",
+                    "Master"
+                ],
+                "name": "Education",
+                "index": 3
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Disabled",
+                    "Employed",
+                    "Medical Leave",
+                    "Retired",
+                    "Unemployed"
+                ],
+                "name": "EmploymentStatus",
+                "index": 4
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "F",
+                    "M"
+                ],
+                "name": "Gender",
+                "index": 5
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 99845,
+                "spread": 27340.5,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Income",
+                "index": 6
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Rural",
+                    "Suburban",
+                    "Urban"
+                ],
+                "name": "Location Code",
+                "index": 7
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Divorced",
+                    "Married",
+                    "Single"
+                ],
+                "name": "Marital Status",
+                "index": 8
+            },
+            {
+                "type": "INT",
+                "min": 61,
+                "max": 297,
+                "spread": 20.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Monthly Premium Auto",
+                "index": 9
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 35,
+                "spread": 8.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Months Since Last Claim",
+                "index": 10
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 99,
+                "spread": 25.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Months Since Policy Inception",
+                "index": 11
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "heuristically_inferred": true,
+                "name": "Number of Open Complaints",
+                "index": 12
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9
+                ],
+                "heuristically_inferred": true,
+                "name": "Number of Policies",
+                "index": 13
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Corporate L1",
+                    "Corporate L2",
+                    "Corporate L3",
+                    "Personal L1",
+                    "Personal L2",
+                    "Personal L3",
+                    "Special L1",
+                    "Special L2",
+                    "Special L3"
+                ],
+                "name": "Policy",
+                "index": 14
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Collision",
+                    "Hail",
+                    "Other",
+                    "Scratch/Dent"
+                ],
+                "name": "Claim Reason",
+                "index": 15
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Agent",
+                    "Branch",
+                    "Call Center",
+                    "Web"
+                ],
+                "name": "Sales Channel",
+                "index": 16
+            },
+            {
+                "type": "FLOAT",
+                "min": 0.38210700000000003,
+                "max": 2452.894264,
+                "spread": 149.00085999999982,
+                "spread_type": "mad",
+                "name": "Total Claim Amount",
+                "index": 17
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Four-Door Car",
+                    "Luxury Car",
+                    "Luxury SUV",
+                    "SUV",
+                    "Sports Car",
+                    "Two-Door Car"
+                ],
+                "name": "Vehicle Class",
+                "index": 18
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    "Large",
+                    "Medsize",
+                    "Small"
+                ],
+                "name": "Vehicle Size",
+                "index": 19
+            }
+        ]
+    },
+    "status": "Completed",
+    "engine_stats": {
+        "num_predict_calls": 11033,
+        "mean_prediction_time_ms": 82.37855624036986,
+        "mean_batch_size": 1936.6528596030091,
+        "num_counterfactuals": 704,
+        "mean_generation_count": 14.671875,
+        "hyperparameters": {
+            "tournsize": 3,
+            "population": 4000,
+            "indpb": 0.05,
+            "CXPB": 0.5,
+            "MUTPB": 0.2,
+            "generation": 180,
+            "evolution": 100,
+            "N_CYCLES": 1,
+            "early_stopping_delta": 0.0001,
+            "early_stopping_epochs": 3,
+            "percent_class_seeding": 5,
+            "sampling_Z": 1.96,
+            "sampling_boundary": 0.1,
+            "sampling_min_n": 100,
+            "2pt_orig_weight": 0.025,
+            "shrinkage_weight": 0.5,
+            "annealing_weight": 0.45,
+            "annealing_rate": 1.25,
+            "elitism": 0.04,
+            "dimensional_normalization": true,
+            "num_counterfactuals": 1,
+            "shap_init_with_eval": true,
+            "shap_num_samples": 500
+        },
+        "runtime_secs": 580.5917167663574,
+        "per cf mean GA init count": 1.0,
+        "per cf mean GA init time": 286.0241079545454,
+        "per cf mean GA mutation time": 134.08924289772733,
+        "per cf mean GA crossover time": 136.13509232954542,
+        "per cf mean GA selection time": 300.75543181818153,
+        "per cf mean eval time": 1241.8079218749992,
+        "per cf mean prediction time": 1291.0264360795463,
+        "per cf mean diversity selection time": 0.0
+    },
+    "detailed_scores": {
+        "CERScore": 0.985097023132091,
+        "NCERScore": 0.05738965919819652,
+        "Normalization": 17.16506138727947,
+        "details": [
+            {
+                "feature": "Marital Status",
+                "groups": [
+                    {
+                        "label": "Divorced",
+                        "value": 0.23478270563936154,
+                        "value_confidence_95_lower": 0.1842940200527549,
+                        "value_confidence_95_upper": 0.29130523043412493,
+                        "values": [
+                            0.23478270563936154
+                        ],
+                        "values_confidence_95_lower": [
+                            0.1842940200527549
+                        ],
+                        "values_confidence_95_upper": [
+                            0.29130523043412493
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "Married",
+                        "value": 0.21680436261517572,
+                        "value_confidence_95_lower": 0.18692157403067114,
+                        "value_confidence_95_upper": 0.2520818497629659,
+                        "values": [
+                            0.21680436261517572
+                        ],
+                        "values_confidence_95_lower": [
+                            0.18692157403067114
+                        ],
+                        "values_confidence_95_upper": [
+                            0.2520818497629659
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "Single",
+                        "value": 0.15703263937583306,
+                        "value_confidence_95_lower": 0.11789126786722501,
+                        "value_confidence_95_upper": 0.19949831845790653,
+                        "values": [
+                            0.15703263937583306
+                        ],
+                        "values_confidence_95_lower": [
+                            0.11789126786722501
+                        ],
+                        "values_confidence_95_upper": [
+                            0.19949831845790653
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    }
+                ]
+            },
+            {
+                "feature": "Gender",
+                "groups": [
+                    {
+                        "label": "F",
+                        "value": 0.2175714599424351,
+                        "value_confidence_95_lower": 0.183932500024455,
+                        "value_confidence_95_upper": 0.2541729547410922,
+                        "values": [
+                            0.2175714599424351
+                        ],
+                        "values_confidence_95_lower": [
+                            0.183932500024455
+                        ],
+                        "values_confidence_95_upper": [
+                            0.2541729547410922
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "M",
+                        "value": 0.19476290155467552,
+                        "value_confidence_95_lower": 0.1632176716164006,
+                        "value_confidence_95_upper": 0.2288022216803204,
+                        "values": [
+                            0.19476290155467552
+                        ],
+                        "values_confidence_95_lower": [
+                            0.1632176716164006
+                        ],
+                        "values_confidence_95_upper": [
+                            0.2288022216803204
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "feature_fairness": [
+            {
+                "feature": "Marital Status",
+                "value": 86.1245195131158,
+                "value_confidence_95_lower": 77.05118979201343,
+                "value_confidence_95_upper": 94.50692544907531
+            },
+            {
+                "feature": "Gender",
+                "value": 93.9077414639152,
+                "value_confidence_95_lower": 83.77343557088446,
+                "value_confidence_95_upper": 99.42479067683948
+            }
+        ]
+    },
+    "feature_restrictions": [
+        {
+            "feature_name": "Gender",
+            "restriction_string": "no changes"
+        }
+    ],
+    "prediction_description": "Amount of Settled Claim",
+    "prediction_favorability": "ordered",
+    "favorable_outcome_value": "increased",
+    "regression_standard_deviation": 0.5,
+    "fairness": {
+        "fairness_grouping_features": [
+            {
+                "name": "Marital Status"
+            },
+            {
+                "name": "Gender"
+            }
+        ],
+        "feature_fairness": [
+            {
+                "feature": "Marital Status",
+                "value": 86.1245195131158,
+                "value_confidence_95_lower": 77.05118979201343,
+                "value_confidence_95_upper": 94.50692544907531
+            },
+            {
+                "feature": "Gender",
+                "value": 93.9077414639152,
+                "value_confidence_95_lower": 83.77343557088446,
+                "value_confidence_95_upper": 99.42479067683948
+            }
+        ],
+        "detailed_fairness": [
+            {
+                "feature": "Marital Status",
+                "groups": [
+                    {
+                        "label": "Divorced",
+                        "value": 0.23478270563936154,
+                        "value_confidence_95_lower": 0.1842940200527549,
+                        "value_confidence_95_upper": 0.29130523043412493,
+                        "values": [
+                            0.23478270563936154
+                        ],
+                        "values_confidence_95_lower": [
+                            0.1842940200527549
+                        ],
+                        "values_confidence_95_upper": [
+                            0.29130523043412493
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "Married",
+                        "value": 0.21680436261517572,
+                        "value_confidence_95_lower": 0.18692157403067114,
+                        "value_confidence_95_upper": 0.2520818497629659,
+                        "values": [
+                            0.21680436261517572
+                        ],
+                        "values_confidence_95_lower": [
+                            0.18692157403067114
+                        ],
+                        "values_confidence_95_upper": [
+                            0.2520818497629659
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "Single",
+                        "value": 0.15703263937583306,
+                        "value_confidence_95_lower": 0.11789126786722501,
+                        "value_confidence_95_upper": 0.19949831845790653,
+                        "values": [
+                            0.15703263937583306
+                        ],
+                        "values_confidence_95_lower": [
+                            0.11789126786722501
+                        ],
+                        "values_confidence_95_upper": [
+                            0.19949831845790653
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    }
+                ]
+            },
+            {
+                "feature": "Gender",
+                "groups": [
+                    {
+                        "label": "F",
+                        "value": 0.2175714599424351,
+                        "value_confidence_95_lower": 0.183932500024455,
+                        "value_confidence_95_upper": 0.2541729547410922,
+                        "values": [
+                            0.2175714599424351
+                        ],
+                        "values_confidence_95_lower": [
+                            0.183932500024455
+                        ],
+                        "values_confidence_95_upper": [
+                            0.2541729547410922
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    },
+                    {
+                        "label": "M",
+                        "value": 0.19476290155467552,
+                        "value_confidence_95_lower": 0.1632176716164006,
+                        "value_confidence_95_upper": 0.2288022216803204,
+                        "values": [
+                            0.19476290155467552
+                        ],
+                        "values_confidence_95_lower": [
+                            0.1632176716164006
+                        ],
+                        "values_confidence_95_upper": [
+                            0.2288022216803204
+                        ],
+                        "values_names": [
+                            "burden"
+                        ]
+                    }
+                ]
+            }
+        ],
+        "score": 85.43931753276944,
+        "fairness_metric": "burden",
+        "score_confidence_95_lower": 76.87328167160837,
+        "score_confidence_95_upper": 92.96384081852554,
+        "secondary_scores": []
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "scan": {
+        "scan_id": "7658b1bebf36",
+        "evaluation_type": "performance",
+        "started": "2020-05-06T20:27:57",
+        "ended": "2020-05-06T20:27:57",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 4 candidate models."
+    },
+    "model_use_case": {
+        "name": "Banking: Propensity to Buy",
+        "model_use_case_id": "c12e/datasciencelab/bank_marketing",
+        "performance_metrics": [
+            {
+                "metric": "Accuracy",
+                "name": "Accuracy"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a target of a previous marketing campaign. The learning task is to predict who will make a term deposit with the bank as a result of a similar campaign.\n\nThis dataset was sourced from Kaggle:  https://www.kaggle.com/janiobachmann/bank-marketing-dataset\n\nIt is originally from the UCI Machine Learning Repository.\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "svm",
+        "name": "Support Vector Classifier",
+        "predict_endpoint": "http://127.0.0.1:5111/bank_marketing_svm/predict",
+        "performance_metric_values": [
+            {
+                "name": "Accuracy",
+                "value": 0.84264
+            }
+        ],
+        "description": "Scikit-learn SVC classifier"
+    },
+    "status": "Completed",
+    "performance_metrics": [
+        {
+            "name": "Accuracy",
+            "value": 0.84264,
+            "score": 84.264
+        }
+    ]
+}

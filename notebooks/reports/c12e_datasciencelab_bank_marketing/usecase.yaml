@@ -1,0 +1,21 @@
+created: 20200506T210525
+model_use_case:
+  atx_performance_metric_name: Accuracy
+  author: info@cognitivescale.com
+  description: 'In this use case, each entry in the dataset represents a target of
+    a previous marketing campaign. The learning task is to predict who will make a
+    term deposit with the bank as a result of a similar campaign.
+
+
+    This dataset was sourced from Kaggle:  https://www.kaggle.com/janiobachmann/bank-marketing-dataset
+
+
+    It is originally from the UCI Machine Learning Repository.
+
+    '
+  model_use_case_id: c12e/datasciencelab/bank_marketing
+  name: 'Banking: Propensity to Buy'
+  performance_metrics:
+  - metric: Accuracy
+    name: Accuracy
+  task_type: binary-classification

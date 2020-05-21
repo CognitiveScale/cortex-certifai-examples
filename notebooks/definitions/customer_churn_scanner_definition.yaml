@@ -1,0 +1,113 @@
+scan:
+  output:
+    path: ../local_reports
+
+model_use_case:
+  atx_performance_metric_name: Accuracy
+  author: info@cognitivescale.com
+  description: 'In this use case, each entry in the dataset represents a customer
+    or previous customer of the bank. The learning task is to predict who is likely
+    to quit as a customer.
+
+
+    This dataset was sourced from Kaggle: https://www.kaggle.com/adammaus/predicting-churn-for-bank-customers
+
+    '
+  model_use_case_id: c12e/datasciencelab/customer_churn
+  name: 'Banking: Predicting Customer Churn'
+  performance_metrics:
+  - metric: Accuracy
+    name: Accuracy
+  task_type: binary-classification
+
+evaluation:
+  description: This evaluation compares the robustness, accuracy, fairness and explanations
+    for 4 candidate models.
+  evaluation_dataset_id: eval
+  evaluation_types:
+  - robustness
+  - fairness
+  - explanation
+  - explainability
+  - performance
+  explanation_dataset_id: explan
+  fairness_grouping_features:
+    - name: Gender
+    - name: Age
+      buckets:
+      - description: "<= 40 years old"
+        max: 40
+      - description: "> 40 years old"
+  feature_restrictions:
+  - feature_name: Age
+    restriction_string: no changes
+  - feature_name: Gender
+    restriction_string: no changes
+  - feature_name: Geography
+    restriction_string: no changes
+  name: Baseline evaluation of 4 models
+  prediction_description: Will customer quit?
+  prediction_favorability: explicit
+  prediction_values:
+  - favorable: false
+    name: Customer quits
+    value: 1
+  - favorable: true
+    name: Customer does not quit
+    value: 0
+
+models:
+- author: ''
+  description: Scikit-learn SVC classifier
+  model_id: svm
+  name: Support Vector Classifier
+  performance_metric_values:
+  - name: Accuracy
+    value: 0.8652
+  predict_endpoint: http://127.0.0.1:5111/customer_churn_svm/predict
+- author: ''
+  description: Scikit-learn RandomForestClassifier using gini criterion
+  model_id: rf
+  name: Random Forest Classifier
+  performance_metric_values:
+  - name: Accuracy
+    value: 0.8476
+  predict_endpoint: http://127.0.0.1:5111/customer_churn_rf/predict
+- author: ''
+  description: Scikit-learn GradientBoostingClassifier using logistic regression (deviance)
+  model_id: gbm
+  name: Gradient Boosting Classifier
+  performance_metric_values:
+  - name: Accuracy
+    value: 0.8668
+  predict_endpoint: http://127.0.0.1:5111/customer_churn_gbm/predict
+- author: ''
+  description: Scikit-learn neural network MLP Classifier
+  model_id: mlp
+  name: Multi-Layer Perceptron Classifier
+  performance_metric_values:
+  - name: Accuracy
+    value: 0.862
+  predict_endpoint: http://127.0.0.1:5111/customer_churn_mlp/predict
+
+datasets:
+- dataset_id: eval
+  description: 1000 row representative sample of the full dataset
+  file_type: csv
+  has_header: true
+  name: Evaluation dataset
+  url: file:../datasets/customer_churn_eval.csv
+- dataset_id: explan
+  description: ''
+  file_type: csv
+  has_header: true
+  name: 100 row explanation dataset
+  url: file:../datasets/customer_churn_explan.csv
+
+dataset_schema:
+  feature_schemas:
+  - feature_name: Age
+  - feature_name: Gender
+  - feature_name: Geography
+  outcome_column: Exited
+

@@ -1,0 +1,191 @@
+{
+    "scan": {
+        "scan_id": "a15570fe5438",
+        "evaluation_type": "robustness",
+        "started": "2020-05-06T17:34:30",
+        "ended": "2020-05-06T17:37:40",
+        "name": "Baseline evaluation of 4 models",
+        "description": "This evaluation compares the robustness, accuracy and explanations for 4 candidate models. Fairness is not applicable to this use case."
+    },
+    "model_use_case": {
+        "name": "HealthCare: Disease Prediction",
+        "model_use_case_id": "c12e/datasciencelab/diabetes",
+        "performance_metrics": [
+            {
+                "name": "Accuracy",
+                "metric": "Accuracy"
+            }
+        ],
+        "atx_performance_metric_name": "Accuracy",
+        "task_type": "binary-classification",
+        "description": "In this use case, each entry in the dataset represents a patient. The learning task is to predict whether or not a patient has diabetes, based on certain diagnostic measurements included in the dataset.\n\nSeveral constraints were placed on the selection of these instances from a larger database. In particular, all patients here are females at least 21 years old of Pima Indian heritage.\n\nThis dataset was sourced from Kaggle: https://www.kaggle.com/uciml/pima-indians-diabetes-database\n\nIt is originally from the National Institute of Diabetes and Digestive and Kidney Diseases.\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "dtree",
+        "name": "Decision Tree",
+        "predict_endpoint": "http://127.0.0.1:5111/diabetes_dtree/predict",
+        "performance_metric_values": [
+            {
+                "name": "Accuracy",
+                "value": 0.65745
+            }
+        ],
+        "description": "Scikit-learn DecisionTreeClassifier using entropy criterion"
+    },
+    "dataset": {
+        "dataset_id": "eval",
+        "url": "file:../datasets/diabetes_eval.csv",
+        "checksum_type": "md5",
+        "checksum": "da5573d7e6fea4ea05efaa79fd7c0b38",
+        "num_features": 9,
+        "rows": 724,
+        "name": "Full evaluation dataset",
+        "description": "Full dataset from Kaggle https://www.kaggle.com/uciml/pima-indians-diabetes-database"
+    },
+    "dataset_schema": {
+        "outcome_column": "Outcome",
+        "feature_schemas": [
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 17,
+                "spread": 2.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Pregnancies",
+                "index": 0
+            },
+            {
+                "type": "INT",
+                "min": 44,
+                "max": 199,
+                "spread": 20.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Glucose",
+                "index": 1
+            },
+            {
+                "type": "INT",
+                "min": 24,
+                "max": 122,
+                "spread": 8.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "BloodPressure",
+                "index": 2
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 99,
+                "spread": 11.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "SkinThickness",
+                "index": 3
+            },
+            {
+                "type": "INT",
+                "min": 0,
+                "max": 846,
+                "spread": 48.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Insulin",
+                "index": 4
+            },
+            {
+                "type": "FLOAT",
+                "min": 18.2,
+                "max": 67.1,
+                "spread": 4.65,
+                "spread_type": "mad",
+                "name": "BMI",
+                "index": 5
+            },
+            {
+                "type": "FLOAT",
+                "min": 0.078,
+                "max": 2.42,
+                "spread": 0.16949999999999998,
+                "spread_type": "mad",
+                "name": "DiabetesPedigreeFunction",
+                "index": 6
+            },
+            {
+                "type": "INT",
+                "min": 21,
+                "max": 81,
+                "spread": 7.0,
+                "spread_type": "mad",
+                "heuristically_inferred": true,
+                "name": "Age",
+                "index": 7
+            },
+            {
+                "type": "CAT",
+                "category_values": [
+                    0,
+                    1
+                ],
+                "heuristically_inferred": true,
+                "name": "Outcome",
+                "index": 8
+            }
+        ]
+    },
+    "status": "Completed",
+    "engine_stats": {
+        "num_predict_calls": 6469,
+        "mean_prediction_time_ms": 12.818006647086108,
+        "mean_batch_size": 2032.0414283505952,
+        "num_counterfactuals": 384,
+        "mean_generation_count": 15.846354166666666,
+        "hyperparameters": {
+            "tournsize": 3,
+            "population": 4000,
+            "indpb": 0.05,
+            "CXPB": 0.5,
+            "MUTPB": 0.2,
+            "generation": 180,
+            "evolution": 100,
+            "N_CYCLES": 1,
+            "early_stopping_delta": 0.0001,
+            "early_stopping_epochs": 3,
+            "percent_class_seeding": 5,
+            "sampling_Z": 1.96,
+            "sampling_boundary": 0.1,
+            "sampling_min_n": 100,
+            "2pt_orig_weight": 0.025,
+            "shrinkage_weight": 0.5,
+            "annealing_weight": 0.45,
+            "annealing_rate": 1.25,
+            "elitism": 0.04,
+            "dimensional_normalization": true,
+            "num_counterfactuals": 1,
+            "shap_init_with_eval": true,
+            "shap_num_samples": 500
+        },
+        "runtime_secs": 189.76156902313232,
+        "per cf mean GA init count": 1.0,
+        "per cf mean GA init time": 209.59624218750014,
+        "per cf mean GA mutation time": 132.46386197916652,
+        "per cf mean GA crossover time": 154.0317057291665,
+        "per cf mean GA selection time": 323.07636718750007,
+        "per cf mean eval time": 411.40079687499997,
+        "per cf mean prediction time": 215.93667968750006,
+        "per cf mean diversity selection time": 0.0
+    },
+    "detailed_scores": {
+        "CERScore": 0.5563863877311638,
+        "NCERScore": 0.03945781821360766,
+        "Normalization": 14.100789473942204
+    },
+    "robustness": {
+        "score": 9.163909499051282,
+        "score_confidence_95_lower": 8.395914736642728,
+        "score_confidence_95_upper": 9.947560580347087
+    }
+}

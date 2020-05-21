@@ -1,0 +1,57 @@
+{
+    "scan": {
+        "scan_id": "ca495e5ef260",
+        "evaluation_type": "atx",
+        "started": "2020-05-06T17:44:07",
+        "ended": "2020-05-06T18:08:33",
+        "name": "Baseline evaluation of 3 models",
+        "description": "This evaluation compares the robustness, accuracy, fairness and explanations for 3 candidate models."
+    },
+    "model_use_case": {
+        "name": "Insurance: Auto Insurance Claims",
+        "model_use_case_id": "c12e/datasciencelab/auto_insurance",
+        "performance_metrics": [
+            {
+                "metric": "R-squared",
+                "name": "R-squared"
+            }
+        ],
+        "atx_performance_metric_name": "R-squared",
+        "task_type": "regression",
+        "description": "In this use case, each entry in the dataset represents an auto insurance claim. The learning task is to predict the final settled claim amount.\n\nThis dataset was originally sourced from Emcien: https://www.sixtusdakurah.com/resources/The_Application_of_Regularization_in_Modelling_Insurance_Claims.pdf\n",
+        "author": "info@cognitivescale.com"
+    },
+    "model": {
+        "model_id": "linl1",
+        "name": "L1 Linear Regression",
+        "predict_endpoint": "http://127.0.0.1:5111/auto_insurance_linl1/predict",
+        "description": "Scikit-learn linear regression using Lasso with L1 regularization"
+    },
+    "atx": 87.50524770442048,
+    "components_measured": [
+        "explainability",
+        "fairness",
+        "performance",
+        "robustness"
+    ],
+    "component_scores": {
+        "robustness": 91.87499999999991,
+        "fairness": 81.78632018250724,
+        "explainability": 99.921875,
+        "performance": 76.4377956351748
+    },
+    "aspect_weights": {
+        "robustness": 1.0,
+        "fairness": 1.0,
+        "explainability": 1.0,
+        "performance": 1.0
+    },
+    "aspect_types": {
+        "robustness": "",
+        "fairness": "burden",
+        "explanation": "counterfactual",
+        "explainability": "counterfactual",
+        "performance": "R-squared"
+    },
+    "status": "Completed"
+}

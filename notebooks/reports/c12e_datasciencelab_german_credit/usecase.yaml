@@ -1,0 +1,25 @@
+created: 20200506T172618
+model_use_case:
+  atx_performance_metric_name: Accuracy
+  author: info@cognitivescale.com
+  description: 'In this use case, each entry in the dataset represents a person who
+    takes a credit loan from a bank. The learning task is to classify each person
+    as either a good or bad credit risk according to the set of attributes.
+
+
+    This dataset was sourced from Kaggle: https://www.kaggle.com/uciml/german-credit
+
+
+    The original source is: https://archive.ics.uci.edu/ml/datasets/Statlog+%28German+Credit+Data%29
+
+    '
+  model_use_case_id: c12e/datasciencelab/german_credit
+  name: 'Banking: Loan Approval'
+  performance_metrics:
+  - metric: Accuracy
+    name: Accuracy
+  - metric: Recall
+    name: Recall
+  - metric: Precision
+    name: Precision
+  task_type: binary-classification
