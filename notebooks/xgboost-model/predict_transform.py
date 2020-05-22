@@ -7,6 +7,6 @@ class TransformedPredict:
         self.model = model
         
     def predict(self,arr):
-        dtest = xgb.DMatrix(data=np.delete(arr, self.dropped_indexes_list))
+        dtest = xgb.DMatrix(data=np.delete(arr, self.dropped_indexes_list,1))
         return self.model.predict(dtest)
         
