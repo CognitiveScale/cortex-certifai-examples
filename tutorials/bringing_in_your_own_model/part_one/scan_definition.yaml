@@ -6,7 +6,7 @@ datasets:
   file_type: csv
   has_header: true
   quote_character: '"'
-  url: data/german_credit_eval.csv
+  url: somefile.csv
 evaluation:
   evaluation_dataset_id: evaluation
   evaluation_types:
@@ -18,6 +18,7 @@ evaluation:
   - name: status
   name: test_user_case
   prediction_description: Determine whether a loan should be granted
+  prediction_favorability: explicit
   prediction_values:
   - favorable: true
     name: Loan granted
@@ -30,6 +31,9 @@ model_use_case:
   name: test_user_case
   task_type: binary-classification
 models:
-- model_id: local
-  name: local
-  predict_endpoint: http://localhost:5111/german_credit_logit/predict
+- model_id: logistic_regression
+  name: logistic_regression
+  predict_endpoint: http://mymodel/predict
+  prediction_value_order:
+  - 1
+  - 2

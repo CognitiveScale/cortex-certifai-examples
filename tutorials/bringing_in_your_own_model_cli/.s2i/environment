@@ -1,3 +1,0 @@
-ROUTES=german_credit_logit/predict:predict:predict_german_credit_logit
-TRAIN_MODULE=train
-TRAIN_FUNCTION=train
