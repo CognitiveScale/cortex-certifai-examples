@@ -1,5 +1,5 @@
 # Cortex Certifai Tutorials 
-This directory contains self contained tutorials which walk through various parts of Certifai *outside* of a notebook environment.
+This directory contains self contained tutorials which walk through basic parts of Certifai funcitonality 
 
 ### Bringing In Your Own Model to Certifai Part 1
 
