@@ -1,6 +1,6 @@
 
 from sklearn import preprocessing
-from sklearn.preprocessing import Normalizer
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 class CatEncoder:
@@ -14,7 +14,7 @@ class CatEncoder:
         cat_transformed_names = self.encoder.get_feature_names(input_features=self.cat_columns)
         self._transformed_column_names =  self.num_columns + list(cat_transformed_names)
         if normalize:
-            self.normalizer = Normalizer()
+            self.normalizer = StandardScaler()
             self.normalizer.fit(data.iloc[:, self.num_indexes])
         else:
             self.normalizer = None
