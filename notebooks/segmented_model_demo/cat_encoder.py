@@ -1,7 +1,9 @@
+from typing import Dict,Any
 
 from sklearn import preprocessing
 from sklearn.preprocessing import StandardScaler
 import numpy as np
+
 
 class CatEncoder:
     def __init__(self, cat_columns, data, normalize: bool=True):
@@ -18,7 +20,7 @@ class CatEncoder:
             self.normalizer.fit(data.iloc[:, self.num_indexes])
         else:
             self.normalizer = None
-
+    
     def __call__(self, x):
         numeric = x[:, self.num_indexes]
         if self.normalizer is not None:
@@ -29,3 +31,11 @@ class CatEncoder:
     @property
     def transformed_features(self):
         return self._transformed_column_names
+
+    def cat_indexes_of_feature(self, feature: str) -> Dict[str, int]:
+        result = {}
+        for idx, feat in enumerate(self._transformed_column_names):
+            feature_prefix = f"{feature}_"
+            if feat.startswith(feature_prefix):
+                result[feat[len(feature_prefix):]] = idx
+        return result
