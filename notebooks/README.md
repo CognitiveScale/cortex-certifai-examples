@@ -10,5 +10,5 @@ The Azure Model headers demo example notebook highlights the end-to-end process 
 This notebook will run an explainability analysis using SHAP and graph some summary plots of feature importance.
 
 ### Documentation
-These tutorials have docs to be followed along, which can be found at: https://cognitivescale.github.io/cortex-certifai/docs/about
+Certifai documentation is available here: https://cognitivescale.github.io/cortex-certifai/docs/about
 
