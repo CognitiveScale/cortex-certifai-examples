@@ -5,8 +5,8 @@ This directory contains examples and tutorials illustrating how to use Certifai 
 The *notebooks* folder contains Jupiter Lab notebooks which demonstrate how to use various functions of Certifai in a notebook environment. 
 
 ### Tutorials
-The *tutorials* folder contains walkthroughs outside of a notebook environment which demonstrate various Certifai functionality.
+The *tutorials* folder contains walkthroughs which demonstrate basic Certifai functionality.
 
 ### Documentation
-Refer to the Cortex Certifai documentation: https://cognitivescale.github.io/cortex-certifai/ for getting started
+Refer to the Cortex Certifai documentation: https://cognitivescale.github.io/cortex-certifai/docs/about for getting started
 information.

@@ -12,7 +12,7 @@ which is plotted as a histogram for each of two comparative models built on the 
 
 ### Azure ML Model Headers Demo
 
- The Azure Model Headers Demo notebook highlights end-to-end process of running a Certifai Fairness evaluation by starting out with training, testing and deploying a sklearn model as a web service with token based Authentication on Azure, using Azure Containerized Instance(ACI) and launching a Certifai model scan on the deployed model in the same notebook. The example notebook can be run either on local machine or on Azure hosted notebook environments.
+The Azure Model headers demo example notebook highlights the end-to-end process of running a Certifai fairness evaluation by starting with training, testing, and deploying a sklearn model as a web service with token-based Authentication on Azure, using Azure Containerized Instance(ACI) and launching a Certifai model scan on the deployed model in the same notebook. The example notebook can be run either on local machine or on an Azure-hosted notebook environments.
 
 ### Clean Start 
 
@@ -46,10 +46,10 @@ Secondly by adding an extra protected feature ('pseudo') which is randomly assig
 
 In this notebook a Certifai Scan will be run from an existing scan definition file
 
-### SHAP (SHapley Additive exPlanations)
+### SHAP
 
-In this notebook an explainability analysis will run using SHAP and then we'll proceed to graph some summary plots of feature importance.
+This notebook will run an explainability analysis using SHAP and graph some summary plots of feature importance.
 
 ### Documentation
-These tutorials have docs to be followed along, which can be found at: https://cognitivescale.github.io/cortex-certifai/docs/about
+Certifai documentation is available here: https://cognitivescale.github.io/cortex-certifai/docs/about
 
