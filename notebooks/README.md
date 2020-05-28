@@ -1,5 +1,5 @@
 # Cortex Certifai Notebooks
-This directory contains *Jupyter notebooks* demonstrating various Certifai capabilities in a *notebook* environment.
+This directory contains *Jupyter notebooks* illustrating how to use Certifai in a notebook environment.
 
 ### Analyze Feature Usage
 

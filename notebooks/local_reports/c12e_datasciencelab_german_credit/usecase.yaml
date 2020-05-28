@@ -2,12 +2,12 @@ model_use_case:
   name: 'Banking: Loan Approval'
   model_use_case_id: c12e/datasciencelab/german_credit
   performance_metrics:
-  - name: Accuracy
-    metric: Accuracy
-  - name: Recall
-    metric: Recall
-  - name: Precision
-    metric: Precision
+  - metric: Accuracy
+    name: Accuracy
+  - metric: Recall
+    name: Recall
+  - metric: Precision
+    name: Precision
   atx_performance_metric_name: Accuracy
   task_type: binary-classification
   description: 'In this use case, each entry in the dataset represents a person who
@@ -22,4 +22,4 @@ model_use_case:
 
     '
   author: info@cognitivescale.com
-created: 20200521T143646
+created: 20200528T121422
