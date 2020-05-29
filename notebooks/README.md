@@ -20,7 +20,7 @@ This notebook builds up a scan definition from first principles, against a local
 
 ### Clean Start (Soft Output)
 
-The CleanStart notebook with soft outputs required for SHAP explainaitons
+The CleanStart notebook with soft outputs required for SHAP explanations.
 
 ### Fairness Metrics
 
@@ -44,7 +44,7 @@ Secondly by adding an extra protected feature ('pseudo') which is randomly assig
 
 ### Scan From Definition
 
-In this notebook a Certifai Scan will be run from an existing scan definition file
+In this notebook a Certifai Scan will be run from an existing scan definition file.
 
 ### SHAP
 
