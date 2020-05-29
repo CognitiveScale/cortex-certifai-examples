@@ -2,4 +2,4 @@ model_use_case:
   name: test_user_case
   model_use_case_id: test_user_case
   task_type: binary-classification
-created: 20200528T130158
+created: 20200529T101022
