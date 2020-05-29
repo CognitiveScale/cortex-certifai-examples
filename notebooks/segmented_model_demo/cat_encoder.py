@@ -17,12 +17,12 @@ class CatEncoder:
         self._transformed_column_names =  self.num_columns + list(cat_transformed_names)
         if normalize:
             self.normalizer = StandardScaler()
-            self.normalizer.fit(data.iloc[:, self.num_indexes])
+            self.normalizer.fit(data.iloc[:, self.num_indexes].astype(float))
         else:
             self.normalizer = None
     
     def __call__(self, x):
-        numeric = x[:, self.num_indexes]
+        numeric = x[:, self.num_indexes].astype(float)
         if self.normalizer is not None:
             numeric = self.normalizer.transform(numeric)
         categorical = self.encoder.transform(x[:, self.cat_indexes]).toarray()
