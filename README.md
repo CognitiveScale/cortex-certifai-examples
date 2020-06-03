@@ -8,9 +8,7 @@ The *notebooks* folder contains Jupiter Lab notebooks which demonstrate how to u
 
 ## Tutorials
 
-The *tutorials* folder contains walkthroughs which demonstrate basic Certifai functionality. Tutorials available in this repo are as follows. For additional documentation about the tutorials click lick the tutorial name.
-
-- [Bring in your own model](https://cognitivescale.github.io/cortex-certifai/docs/tutorials/scan-own-model-part-1)
+The *tutorials* folder contains walkthroughs which demonstrate basic Certifai functionality. A list of tutorials available in this repo can be found in the [tutorials README](/tutorials/README.md).
 
 ## Certifai Documentation
 
