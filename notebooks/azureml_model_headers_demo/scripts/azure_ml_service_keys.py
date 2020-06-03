@@ -2,7 +2,6 @@
 # To add a new markdown cell, type '# %% [markdown]'
 # %%
 from IPython import get_ipython
-from ipdb import set_trace as bp
 
 import pandas as pd
 import numpy as np
