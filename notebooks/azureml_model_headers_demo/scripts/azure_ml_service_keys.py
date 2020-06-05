@@ -160,7 +160,7 @@ def main(args):
     logistic_service_name = f'german-cred-logis-svc-{resource_name_suffix}'
     svm_service_name = f'german-cred-svm-svc-{resource_name_suffix}'
 
-    aci_deployment_config = AciWebservice.deploy_configuration(cpu_cores=4, memory_gb=2, auth_enabled=True)
+    aci_deployment_config = AciWebservice.deploy_configuration(auth_enabled=True)
 
     # # Remove any existing services under the same name.
     # try:
