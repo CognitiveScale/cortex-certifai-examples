@@ -192,8 +192,11 @@ def main(args):
     #     "AZUREML_MODEL_DIR": get_docker_envars(svm_model_azure, "svm")
     # }
 
-    logistic_service_name = f"{ws.name[0:6]}-logis-svc-{resource_name_suffix}"
-    svm_service_name = f"{ws.name[0:6]}-svm-svc-{resource_name_suffix}"
+    # Must be unique to the workspace, only consist of lowercase letters,
+    # numbers, or dashes, start with a letter, and be between 3 and 32 characters long.
+    ws_prefix = ws.name[0:6].lower().replace('_', '')
+    logistic_service_name = f"{ws_prefix}-logis-svc-{resource_name_suffix}"
+    svm_service_name = f"{ws_prefix}-svm-svc-{resource_name_suffix}"
 
     aci_deployment_config = AciWebservice.deploy_configuration(auth_enabled=True)
 
