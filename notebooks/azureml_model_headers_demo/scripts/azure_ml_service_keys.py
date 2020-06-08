@@ -246,9 +246,11 @@ def main(args):
     print(f"Workspace / ML Resource Name  --> {ws.name}")
     print(f"Subscription ID               --> {ws.subscription_id}")
     print(f"Resource Group                --> {ws.resource_group}")
-    print(f"SVM Resources                 --> {svm_model_name} | {svm_service_name}")
     print(
-        f"Logistic Regression Resources --> {logistic_model_name} | {logistic_service_name}"
+        f"SVM Resources                 --> Azure ML Model: {svm_model_name} | Azure ML Endpoint: {svm_service_name}"
+    )
+    print(
+        f"Logistic Regression Resources --> Azure ML Model: {logistic_model_name} | Azure ML Endpoint: {logistic_service_name}"
     )
 
     print(
