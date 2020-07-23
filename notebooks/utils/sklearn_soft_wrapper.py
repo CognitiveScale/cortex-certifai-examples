@@ -10,3 +10,6 @@ class SkLearnSoftWrapper(IHostedModel):
     def soft_predict(self, x):
         return self.skl_model.predict_proba(x)
 
+    @property
+    def supports_soft_scores(self):
+        return True
