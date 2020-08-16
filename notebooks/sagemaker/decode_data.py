@@ -1,3 +1,7 @@
+""" 
+Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/7998b8a481fccd467463deb1fc46d19622079b0e/LICENSE.md
+"""
 feature_names = ['checkingstatus', 'duration', 'history', 'purpose', 'amount', 'savings', 'employ', 'installment', 'status', 'others', 'residence', 'property', 'age', 'otherplans', 'housing', 'cards', 'job', 'liable', 'telephone', 'foreign', 'outcome']
 
 var_xwalk = {'checkingstatus':{
