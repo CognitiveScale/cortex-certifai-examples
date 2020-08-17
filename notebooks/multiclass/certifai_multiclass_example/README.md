@@ -1,4 +1,4 @@
-# Certifai Multiclass Evaluation Example
+# Certifai Target Encoded Multiclass Evaluation Example
 
 The Following example setup demonstrates how to create Certifai model evaluation scan for multi-class classification problem with dataset containing one-hot and target encoded features
 
