@@ -136,6 +136,10 @@ def start_scan():
     assert (model_proxy.model.predict(df.drop(label_column, axis=1)[:10].values) ==
             model.predict(df.drop(label_column, axis=1)[:10].values)).all
 
+    y = df[label_column]
+    X = df.drop(label_column, axis=1)
+    print(f'accuracy pre-release is {model.score(X, y)}')
+
     #
     # ### define  Certifai task type
     #

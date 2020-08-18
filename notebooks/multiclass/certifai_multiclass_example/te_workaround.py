@@ -38,10 +38,6 @@ import sklearn as scikit
 
 
 def start_scan():
-    print(f'sklearn version is {scikit.__version__}')
-    print(f'numpy version is {np.__version__} ')
-    # get_ipython().system('certifai --version')
-
     # In[3]:
 
     seed = 42
@@ -205,6 +201,8 @@ def start_scan():
     # # test to assert wrapped certifai model predicts == raw model predicts
     assert (model_proxy.model.predict(encoder(X[:10].values)) ==
             model.predict(df.drop(label_column, axis=1)[:10].values)).all
+
+    print(f'accuracy workaround is {model.score(X, y)}')
 
     #
     # ### define  Certifai task type
