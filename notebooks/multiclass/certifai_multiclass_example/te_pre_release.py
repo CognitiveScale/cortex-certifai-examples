@@ -138,7 +138,11 @@ def start_scan():
 
     y = df[label_column]
     X = df.drop(label_column, axis=1)
-    print(f'accuracy pre-release is {model.score(X, y)}')
+
+    # calculate  model accuracy on whole data
+    y_pred = model_proxy.model.predict(X.values)
+    accuracy = np.mean(y_pred == y)
+    print(f'accuracy pre-release is {accuracy}')
 
     #
     # ### define  Certifai task type

@@ -202,7 +202,10 @@ def start_scan():
     assert (model_proxy.model.predict(encoder(X[:10].values)) ==
             model.predict(df.drop(label_column, axis=1)[:10].values)).all
 
-    print(f'accuracy workaround is {model.score(X, y)}')
+    # calculate  model accuracy on whole data
+    y_pred = model_proxy.model.predict(encoder(X.values))
+    accuracy = np.mean(y_pred == y)
+    print(f'accuracy workaround is {accuracy}')
 
     #
     # ### define  Certifai task type
