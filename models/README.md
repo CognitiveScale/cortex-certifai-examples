@@ -9,7 +9,7 @@ for examples of scanning models in a Jupyter notebook using the Certifai API.
 ## Certifai Documentation
 
 Refer to the
-(Cortex Certifai documentation)[https://cognitivescale.github.io/cortex-certifai/docs/about]
+[Cortex Certifai documentation](https://cognitivescale.github.io/cortex-certifai/docs/about)
 for detailed information about Cortex Certifai.
 
 ## Models Table of Contents

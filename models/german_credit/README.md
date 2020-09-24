@@ -1,12 +1,12 @@
 # German Credit example
 
 This example uses the German Credit dataset originally sourced from
-(Kaggle)[https://www.kaggle.com/uciml/german-credit]. This is a binary
+[Kaggle](https://www.kaggle.com/uciml/german-credit). This is a binary
 classification example.
 
  The example shows how to use the Certifai Model SDK to wrap trained models into services
  so they can be scanned using the
- (Certifai toolkit)[https://cognitivescale.github.io/cortex-certifai/docs/about].
+ [Certifai toolkit](https://cognitivescale.github.io/cortex-certifai/docs/about).
 
 Specifically, it shows how to use the Certifai toolkit to:
  * wrap a single model as a service
@@ -54,7 +54,7 @@ conda activate certifai
 
 To train the example models:
 ```
-python app_dtree.py
+python train.py
 ```
 This generates the trained models as `german_credit_{model}.pkl`.
 
@@ -92,7 +92,6 @@ a scan that evaluates robustness, fairness, explainability, performance and expl
 for each of the models.
 
 To scan the models, first run the composite service:
-To wrap the models and run them as a service:
 ```
 python composed_app.py
 ```

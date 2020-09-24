@@ -1,12 +1,12 @@
 # Iris classification example
 
-This example uses the (Iris plants dataset)[https://scikit-learn.org/stable/datasets/index.html#iris-dataset]
+This example uses the [Iris plants dataset](https://scikit-learn.org/stable/datasets/index.html#iris-dataset)
  provided with sklearn. This is a multi-class classification use case with no
  favorability (outcomes are not favorable or unfavorable).
 
  The example shows how to use the Certifai Model SDK to wrap trained models into services
  so they can be scanned using the
-  (Certifai toolkit)[https://cognitivescale.github.io/cortex-certifai/docs/about].
+  {Certifai toolkit](https://cognitivescale.github.io/cortex-certifai/docs/about).
 
  Specifically, it shows how to use the Certifai toolkit to:
   * wrap a single model as a service, using a customized wrapper
