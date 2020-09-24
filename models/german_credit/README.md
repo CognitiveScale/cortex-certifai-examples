@@ -14,25 +14,26 @@ Specifically, it shows how to use the Certifai toolkit to:
  * scan the models
 
 ## Wrap a single model as a service
-Make sure you have activated your Certifai toolkit environment:
+
+1. Make sure you have activated your Certifai toolkit environment:
 ```
 conda activate certifai
 ```
 
-To train the example model:
+2. To train the example model:
 ```
 python train.py
 ```
 This generates the trained model as `german_credit_dtree.pkl`.
 
-To wrap the model and run it as a service:
+3. To wrap the model and run it as a service:
 ```
 python app_dtree.py
 ```
 The model is surfaced on endpoint `http://127.0.0.1:8551/predict`
 
 
-To test the model service, in another terminal activate your Certifai toolkit
+4. To test the model service, in another terminal activate your Certifai toolkit
 environment and run the test script:
 ```
 conda activate certifai
@@ -47,24 +48,25 @@ Response from shutdown: [200] Shutting down
 At the end of the tests, the service is shutdown using the `shutdown` endpoint.
 
 ## Implement a composite service
-Make sure you have activated your Certifai toolkit environment:
+
+1. Make sure you have activated your Certifai toolkit environment:
 ```
 conda activate certifai
 ```
 
-To train the example models:
+2. To train the example models:
 ```
 python train.py
 ```
 This generates the trained models as `german_credit_{model}.pkl`.
 
-To wrap the models and run them as a service:
+3. To wrap the models and run them as a service:
 ```
 python composed_app.py
 ```
 The models are surfaced on endpoints `http://127.0.0.1:8551/{model}/predict`
 
-To test the model service, in another terminal activate your Certifai toolkit
+4. To test the model service, in another terminal activate your Certifai toolkit
 environment and run the test script:
 ```
 conda activate certifai
@@ -91,18 +93,18 @@ A scan definition is provided in `german_credit_scanner_definition.yaml`. It def
 a scan that evaluates robustness, fairness, explainability, performance and explanations
 for each of the models.
 
-To scan the models, first run the composite service:
+1. To scan the models, first run the composite service:
 ```
 python composed_app.py
 ```
 
-In another terminal, run Certifai:
+2. In another terminal, run Certifai:
 ```
 certifai scan -f german_credit_scanner_definition.yaml
 ```
 This will create scan reports in the `./reports` folder.
 
-To view the reports in the Certifai console:
+3. To view the reports in the Certifai console:
 ```
 certifai console ./reports
 ```
