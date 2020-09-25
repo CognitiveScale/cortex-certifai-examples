@@ -10,6 +10,10 @@ The *notebooks* folder contains JupyterLab notebooks which demonstrate how to us
 
 The *tutorials* folder contains walkthroughs which demonstrate basic Certifai functionality. A list of tutorials available in this repo can be found in the [tutorials README](/tutorials/README.md).
 
+## Models
+
+The *models* folder contains examples of wrapping trained models into services that can be scanned with Certifai. See the [models README](/models/README.md) for more information.
+
 ## Certifai Documentation
 
 Refer to the Cortex Certifai documentation: https://cognitivescale.github.io/cortex-certifai/docs/about for detailed information about Cortex Certifai.
