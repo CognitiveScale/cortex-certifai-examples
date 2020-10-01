@@ -1,0 +1,101 @@
+State Code,Claim Amount,Coverage,Education,EmploymentStatus,Gender,Income,Location Code,Marital Status,Monthly Premium Auto,Months Since Last Claim,Months Since Policy Inception,Number of Open Complaints,Number of Policies,Policy,Claim Reason,Sales Channel,Total Claim Amount,Vehicle Class,Vehicle Size
+NE,387.3647046,Basic,College,Retired,M,28142,Suburban,Married,105,18,50,0,1,Personal L3,Hail,Agent,701.7082389999998,Sports Car,Medsize
+IA,1212.836511,Basic,College,Employed,F,20495,Suburban,Married,61,7,36,0,2,Personal L3,Hail,Agent,292.8,Four-Door Car,Medsize
+IA,800.0545061,Basic,Master,Employed,F,63834,Rural,Married,100,23,19,1,3,Personal L3,Other,Agent,215.226476,Sports Car,Small
+MO,795.6150058999998,Basic,Master,Employed,F,44818,Rural,Divorced,67,25,41,1,2,Personal L3,Collision,Web,136.883999,Two-Door Car,Medsize
+NE,234.7591802,Basic,High School or Below,Unemployed,M,0,Suburban,Single,69,14,10,1,1,Personal L3,Collision,Branch,757.8911400000002,Four-Door Car,Medsize
+OK,389.50347660000006,Premium,Bachelor,Employed,M,52361,Suburban,Single,102,13,78,0,1,Personal L3,Scratch/Dent,Agent,645.952371,Four-Door Car,Medsize
+IA,580.2065977999998,Basic,College,Employed,M,97541,Suburban,Married,72,22,1,0,3,Personal L3,Hail,Call Center,389.185006,Four-Door Car,Large
+IA,286.6779811,Basic,High School or Below,Employed,M,81763,Suburban,Married,72,22,12,1,1,Personal L3,Hail,Branch,518.4,Two-Door Car,Small
+IA,970.9746073,Extended,College,Unemployed,M,0,Suburban,Married,133,11,30,0,7,Corporate L3,Collision,Agent,827.085431,SUV,Small
+MO,239.7036098,Basic,High School or Below,Retired,F,22283,Suburban,Divorced,65,16,93,0,1,Corporate L3,Collision,Branch,572.072106,Four-Door Car,Medsize
+MO,942.9629367,Basic,Master,Employed,F,43811,Suburban,Married,117,24,10,0,4,Personal L3,Collision,Web,571.136574,Sports Car,Small
+OK,2053.439224,Extended,High School or Below,Unemployed,M,0,Suburban,Single,93,24,25,0,2,Special L3,Scratch/Dent,Agent,669.6,Four-Door Car,Small
+IA,1908.834203,Basic,College,Employed,F,32775,Urban,Divorced,61,10,73,0,2,Personal L1,Collision,Branch,251.886847,Four-Door Car,Small
+NE,1626.558682,Extended,Bachelor,Employed,F,85322,Suburban,Married,134,32,55,0,2,Personal L3,Collision,Agent,735.491986,SUV,Medsize
+MO,808.2880956,Basic,College,Employed,M,53554,Suburban,Married,67,6,5,0,2,Personal L2,Collision,Agent,327.020539,Four-Door Car,Large
+NE,619.9962422,Extended,College,Unemployed,F,0,Suburban,Single,84,31,61,0,3,Personal L3,Collision,Agent,604.8,Two-Door Car,Small
+NE,498.361893,Extended,College,Unemployed,M,0,Suburban,Single,83,22,0,3,5,Personal L3,Collision,Agent,736.00483,Four-Door Car,Small
+MO,222.7072755,Basic,High School or Below,Retired,M,27972,Suburban,Married,61,7,38,0,1,Personal L3,Scratch/Dent,Web,292.8,Four-Door Car,Medsize
+MO,1867.785248,Extended,College,Unemployed,M,0,Suburban,Married,86,17,14,0,2,Personal L2,Collision,Agent,538.649619,Four-Door Car,Medsize
+IA,450.24087710000015,Basic,College,Unemployed,M,0,Suburban,Single,67,15,4,0,4,Personal L3,Hail,Branch,499.590386,Two-Door Car,Medsize
+MO,3151.65084,Extended,College,Unemployed,M,0,Suburban,Married,125,23,4,0,2,Corporate L3,Scratch/Dent,Branch,626.411563,SUV,Medsize
+MO,245.35707940000003,Basic,Bachelor,Medical Leave,M,29735,Suburban,Single,69,3,92,0,1,Personal L2,Collision,Agent,331.2,Four-Door Car,Medsize
+MO,604.7025160000002,Extended,College,Employed,M,20396,Suburban,Married,76,15,60,1,4,Personal L3,Collision,Branch,364.8,Four-Door Car,Medsize
+KS,373.1504584,Extended,High School or Below,Unemployed,F,0,Suburban,Married,96,31,34,0,1,Personal L2,Collision,Agent,460.8,Four-Door Car,Large
+MO,816.0689782000002,Basic,High School or Below,Unemployed,F,0,Suburban,Married,109,15,61,0,7,Personal L1,Collision,Web,523.2,SUV,Medsize
+NE,1427.455485,Extended,High School or Below,Unemployed,M,0,Suburban,Single,84,35,42,0,2,Personal L1,Other,Call Center,604.8,Four-Door Car,Medsize
+NE,581.3242121000002,Basic,Bachelor,Employed,M,42795,Suburban,Married,73,2,38,0,4,Personal L1,Scratch/Dent,Branch,350.4,Four-Door Car,Large
+MO,471.1038869,Basic,Bachelor,Employed,M,24843,Suburban,Married,61,20,17,2,4,Personal L2,Collision,Agent,331.325638,Four-Door Car,Medsize
+MO,1284.043291,Extended,College,Unemployed,F,0,Suburban,Single,90,1,94,0,2,Personal L2,Collision,Call Center,648.0,Two-Door Car,Large
+NE,2418.688247,Basic,College,Employed,F,32989,Suburban,Married,102,25,12,0,2,Personal L3,Hail,Web,489.6,SUV,Small
+IA,509.6673223,Basic,Master,Disabled,F,22886,Suburban,Divorced,65,9,81,0,3,Special L1,Collision,Agent,312.0,Four-Door Car,Small
+IA,2377.781427,Extended,Master,Employed,F,33032,Rural,Married,86,33,77,1,2,Personal L3,Hail,Branch,87.080119,Two-Door Car,Medsize
+IA,2359.46802,Basic,Bachelor,Employed,M,76358,Rural,Married,66,25,3,0,2,Personal L1,Scratch/Dent,Agent,86.46158199999998,Four-Door Car,Medsize
+IA,2903.747753,Basic,High School or Below,Unemployed,M,0,Suburban,Married,113,0,16,0,2,Personal L3,Other,Web,542.4,SUV,Medsize
+IA,1154.6173720000004,Extended,Master,Employed,M,81081,Rural,Married,96,32,34,1,2,Corporate L2,Other,Call Center,206.211089,Four-Door Car,Medsize
+NE,405.5399126,Extended,Bachelor,Unemployed,M,0,Suburban,Single,121,2,18,0,1,Personal L1,Collision,Call Center,1215.970113,SUV,Medsize
+MO,433.038602,Premium,College,Employed,M,60475,Suburban,Married,107,9,18,0,1,Personal L1,Hail,Branch,513.6,Four-Door Car,Medsize
+IA,381.5851163,Extended,High School or Below,Employed,M,38651,Suburban,Single,98,12,83,0,1,Personal L3,Scratch/Dent,Branch,470.4,Two-Door Car,Medsize
+MO,987.5092794,Extended,College,Employed,M,29598,Rural,Single,87,2,70,0,2,Personal L1,Other,Call Center,150.926696,Two-Door Car,Medsize
+IA,1907.909518,Basic,High School or Below,Employed,F,42754,Urban,Divorced,65,5,56,4,2,Personal L3,Scratch/Dent,Agent,279.715067,Two-Door Car,Medsize
+IA,474.4967459,Basic,Doctor,Employed,M,20698,Urban,Single,68,21,72,5,5,Personal L3,Other,Branch,248.422693,Two-Door Car,Medsize
+KS,747.5784970999998,Basic,Bachelor,Disabled,F,29633,Urban,Married,196,26,57,0,1,Corporate L3,Collision,Agent,534.653787,Luxury Car,Medsize
+MO,289.7278535000001,Basic,College,Employed,M,75041,Rural,Single,74,30,42,0,1,Personal L2,Scratch/Dent,Agent,56.05058,Four-Door Car,Medsize
+MO,506.6827444,Basic,Master,Employed,F,40215,Rural,Divorced,64,11,22,0,3,Personal L2,Scratch/Dent,Branch,98.480884,Four-Door Car,Medsize
+MO,290.743603,Basic,High School or Below,Employed,F,52216,Suburban,Married,72,8,55,1,1,Personal L2,Collision,Web,362.026936,Four-Door Car,Medsize
+MO,253.7813878,Basic,High School or Below,Employed,M,56621,Rural,Married,65,27,36,2,1,Personal L2,Hail,Branch,84.026848,Four-Door Car,Medsize
+OK,533.7352409,Extended,Bachelor,Unemployed,F,0,Suburban,Single,86,19,93,3,5,Personal L3,Collision,Agent,619.2,Four-Door Car,Small
+MO,865.8863812999998,Basic,College,Employed,M,62464,Urban,Married,109,23,45,0,4,Personal L3,Hail,Agent,400.181882,Sports Car,Medsize
+NE,389.5961837,Extended,High School or Below,Employed,M,35970,Suburban,Divorced,98,29,81,0,1,Corporate L3,Scratch/Dent,Call Center,470.4,Four-Door Car,Large
+MO,277.8903705,Basic,Master,Employed,F,73570,Rural,Single,70,0,46,1,1,Special L3,Hail,Branch,75.93609599999998,Two-Door Car,Medsize
+NE,430.5808345,Basic,High School or Below,Employed,M,24188,Suburban,Married,109,14,82,0,1,Personal L3,Collision,Agent,523.2,Sports Car,Medsize
+MO,641.1675303999998,Extended,Bachelor,Employed,F,47606,Suburban,Divorced,81,24,50,0,4,Personal L3,Scratch/Dent,Agent,388.8,Two-Door Car,Small
+MO,519.3770572,Basic,Master,Employed,F,24948,Urban,Married,65,3,51,0,4,Personal L3,Hail,Branch,280.352767,Four-Door Car,Medsize
+IA,1086.427491,Basic,Doctor,Employed,F,95579,Urban,Single,67,19,78,0,2,Personal L1,Collision,Agent,308.631159,Four-Door Car,Medsize
+KS,920.6598256,Extended,College,Retired,F,24589,Suburban,Married,82,33,39,0,2,Personal L3,Collision,Branch,511.497882,Two-Door Car,Medsize
+MO,1059.854249,Extended,Bachelor,Employed,F,20179,Suburban,Married,133,29,0,1,5,Corporate L3,Scratch/Dent,Agent,638.4,SUV,Medsize
+IA,429.9838835,Premium,College,Employed,M,44388,Urban,Divorced,113,10,74,1,1,Personal L2,Collision,Call Center,496.843023,Four-Door Car,Medsize
+KS,1327.222792,Basic,High School or Below,Unemployed,M,0,Suburban,Single,194,31,11,0,4,Personal L3,Scratch/Dent,Call Center,1396.8,Luxury Car,Medsize
+IA,611.3869984,Extended,High School or Below,Unemployed,M,0,Suburban,Single,88,18,7,0,5,Personal L2,Collision,Branch,1034.799615,Four-Door Car,Medsize
+MO,1555.844195,Basic,Bachelor,Employed,F,62922,Suburban,Married,194,26,80,0,7,Corporate L3,Collision,Agent,1121.633645,Luxury Car,Medsize
+IA,286.304871,Basic,Master,Employed,F,41077,Rural,Married,71,3,14,0,1,Personal L3,Collision,Agent,82.41545699999998,Two-Door Car,Medsize
+MO,446.2997006,Basic,Bachelor,Unemployed,F,0,Suburban,Single,73,35,52,3,5,Corporate L3,Collision,Web,350.4,Two-Door Car,Medsize
+NE,941.4119587,Extended,College,Disabled,F,20455,Suburban,Married,84,14,40,2,2,Corporate L3,Scratch/Dent,Branch,564.9220339999998,Two-Door Car,Medsize
+NE,900.9219409,Premium,Doctor,Employed,M,32260,Suburban,Married,113,8,99,0,4,Personal L1,Collision,Branch,601.1246570000002,Four-Door Car,Medsize
+MO,261.93373760000003,Basic,Bachelor,Employed,M,78618,Urban,Divorced,66,7,56,0,1,Corporate L1,Collision,Agent,225.578841,Two-Door Car,Medsize
+IA,627.4447705,Extended,High School or Below,Medical Leave,F,13662,Suburban,Single,85,29,37,0,3,Personal L1,Collision,Agent,408.0,Four-Door Car,Small
+MO,281.1956395,Basic,Master,Employed,F,62537,Suburban,Divorced,71,19,64,1,1,Personal L2,Collision,Branch,354.1996640000001,Two-Door Car,Medsize
+IA,251.5259002,Basic,College,Employed,M,25558,Suburban,Married,63,31,11,0,1,Personal L3,Hail,Branch,453.6,Four-Door Car,Small
+OK,965.6759549,Basic,Bachelor,Unemployed,M,0,Suburban,Single,72,17,52,0,2,Personal L1,Collision,Agent,345.6,Four-Door Car,Medsize
+KS,2536.010404,Basic,Bachelor,Employed,M,21442,Suburban,Married,108,16,83,0,2,Corporate L3,Collision,Agent,518.4,SUV,Medsize
+IA,803.1706693,Basic,High School or Below,Employed,M,40082,Suburban,Divorced,69,6,18,0,2,Personal L2,Other,Agent,331.2,Four-Door Car,Small
+NE,230.0691547,Basic,Bachelor,Retired,M,25905,Suburban,Divorced,63,21,12,0,1,Personal L3,Collision,Agent,302.4,Four-Door Car,Large
+OK,648.1526576,Extended,Bachelor,Employed,F,30689,Suburban,Married,81,23,51,0,5,Personal L2,Other,Branch,467.24802,Four-Door Car,Medsize
+NE,731.7014254,Basic,College,Employed,F,24083,Suburban,Divorced,63,22,2,1,2,Personal L3,Collision,Agent,340.453606,Four-Door Car,Small
+NE,370.3404606,Basic,Bachelor,Unemployed,M,0,Suburban,Single,109,22,5,0,1,Personal L3,Collision,Agent,784.8,SUV,Small
+NE,1437.655039,Premium,College,Employed,M,70341,Rural,Married,179,11,43,0,3,Personal L3,Other,Branch,253.511935,SUV,Medsize
+IA,907.5768214,Basic,Master,Employed,M,37722,Rural,Single,116,8,23,0,8,Personal L1,Collision,Agent,158.077504,Sports Car,Medsize
+MO,2023.09675,Basic,High School or Below,Employed,M,48448,Suburban,Married,74,24,11,1,2,Corporate L3,Scratch/Dent,Agent,355.2,Four-Door Car,Medsize
+IA,688.0633889999998,Basic,High School or Below,Unemployed,M,0,Suburban,Single,66,24,48,0,2,Corporate L3,Collision,Web,475.2,Four-Door Car,Small
+MO,701.3436657000002,Extended,High School or Below,Employed,M,92107,Rural,Divorced,88,7,38,0,5,Personal L3,Hail,Agent,16.37296,Four-Door Car,Medsize
+MO,287.1437451000001,Basic,Bachelor,Employed,F,23803,Suburban,Married,72,11,90,0,1,Corporate L2,Other,Branch,410.548521,Two-Door Car,Small
+NE,866.8611261,Basic,High School or Below,Employed,M,21474,Urban,Married,114,13,72,2,9,Corporate L3,Collision,Agent,373.428187,SUV,Small
+IA,480.3777507,Basic,High School or Below,Disabled,F,23634,Suburban,Married,62,4,25,0,9,Personal L3,Collision,Branch,440.189611,Two-Door Car,Small
+MO,434.7159852,Basic,College,Employed,F,38223,Suburban,Married,112,27,18,2,1,Personal L3,Scratch/Dent,Branch,537.6,SUV,Medsize
+MO,452.0339327,Basic,College,Unemployed,M,0,Suburban,Single,61,7,1,0,4,Personal L3,Collision,Agent,304.156333,Four-Door Car,Medsize
+IA,1613.841628,Basic,Master,Employed,F,79041,Rural,Married,199,14,48,0,3,Personal L3,Hail,Branch,419.26062,Luxury SUV,Small
+OK,651.6214888,Premium,Bachelor,Unemployed,F,0,Suburban,Married,175,12,60,0,1,Personal L3,Collision,Call Center,1221.143438,SUV,Small
+KS,2163.983862,Basic,High School or Below,Employed,M,64455,Rural,Married,108,5,43,0,2,Personal L3,Hail,Agent,133.73539499999998,SUV,Medsize
+MO,309.6511217,Extended,College,Employed,F,21604,Suburban,Divorced,79,14,28,0,1,Corporate L3,Collision,Branch,379.2,Four-Door Car,Medsize
+IA,358.5942995000001,Extended,Master,Employed,M,25748,Rural,Married,90,9,23,0,1,Personal L1,Scratch/Dent,Call Center,117.871165,Four-Door Car,Medsize
+NE,632.3923864,Extended,High School or Below,Employed,F,78532,Suburban,Married,78,25,87,0,3,Personal L3,Hail,Call Center,374.4,Four-Door Car,Medsize
+IA,254.1627614,Basic,Master,Employed,F,23692,Suburban,Married,65,26,27,2,1,Personal L3,Scratch/Dent,Agent,312.0,Two-Door Car,Medsize
+NE,568.1307055999998,Basic,High School or Below,Employed,M,67132,Suburban,Married,71,34,71,0,6,Corporate L2,Hail,Branch,466.371705,Four-Door Car,Large
+NE,2152.294749,Extended,High School or Below,Employed,F,44695,Rural,Married,79,14,51,2,2,Personal L2,Collision,Call Center,81.16632299999998,Two-Door Car,Medsize
+IA,477.0550911,Basic,College,Medical Leave,F,12964,Suburban,Single,65,2,37,0,4,Personal L1,Collision,Web,362.7745450000001,Two-Door Car,Medsize
+MO,1610.975353,Basic,High School or Below,Unemployed,F,0,Suburban,Married,73,12,42,0,2,Personal L3,Scratch/Dent,Call Center,350.4,Four-Door Car,Small
+KS,725.5953792,Extended,Bachelor,Employed,F,88891,Rural,Married,89,17,56,0,3,Personal L2,Collision,Branch,50.528355,Four-Door Car,Medsize
+IA,245.2059049,Basic,College,Employed,F,30216,Suburban,Divorced,63,18,74,0,1,Corporate L3,Hail,Call Center,302.4,Four-Door Car,Medsize
+IA,452.8737362,Basic,High School or Below,Employed,F,90034,Suburban,Married,112,5,86,0,1,Corporate L3,Collision,Call Center,537.6,SUV,Medsize
+NE,1418.164282,Basic,College,Unemployed,F,0,Suburban,Single,72,15,91,2,2,Personal L1,Collision,Call Center,345.6,Four-Door Car,Medsize
