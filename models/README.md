@@ -16,5 +16,5 @@ for detailed information about Cortex Certifai.
 
 | Model Folder | Description | Task Type | Language | Model Framework |
 | --- | --- | --- | --- | -- |
-| [german_credit](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/german_credit) | Illustrates using the Certifai Model SDK to run a single model in a service or to run multiple models in a service  |  Binary classification | python | sklearn |
+| [german_credit](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/german_credit) | Illustrates using the Certifai Model SDK to run a single model in a service or to run multiple models in a service. Also shows scanning a model within a python script using the API.  |  Binary classification | python | sklearn |
 | [iris](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/iris) | Illustrates using the Certifai Model SDK to run a single multi-class model in a service, using a customized model wrapper  |  Multi-class classification | python | sklearn |
