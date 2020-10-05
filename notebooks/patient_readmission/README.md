@@ -1,7 +1,9 @@
 # Patient Readmission example
 
-This example shows how to explain models using Certifai in a notebook. It then
-shows how to scan the same models for their trust scores
+This example uses a kaggle dataset [Diabetes 130 US hospitals for years 1999-2008](https://www.kaggle.com/brandao/diabetes) where the task is to predict whether a patient will be readmitted to hospital after being discharged.
+
+This example first shows how to explain models using Certifai in a notebook.
+It then shows how to scan the same models for their trust scores
 (fairness, explainability and robustness).
 
 ## Certifai Scanning in a Notebook
