@@ -11,7 +11,8 @@ classification example.
 Specifically, it shows how to use the Certifai toolkit to:
  * wrap a single model as a service
  * implement a composite service that wraps multiple models
- * scan the models
+ * scan the models using the CLI
+ * scan a model using the API
 
 ## Wrap a single model as a service
 
@@ -87,7 +88,7 @@ Response from shutdown: [200] Shutting down
 ```
 At the end of the tests, the service is shutdown using the `shutdown` endpoint.
 
-## Scan models
+## Scan models using CLI
 
 A scan definition is provided in `german_credit_scanner_definition.yaml`. It defines
 a scan that evaluates robustness, fairness, explainability, performance and explanations
@@ -105,6 +106,25 @@ certifai scan -f german_credit_scanner_definition.yaml
 This will create scan reports in the `./reports` folder.
 
 3. To view the reports in the Certifai console:
+```
+certifai console ./reports
+```
+
+## Scan models using API
+
+You can also scan models from python using the Certifai API. The
+`explain.py` script illustrates doing this in order to explain a set of
+predictions.
+
+1. To explain the predictions:
+```
+python explain.py
+```
+
+This will create a scan report in the `./reports` folder
+containing explanations for the decision tree model.
+
+2. To view the reports in the Certifai console:
 ```
 certifai console ./reports
 ```
