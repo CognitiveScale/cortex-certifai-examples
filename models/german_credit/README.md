@@ -128,3 +128,48 @@ containing explanations for the decision tree model.
 ```
 certifai console ./reports
 ```
+
+## Wrap a soft-scoring model as a service
+
+1. Soft Scoring MLP classifier model is trained as a part of [Wrap a single model as a service](#wrap-a-single-model-as-a-service) 
+
+2. To wrap the model and run it as a service:
+    ```
+    python app_mlp_soft_scoring.py
+    ```
+    The model is surfaced on endpoint `http://127.0.0.1:8551/german_credit_mlp/predict`
+
+3. To test the model service, in another terminal activate your Certifai toolkit
+environment and run the test script:
+
+    ```
+    conda activate certifai
+    python app_mlp_soft_scoring_test.py
+    ```
+    The tests create output similar to:
+    ```
+    Response from model: [200] {"payload":{"labels":[1,2],"predictions":[1],"scores":[[0.9970156761270139,0.0029843238729861045]],"threshold":null}}
+
+    Response from shutdown: [200] Shutting down
+    ```
+    At the end of the tests, the service is shutdown using the `shutdown` endpoint.
+
+## Scan soft scoring models using CLI
+
+A scan definition for soft scoring model is provided in `german_credit_shap_explanation_scanner_definition.yaml`. It defines a scan that evaluates SHAP and Counterfactual Explanations for a soft model on a subsample 100 row of the [germanCreditDataset](#german-credit-example)
+
+1. To scan the model, first run the soft scoring model service:
+    ```
+    python app_mlp_soft_scoring.py
+    ```
+
+2. In another terminal, run Certifai:
+    ```
+    certifai scan -f german_credit_shap_explanation_scanner_definition.yaml
+    ```
+   This will create scan reports in the `./reports` folder.
+
+3. To view the reports in the Certifai console:
+    ```
+    certifai console ./reports
+    ```
