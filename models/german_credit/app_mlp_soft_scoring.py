@@ -16,4 +16,7 @@ with open('german_credit_mlp.pkl', 'rb') as f:
 
 app = SimpleModelWrapper(supports_soft_scores=True, model=model, encoder=encoder, score_labels=[1, 2],
                          endpoint_url='/german_credit_mlp/predict')
-app.run()
+
+# to start production ready gunicorn server use `production=True`
+app.run(production=True)
+
