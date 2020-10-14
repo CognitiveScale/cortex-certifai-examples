@@ -108,7 +108,7 @@ calculate_prediction <- function(payload, res) {
     # create response json { "payload" : {"predictions" : pred} }
     pred_list <<- list(payload = list(predictions = pred))
     pred_json <<- toJSON(pred_list)
-    res$status <<- 200
+    res$status <- 200
     return(pred_json)
   },
   # handle error and return error message
@@ -116,7 +116,7 @@ calculate_prediction <- function(payload, res) {
     error = function(cond) {
       error_list <<- list(payload = list(error = cond))
       error_json <<- toJSON(error_list, force = TRUE)
-      res$status <<- 500 # Internal Server errror in predicts
+      res$status <- 500 # Internal Server errror in predicts
       return(error_json)
     }
 
