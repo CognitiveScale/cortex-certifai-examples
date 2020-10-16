@@ -17,4 +17,5 @@ for detailed information about Cortex Certifai.
 | Model Folder | Description | Task Type | Language | Model Framework |
 | --- | --- | --- | --- | -- |
 | [german_credit](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/german_credit) | Illustrates using the Certifai Model SDK to run a single (hard or soft-scoring) model in a service or to run multiple models in a service. Also shows scanning a model within a python script using the API.  |  Binary classification | python | sklearn |
+| [h2o_dai_german_credit](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/h2o_dai_german_credit) | Illustrates using the Certifai Model SDK to create a prediction service from an H2O MOJO, and scan it for trust scores or for explanations.  |  Binary classification | python | H2O MOJO |
 | [iris](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/iris) | Illustrates using the Certifai Model SDK to run a single multi-class model in a service, using a customized model wrapper  |  Multi-class classification | python | sklearn |
