@@ -4,12 +4,21 @@ To install the necessary packages (only needed the first time), run
 
 To set up the api, run (e.g.):
 
-```
-library(plumber)
-pr <- plumber::plumb("random_forest_api.R")
-pr$run(port=8551)
-```
-Starts the webserver on port 8551 using file `random_forest_api.R`
+1. execute the `train_german_credit.R` script in R Console to train and persist the model to disk 
+
+2. execute the below code snippet in R console to start the model server on port 8551
+
+    ```
+    library(plumber)
+    pr <- plumber::plumb("predict_german_credit.R")
+    pr$run(port=8551)
+    ```
+   Starts the webserver on port 8551 using file `predict_german_credit.R` 
+    ```
+    Running plumber API at http://127.0.0.1:8551
+    Running swagger Docs at http://127.0.0.1:8551/__docs__/
+    ```
+
 
 ## Predict
 
