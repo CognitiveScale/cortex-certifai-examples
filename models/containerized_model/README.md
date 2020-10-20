@@ -13,7 +13,7 @@ TODO:
 
 
 ## Step 2 - Copy artifacts
-Copy the contents of `packages` folder from inside to toolkit to the `packages` folder present in the current directory.
+Copy the `packages` folder from inside the toolkit to current directory (`containerized_model` in this case)
 
 ## Step 3 - Configure cloud storage
 - Add respective cloud storage credentials and `MODEL_PATH` to `environment.yaml` file.
