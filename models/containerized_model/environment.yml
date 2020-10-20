@@ -1,4 +1,4 @@
-MODEL_PATH=s3://mayank-test/german_credit_dtree.pkl
+MODEL_PATH=s3://bucket/model.pkl
 BUCKET_ENDPOINT=
 BUCKET_SECRET_KEY=
 BUCKET_ACCESS_KEY=
