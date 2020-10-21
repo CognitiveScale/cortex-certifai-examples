@@ -3,6 +3,11 @@ import pandas as pd
 import numpy as np
 from numpy import nan
 import datatable as dt
+"""
+Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
+"""
+
 import daimojo.model
 
 model = daimojo.model("./pipeline.mojo")

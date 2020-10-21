@@ -1,3 +1,8 @@
+"""
+Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
+"""
+
 from certifai.model.sdk import SimpleModelWrapper
 import pickle
 
@@ -19,4 +24,3 @@ app = SimpleModelWrapper(supports_soft_scores=True, model=model, encoder=encoder
 
 # to start production ready gunicorn server use `production=True`
 app.run(production=True)
-
