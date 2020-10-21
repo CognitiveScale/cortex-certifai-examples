@@ -50,4 +50,4 @@ class GermanCredit(SimpleModelWrapper):
 if __name__ == "__main__":
     # Host is set to 0.0.0.0 to allow this to be run in a docker container
     app = GermanCredit(host="0.0.0.0")
-    app.run(log_level="warn")
+    app.run()
