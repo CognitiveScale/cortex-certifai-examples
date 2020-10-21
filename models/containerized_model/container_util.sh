@@ -10,7 +10,7 @@ if [ "$COMMAND" = "build" ]; then
 elif [ "$COMMAND" = "run" ]; then
   ENV_PATH=$2
   if [ "$ENV_PATH" = "" ]; then
-    echo "Pass the environments file as the second argument. e.g /.container_util.sh run ./environment.yml"
+    echo "Pass the environments file as the second argument. e.g ./container_util.sh run ./environment.yml"
     exit 1
   fi
   docker run -p 8551:8551 --env-file $ENV_PATH -it $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
