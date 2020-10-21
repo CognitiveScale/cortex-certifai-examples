@@ -4,7 +4,7 @@
 
 - Certifai toolkit (from [CognitiveScale website](https://www.cognitivescale.com/try-certifai/)).
 - A model (pickle) stored in a cloud storage (e.g Amazon S3).
-- A base docker image which (strictly) simulates the trained model python environment.
+- A base docker image which has all the dependencies at the specific versions that were used when the model was trained.
 
 
 ## Step 1 - Template generation
