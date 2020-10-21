@@ -92,7 +92,7 @@ Response from model: [200] {"payload":{"predictions":[1]}}
 
 ## Scan models using Certifai CLI
 
-1. Follow the instructions in the Certifai documentation under
+1. Follow the instructions in the [Certifai documentation](https://cognitivescale.github.io/cortex-certifai/docs/about) under
 'Toolkit > CLI Usage > Define and run scans locally' to define and test a
 scan definition for the German Credit example. The only difference from
 the example in the documentation is that you need to set the `predict_endpoint`
