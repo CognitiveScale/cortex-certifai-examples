@@ -16,14 +16,21 @@ TODO:
 Copy the `packages` folder from inside the toolkit to current directory (`containerized_model` in this case)
 
 ## Step 3 - Configure cloud storage
-- Add respective cloud storage credentials and `MODEL_PATH` to `environment.yaml` file.
+- Add respective cloud storage credentials and `MODEL_PATH` to `environment.yaml` file. This will be used in the `RUN` step.
 
-## Step 4 - Build and run
-The following command would build the docker image and run it on port 8551.
+## Step 4 - Build
+The following command would build the docker image.
 
 ```
-./container_util.sh build && ./container_util.sh run
+./container_util.sh build
 ```
 
-## Step 5 - Test
+## Step 5 - Run
+The following command would run the docker image using environment variables from the environments file that is being passed:
+
+```
+./container_util.sh run ./environment.yml
+```
+
+## Step 6 - Test
 Make a request to `http://127.0.0.1/predict` with the respective parameters.
