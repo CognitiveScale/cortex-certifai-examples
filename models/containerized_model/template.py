@@ -11,6 +11,17 @@ from jinja2 import FileSystemLoader, Environment
 
 def main():
 
+    def apply_template(filename, exec_permission=False, **kwargs):
+        file_names.remove(filename)
+        _template = env.get_template(filename)
+        rendered_template = _template.render(kwargs)
+        with open(os.path.join(BASE_DIR, filename), 'w') as f:
+            f.write(rendered_template)
+
+        if exec_permission:
+            _st = os.stat(os.path.join(BASE_DIR, filename))
+            os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
+
     # Argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help='Directory name to be created for the containerized model.')
@@ -32,25 +43,12 @@ def main():
     file_names = {'environment.yml', 'prediction_service.py', 'container_util.sh', 'Dockerfile'}
 
     # Dockerfile
-    filename = 'Dockerfile'
-    file_names.remove(filename)
-    template = env.get_template(filename)
-    dockerfile = template.render(BASE_DOCKER_IMAGE_NAME=args.base_docker_image_name,
-                                 BASE_DOCKER_IMAGE_TAG=args.base_docker_image_tag)
-    with open(os.path.join(BASE_DIR, filename), 'w') as f:
-        f.write(dockerfile)
+    apply_template('Dockerfile', False, BASE_DOCKER_IMAGE_NAME=args.base_docker_image_name,
+                   BASE_DOCKER_IMAGE_TAG=args.base_docker_image_tag)
 
     # Container util
-    filename = 'container_util.sh'
-    file_names.remove(filename)
-    template = env.get_template(filename)
-    container_util = template.render(BASE_DOCKER_IMAGE_NAME=args.base_docker_image_name,
-                                     BASE_DOCKER_IMAGE_TAG=args.base_docker_image_tag)
-    with open(os.path.join(BASE_DIR, filename), 'w') as f:
-        f.write(container_util)
-
-    st = os.stat(os.path.join(BASE_DIR, filename))
-    os.chmod(os.path.join(BASE_DIR, filename), st.st_mode | stat.S_IEXEC)
+    apply_template('container_util.sh', True, BASE_DOCKER_IMAGE_NAME=args.base_docker_image_name,
+                   BASE_DOCKER_IMAGE_TAG=args.base_docker_image_tag)
 
     # Files without template
     for filename in file_names:
