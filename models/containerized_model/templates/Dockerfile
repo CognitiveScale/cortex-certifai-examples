@@ -1,5 +1,4 @@
-# Sample base image, needs to be replaced by the specific model env image
-FROM continuumio/miniconda3:4.7.10
+FROM {{BASE_DOCKER_IMAGE_NAME}}:{{BASE_DOCKER_IMAGE_TAG}}
 
 WORKDIR /app
 

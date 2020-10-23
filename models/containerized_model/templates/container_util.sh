@@ -1,8 +1,13 @@
+#"""
+#Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+#Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
+#"""
+
 #!/usr/bin/env bash
 
 # Set docker image name and tag
-DOCKER_IMAGE_NAME=certifai-containerized-model
-DOCKER_IMAGE_TAG=cloud_s3
+DOCKER_IMAGE_NAME={{BASE_DOCKER_IMAGE_NAME}}
+DOCKER_IMAGE_TAG={{BASE_DOCKER_IMAGE_TAG}}
 
 COMMAND=$1
 if [ "$COMMAND" = "build" ]; then
