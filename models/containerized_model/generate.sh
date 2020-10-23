@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+# Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
+#
+
 #!/usr/bin/env bash
 
 DIR_NAME=$1
