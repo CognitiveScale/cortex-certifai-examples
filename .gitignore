@@ -3,5 +3,5 @@ __pycache__
 .ipynb_checkpoints
 .idea
 .DS_Store
-notebooks/local_reports/*
-models/reports/
+notebooks/local_reports/
+reports/
