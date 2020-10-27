@@ -2,12 +2,13 @@
 # Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
 # Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
 #
-FROM {{BASE_DOCKER_IMAGE_NAME}}:{{BASE_DOCKER_IMAGE_TAG}}
+FROM {{BASE_DOCKER_IMAGE}}
 
 WORKDIR /app
 
 COPY prediction_service.py prediction_service.py
-COPY packages/cortex-certifai*.zip /tmp/
+COPY packages/all/cortex-certifai-common*.zip /tmp/
+COPY packages/all/cortex-certifai-model-sdk*.zip /tmp/
 
 RUN pip install --no-cache-dir \
      $(find /tmp -name cortex-certifai-common-*.zip)[s3] \

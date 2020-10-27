@@ -5,20 +5,27 @@
 
 #!/usr/bin/env bash
 
-# Set docker image name and tag
-DOCKER_IMAGE_NAME={{BASE_DOCKER_IMAGE_NAME}}
-DOCKER_IMAGE_TAG={{BASE_DOCKER_IMAGE_TAG}}
+SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+
+# Set docker image name
+DOCKER_IMAGE_NAME={{TARGET_DOCKER_IMAGE}}
+
+DEFAULT_ENVIRONMENT_FILE="$SCRIPT_PATH/environment.yml"
 
 COMMAND=$1
 if [ "$COMMAND" = "build" ]; then
-  docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG .
+  docker build -t $DOCKER_IMAGE_NAME $SCRIPT_PATH
 elif [ "$COMMAND" = "run" ]; then
-  ENV_PATH=$2
-  if [ "$ENV_PATH" = "" ]; then
-    echo "Pass the environments file as the second argument. e.g ./container_util.sh run ./environment.yml"
-    exit 1
+  ENV_PATH=$DEFAULT_ENVIRONMENT_FILE
+  if [ "$2" = "-e" ] || [ "$2" = "--env" ]; then
+    if [ "$3" = "" ]; then
+      echo "Please specify an ABSOLUTE environment file path. Usage: -e /Users/user/environment.yml"
+      exit
+    fi
+    ENV_PATH=$3
   fi
-  docker run -p 8551:8551 --env-file $ENV_PATH -it $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+  echo "Reading ENV variables from $ENV_PATH"
+  docker run -p 8551:8551 --env-file $ENV_PATH -it $DOCKER_IMAGE_NAME
 else
   echo "Param should be one of [\"build\", \"run\"]"
 fi

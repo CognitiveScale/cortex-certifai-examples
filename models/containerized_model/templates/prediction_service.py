@@ -4,10 +4,22 @@ Licensed under CognitiveScale Example Code License https://github.com/CognitiveS
 """
 
 import os
+import io
 import pickle
 
 from certifai.model.sdk import SimpleModelWrapper
-from certifai.model.utils.http_util import fetch_model_binary
+from certifai.common.file.locaters import make_generic_locater
+from certifai.common.file.interface import FilePath
+
+
+def fetch_model_binary(model_path: str) -> io.BytesIO:
+    """
+    Fetches model binary from model_path
+    :param model_path: Model path e.g s3://model/dtree.pkl
+    :return: File-like object with Model Binary as contents
+    """
+    with make_generic_locater(FilePath(model_path)).reader() as f:
+        return io.BytesIO(f.read())
 
 
 def read_model():
