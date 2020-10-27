@@ -14,32 +14,45 @@
 
 Generate the code template for containerization of your model:
 ```
-./generate.sh <directory-name> <base-docker-image-name> <base-docker-image-tag>
+./generate.sh -i certifai-model-container:latest
 ```
 
-This command should create a directory called `<director-name>` in your current directory with the generated code.
+This command should create a directory called `generated-container-model` in your current directory with the generated code.
+
+For more `generate` options:
+```
+./generate.sh --help
+```
 
 ## Step 2 - Copy artifacts
-Copy the `packages` folder from inside the toolkit into the generated directory `<directory-name>`.
+Copy the `packages` folder from inside the toolkit into the generated directory `generated-container-model`:
+
+```
+cp -r <certifai-toolkit-path>/packages generated-container-model/
+```
 
 ## Step 3 - Configure cloud storage
-Add respective cloud storage credentials and `MODEL_PATH` to `<directory-name>/environment.yaml` file. This will be used in the `RUN` step.
+Add respective cloud storage credentials and `MODEL_PATH` to `generated-container-model/environment.yaml` file. This will be used in the `RUN` step.
 
 ## Step 4 - Build
-From inside the `<directory-name>` folder, run the following command which would build the docker image:
+Run the following command to build the prediction service docker image.
 
 ```
-./container_util.sh build
+./generated-container-model/container_util.sh build
 ```
+
+This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-model-container:latest` in this case).
 
 ## Step 5 - Run
-From inside the `<directory-name>` folder, run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
+`Pre-requisite`: Make sure your model `.pkl` file is placed at the respective location defined in `environment.yml` file.
+
+Run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
 
 ```
-./container_util.sh run ./environment.yml
+./generated-container-model/container_util.sh run
 ```
 
 This should create a docker container and host the webservice.
 
 ## Step 6 - Test
-Make a request to `http://127.0.0.1/predict` with the respective parameters.
+Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.

@@ -25,8 +25,8 @@ def main():
     # Argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help='Directory name to be created for the containerized model.')
-    parser.add_argument('--base-docker-image-name', help='Base docker image for the containerized model.')
-    parser.add_argument('--base-docker-image-tag', help='Base docker image for the containerized model.')
+    parser.add_argument('--base-docker-image', help='Base docker image for the containerized model.')
+    parser.add_argument('--target-docker-image', help='Target docker image to be built.')
     args = parser.parse_args()
 
     # Base directory
@@ -43,12 +43,10 @@ def main():
     file_names = {'environment.yml', 'prediction_service.py', 'container_util.sh', 'Dockerfile'}
 
     # Dockerfile
-    apply_template('Dockerfile', False, BASE_DOCKER_IMAGE_NAME=args.base_docker_image_name,
-                   BASE_DOCKER_IMAGE_TAG=args.base_docker_image_tag)
+    apply_template('Dockerfile', False, BASE_DOCKER_IMAGE=args.base_docker_image)
 
     # Container util
-    apply_template('container_util.sh', True, BASE_DOCKER_IMAGE_NAME=args.base_docker_image_name,
-                   BASE_DOCKER_IMAGE_TAG=args.base_docker_image_tag)
+    apply_template('container_util.sh', True, TARGET_DOCKER_IMAGE=args.target_docker_image)
 
     # Files without template
     for filename in file_names:
