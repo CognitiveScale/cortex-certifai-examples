@@ -12,48 +12,68 @@ from jinja2 import FileSystemLoader, Environment
 def main():
 
     def apply_template(filename, exec_permission=False, **kwargs):
-        file_names.remove(filename)
         _template = env.get_template(filename)
         rendered_template = _template.render(kwargs)
-        with open(os.path.join(BASE_DIR, filename), 'w') as f:
+        file_path = os.path.join(BASE_DIR, 'src', filename) if filename in src_files else os.path.join(BASE_DIR, filename)
+        with open(file_path, 'w') as f:
             f.write(rendered_template)
 
         if exec_permission:
             _st = os.stat(os.path.join(BASE_DIR, filename))
             os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
 
+    def create_directories(directory_list: list):
+        for directory in directory_list:
+            try:
+                os.makedirs(os.path.join(BASE_DIR, directory))
+            except FileExistsError:
+                pass
+
     # Argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help='Directory name to be created for the containerized model.')
     parser.add_argument('--base-docker-image', help='Base docker image for the containerized model.')
     parser.add_argument('--target-docker-image', help='Target docker image to be built.')
+    # parser.add_argument('--model-type', help='Type of model you want to generate the code for. e.g h20_mojo, python')
     args = parser.parse_args()
 
     # Base directory
     BASE_DIR = args.dir
-    try:
-        os.mkdir(BASE_DIR)
-    except FileExistsError:
-        pass
+
+    directory_names = {'src', 'model'}
+    src_files = {'prediction_service.py'}
+
+    create_directories(list(directory_names))
 
     # Templates
     file_loader = FileSystemLoader('templates')
     env = Environment(loader=file_loader)
 
-    file_names = {'environment.yml', 'prediction_service.py', 'container_util.sh', 'Dockerfile'}
+    file_metadata = {
+        'environment.yml': {
+            'exec_permission': False,
+            'kwargs': {}
+        },
+        'Dockerfile': {
+            'exec_permission': False,
+            'kwargs': {
+                'BASE_DOCKER_IMAGE': args.base_docker_image
+            }
+        },
+        'container_util.sh': {
+            'exec_permission': True,
+            'kwargs': {
+                'TARGET_DOCKER_IMAGE': args.target_docker_image
+            }
+        },
+        'prediction_service.py': {
+            'exec_permission': False,
+            'kwargs': {}
+        },
+    }
 
-    # Dockerfile
-    apply_template('Dockerfile', False, BASE_DOCKER_IMAGE=args.base_docker_image)
-
-    # Container util
-    apply_template('container_util.sh', True, TARGET_DOCKER_IMAGE=args.target_docker_image)
-
-    # Files without template
-    for filename in file_names:
-        template = env.get_template(filename)
-        file_template = template.render()
-        with open(os.path.join(BASE_DIR, filename), 'w') as f:
-            f.write(file_template)
+    for filename, value in file_metadata.items():
+        apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
 
 
 if __name__ == '__main__':
