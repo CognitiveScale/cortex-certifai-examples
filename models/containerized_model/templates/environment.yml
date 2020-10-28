@@ -1,6 +1,9 @@
 # An example for a model in s3 bucket
 MODEL_PATH=s3://bucket/model.pkl
 
+# Default location for local model
+MODEL_PATH=/model/model.pkl
+
 # S3 credentials
 BUCKET_ENDPOINT=<your-s3-bucket-endpoint>
 BUCKET_SECRET_KEY=<your-s3-secret-key>

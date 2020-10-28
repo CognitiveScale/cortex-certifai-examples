@@ -4,9 +4,10 @@
 #
 FROM {{BASE_DOCKER_IMAGE}}
 
-WORKDIR /app
+WORKDIR /
 
-COPY prediction_service.py prediction_service.py
+COPY src /src
+COPY model /model
 COPY packages/all/cortex-certifai-common*.zip /tmp/
 COPY packages/all/cortex-certifai-model-sdk*.zip /tmp/
 
@@ -16,4 +17,4 @@ RUN pip install --no-cache-dir \
 
 EXPOSE 8551
 
-ENTRYPOINT ["python", "prediction_service.py"]
+ENTRYPOINT ["python", "-m", "src.prediction_service"]
