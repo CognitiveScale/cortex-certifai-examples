@@ -58,7 +58,7 @@ Run the following command to build the prediction service docker image.
 This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-model-container:latest` in this case).
 
 ### Step 6 - Run
-`Pre-requisite`: Make sure your model `.pkl` file is placed at the respective location defined in `environment.yml` file.
+`Pre-requisite`: Make sure your model `.mojo` file is placed at the respective location defined in `environment.yml` file.
 
 Run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
 
