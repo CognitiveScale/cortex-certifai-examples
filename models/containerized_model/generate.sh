@@ -12,6 +12,7 @@ function usage() {
     echo "Optional:"
     echo "\tBase docker image to be used to build the image      [-b | --base-docker-image]"
     echo "\tDirectory to be created                              [-d | --dir]"
+    echo "\tModel type for template e.g h2o_mojo                 [-m | --model-type]"
     echo "\tPrint help                                           [-h | --help]"
 }
 
@@ -22,10 +23,12 @@ fi
 
 DEFAULT_DIR_NAME="generated-container-model"
 DEFAULT_BASE_IMAGE="continuumio/miniconda3:4.7.10"
+DEFAULT_MODEL_TYPE="python"
 TARGET_DOCKER_IMAGE=""
 
 DIR_NAME=""
 BASE_DOCKER_IMAGE=""
+MODEL_TYPE=""
 
 
 while [ "$1" != "" ]; do
@@ -38,6 +41,9 @@ while [ "$1" != "" ]; do
                                                               ;;
         -b | --base-docker-image )                            shift
                                                               BASE_DOCKER_IMAGE="$1"
+                                                              ;;
+        -m | --model-type )                                   shift
+                                                              MODEL_TYPE="$1"
                                                               ;;
         -h | --help )                                         usage
                                                               exit
@@ -63,9 +69,13 @@ if [ "$BASE_DOCKER_IMAGE" = "" ]; then
   BASE_DOCKER_IMAGE=$DEFAULT_BASE_IMAGE
 fi
 
+if [ "$MODEL_TYPE" = "" ]; then
+  MODEL_TYPE=$DEFAULT_MODEL_TYPE
+fi
 
 echo "Generating template using following configuration:"
 echo "DIR = ${DIR_NAME}"
 echo "BASE DOCKER IMAGE = ${BASE_DOCKER_IMAGE}"
 echo "TARGET_DOCKER_IMAGE = ${TARGET_DOCKER_IMAGE}"
-python template.py --dir=$DIR_NAME --target-docker-image=$TARGET_DOCKER_IMAGE --base-docker-image=$BASE_DOCKER_IMAGE
+echo "MODEL TYPE = ${MODEL_TYPE}"
+python template.py --dir=$DIR_NAME --target-docker-image=$TARGET_DOCKER_IMAGE --base-docker-image=$BASE_DOCKER_IMAGE --model-type=$MODEL_TYPE

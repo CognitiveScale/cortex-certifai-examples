@@ -3,7 +3,7 @@ import pickle
 
 with open('german_credit_mlp.pkl', 'rb') as f:
     saved = pickle.load(f)
-    model = saved.get('model')
+    MODEL = saved.get('model')
     encoder = saved.get('encoder', None)
 
 # to enable models with soft-scores use `supports_soft_scores=True` when initializing SimpleModelWrapper
@@ -14,7 +14,7 @@ with open('german_credit_mlp.pkl', 'rb') as f:
 # follow certifai.model.sdk docs for more info.
 # https://cognitivescale.github.io/cortex-certifai/certifai-api-ref-1.3.5/certifai.model.html
 
-app = SimpleModelWrapper(supports_soft_scores=True, model=model, encoder=encoder, score_labels=[1, 2],
+app = SimpleModelWrapper(supports_soft_scores=True, model=MODEL, encoder=encoder, score_labels=[1, 2],
                          endpoint_url='/german_credit_mlp/predict')
 
 # to start production ready gunicorn server use `production=True`

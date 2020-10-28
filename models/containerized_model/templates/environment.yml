@@ -1,5 +1,5 @@
 # An example for a model in s3 bucket
-MODEL_PATH=s3://bucket/model.pkl
+#MODEL_PATH=s3://bucket/model.pkl
 
 # Default location for local model
 MODEL_PATH=/model/model.pkl
@@ -15,3 +15,9 @@ GOOGLE_APPLICATION_CREDENTIALS=<creds-file-path.json>
 # Azure Blob store credentials
 AZURE_ACCOUNT_NAME=<your-azure-account-name>
 AZURE_ACCOUNT_KEY=<your-azure-account-key>
+
+# MOJO environment - Default local location
+H2O_LICENSE_PATH=/license/license.txt
+
+# MOJO environment S3 Location
+#H2O_LICENSE_PATH=s3://bucket/license.txt
