@@ -28,7 +28,7 @@ For more `generate` options:
 Copy the `packages` folder from inside the toolkit into the generated directory `generated-container-model`:
 
 ```
-cp -r <certifai-toolkit-path>/packages generated-container-model/
+cp -r <certifai-toolkit-path>/packages generated-container-model/packages
 ```
 
 ## Step 3 - Configure cloud storage
