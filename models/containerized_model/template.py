@@ -40,7 +40,7 @@ def main():
         create_directories(list(directory_names))
 
         # Templates
-        file_loader = FileSystemLoader('templates')
+        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
         env = Environment(loader=file_loader)
 
         file_metadata = {
@@ -95,7 +95,7 @@ def main():
 
         create_directories(list(directory_names))
         # Templates
-        file_loader = FileSystemLoader('templates')
+        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
         env = Environment(loader=file_loader)
 
         file_metadata = {

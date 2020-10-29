@@ -5,6 +5,8 @@
 
 #!/usr/bin/env bash
 
+SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+
 function usage() {
     echo "usage: ./generate.sh [options] [args]"
     echo "Required:"
@@ -24,12 +26,13 @@ fi
 DEFAULT_DIR_NAME="generated-container-model"
 DEFAULT_BASE_IMAGE="continuumio/miniconda3:4.7.10"
 DEFAULT_MODEL_TYPE="python"
-TARGET_DOCKER_IMAGE=""
+DEFAULT_OUTPUT_PATH="."
 
 DIR_NAME=""
 BASE_DOCKER_IMAGE=""
 MODEL_TYPE=""
-
+OUTPUT_PATH=""
+TARGET_DOCKER_IMAGE=""
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -73,9 +76,13 @@ if [ "$MODEL_TYPE" = "" ]; then
   MODEL_TYPE=$DEFAULT_MODEL_TYPE
 fi
 
+if [ "$OUTPUT_PATH" = "" ]; then
+  OUTPUT_PATH=$DEFAULT_OUTPUT_PATH
+fi
+
 echo "Generating template using following configuration:"
 echo "DIR = ${DIR_NAME}"
 echo "BASE DOCKER IMAGE = ${BASE_DOCKER_IMAGE}"
 echo "TARGET_DOCKER_IMAGE = ${TARGET_DOCKER_IMAGE}"
 echo "MODEL TYPE = ${MODEL_TYPE}"
-python template.py --dir=$DIR_NAME --target-docker-image=$TARGET_DOCKER_IMAGE --base-docker-image=$BASE_DOCKER_IMAGE --model-type=$MODEL_TYPE
+python $SCRIPT_PATH/template.py --dir=$DIR_NAME --target-docker-image=$TARGET_DOCKER_IMAGE --base-docker-image=$BASE_DOCKER_IMAGE --model-type=$MODEL_TYPE
