@@ -15,27 +15,8 @@ CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 MODEL = None
 
-COLUMNS = ['checkingstatus',
-           'duration',
-           'history',
-           'purpose',
-           'amount',
-           'savings',
-           'employ',
-           'installment',
-           'status',
-           'others',
-           'residence',
-           'property',
-           'age',
-           'otherplans',
-           'housing',
-           'cards',
-           'job',
-           'liable',
-           'telephone',
-           'foreign'
-           ]
+# <Add columns here>
+COLUMNS = []
 
 if len(COLUMNS) == 0:
     print('Columns can not be empty. Please update colums in prediction_service.py file.')

@@ -79,6 +79,8 @@ def main():
                 file_path = os.path.join(BASE_DIR, 'src', 'prediction_service.py')
             elif filename == 'Dockerfile.h2o_mojo':
                 file_path = os.path.join(BASE_DIR, 'Dockerfile')
+            elif filename == 'environment_h2o_mojo.yml':
+                file_path = os.path.join(BASE_DIR, 'environment.yml')
             else:
                 file_path = os.path.join(BASE_DIR, filename)
             with open(file_path, 'w') as f:
@@ -97,7 +99,7 @@ def main():
         env = Environment(loader=file_loader)
 
         file_metadata = {
-            'environment.yml': {
+            'environment_h2o_mojo.yml': {
                 'exec_permission': False,
                 'kwargs': {}
             },
