@@ -48,7 +48,11 @@ cp <path-to-linux-daimojo-file>.whl ext_packages/
 ### Step 4 - Configure cloud storage
 Add respective cloud storage credentials, `MODEL_PATH` and `H2O_LICENSE_PATH` to `generated-container-model/environment.yml` file. This will be used in the `RUN` step.
 
-### Step 5 - Build
+### Step 5 - Add model columns
+Add model colums in `src/prediction_service.py` under `columns` variable. Notice the comment related to `Add model columns`.
+Variable `columns` is expected to be a `list of strings`.
+
+### Step 6 - Build
 Run the following command to build the prediction service docker image.
 
 ```
@@ -57,7 +61,7 @@ Run the following command to build the prediction service docker image.
 
 This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-model-container:latest` in this case).
 
-### Step 6 - Run
+### Step 7 - Run
 `Pre-requisite`: Make sure your model `.mojo` file is placed at the respective location defined in `environment.yml` file.
 
 Run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
@@ -68,7 +72,7 @@ Run the following command which would run the docker image using environment var
 
 This should create a docker container and host the webservice.
 
-### Step 6 - Test
+### Step 8 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
 
 ## [Python Template](#python-template)
