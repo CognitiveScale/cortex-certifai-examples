@@ -31,26 +31,26 @@ For more `generate` options:
 ./generate.sh --help
 ```
 
-### Step 2 - Copy artifacts
+### Step 2 - Add model columns
+Add model colums in `src/prediction_service.py` under `columns` variable. Notice the comment related to `Add model columns`.
+Variable `columns` is expected to be a `list of strings`.
+
+### Step 3 - Copy artifacts
 Copy the `packages` folder from inside the toolkit into the generated directory `generated-container-model`:
 
 ```
 cp -r <certifai-toolkit-path>/packages generated-container-model/packages
 ```
 
-### Step 3 - Copy daimojo dependencies
+### Step 4 - Copy daimojo dependencies
 Copy `linux` - `daimojo` dependencies (`.whl` file) to `ext_packages` folder:
 
 ```
 cp <path-to-linux-daimojo-file>.whl ext_packages/
 ```
 
-### Step 4 - Configure cloud storage
+### Step 5 - Configure cloud storage
 Add respective cloud storage credentials, `MODEL_PATH` and `H2O_LICENSE_PATH` to `generated-container-model/environment.yml` file. This will be used in the `RUN` step.
-
-### Step 5 - Add model columns
-Add model colums in `src/prediction_service.py` under `columns` variable. Notice the comment related to `Add model columns`.
-Variable `columns` is expected to be a `list of strings`.
 
 ### Step 6 - Build
 Run the following command to build the prediction service docker image.
