@@ -9,7 +9,7 @@
 ## [Pre-requisites](#pre-req)
 
 - Certifai toolkit (from [CognitiveScale website](https://www.cognitivescale.com/try-certifai/)).
-- A model (pickle) stored in a cloud storage (e.g Amazon S3).
+- A model (MOJO or pickle) stored in a cloud storage (e.g Amazon S3).
 - A base docker image which has all the dependencies at the specific versions that were used when the model was trained.
 - Locally installed:
     - Docker
@@ -37,17 +37,17 @@ For more `generate` options:
 ```
 
 ### Step 2 - Update the prediction service with information for your use case
-Add model columns in `src/prediction_service.py` under `columns` variable.
+Define the dataset columns in `src/prediction_service.py` under `columns` variable.
 Variable `columns` is expected to be a `list of strings`.
 
 Fill in the `_get_prediction_class` in `src/prediction_service.py` to return
 the appropriate class label for your model's outcomes.
 
-You can test the prediction service by running it locally in a python
-environment with the certifai toolkit and `daimojo` MOJO Python runtime
-installed. Copy your model
-to `model/pipeline.mojo` and license file to `license/license.txt`, then
-run `python src/prediction_service.py`.
+When first setting up this template, you are recommended to test the
+ prediction service by running it locally. To do this you will need to install
+ the Certifai Toolkit and the `daimojo` MOJO Python runtime. You can run the
+ prediction service locally using `python src/prediction_service.py`. Follow the [instructions](https://cognitivescale.github.io/cortex-certifai/docs/about)
+under 'Toolkit > CLI Usage' to define and run a scan for your model.
 
 
 ### Step 3 - Copy Certifai packages
