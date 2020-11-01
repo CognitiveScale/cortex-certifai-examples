@@ -22,7 +22,7 @@
 Generate the code template for containerization of your model. Replace `certifai-model-container:latest`
 with the image name and tag that you want to generate.
 ```
-./generate.sh -i certifai-model-container:latest -m h2o_mojo -b python:3.6
+./generate.sh -i certifai-model-container:latest -m h2o_mojo
 ```
 NOTE: When used in a CI/CD pipeline, we recommend generating a template
 with a tag of `latest` and then pushing this and a versioned tag to the
@@ -56,6 +56,10 @@ Copy the `packages` folder from inside the toolkit into the generated directory 
 ```
 cp -r <certifai-toolkit-path>/packages generated-container-model/packages
 ```
+
+NOTE: We copy the entire packages folder for convenience. Only the
+`cortex-certifai-common` and `cortex-model-sdk` packages will be
+built into the Docker image.
 
 ### Step 4 - Copy daimojo dependencies
 Copy the `daimojo` MOJO Python runtime `linux` dependency (`.whl` file) to `ext_packages` folder:
