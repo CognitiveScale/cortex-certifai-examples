@@ -9,11 +9,12 @@
 ## [Pre-requisites](#pre-req)
 
 - Certifai toolkit (from [CognitiveScale website](https://www.cognitivescale.com/try-certifai/)).
-- A model (MOJO or pickle) stored in a cloud storage (e.g Amazon S3).
+- A model (H2O MOJO pipeline or pickle).
+- H2O MOJO runtime and license file (for running H2O MOJO models).
 - A base docker image which has all the dependencies at the specific versions that were used when the model was trained.
 - Locally installed:
-    - Docker
-    - Jinja2 (`pip install -U Jinja2`)
+    - To generate the template: python & Jinja2 (`pip install -U Jinja2`)
+    - To build/run the image: Docker
 
 
 ## [H2O Mojo Template](#h2o-mojo-template)
@@ -25,10 +26,10 @@ with the image name and tag that you want to generate.
 ./generate.sh -i certifai-model-container:latest -m h2o_mojo
 ```
 NOTE: When used in a CI/CD pipeline, we recommend generating a template
-with a tag of `latest` and then pushing this and a versioned tag to the
-docker repository.
+with a tag of `latest`. Each time you build the image, push both the latest tag
+and a version tag to the docker repository.
 
-This command will create a directory called `generated-container-model`
+The `generate` command will create a directory called `generated-container-model`
 in your current directory with the generated code.
 
 For more `generate` options:
@@ -37,20 +38,35 @@ For more `generate` options:
 ```
 
 ### Step 2 - Update the prediction service with information for your use case
-Define the dataset columns in `src/prediction_service.py` under `columns` variable.
-Variable `columns` is expected to be a `list of strings`.
+Define the dataset columns in `src/prediction_service.py` under the `COLUMNS`
+variable. `COLUMNS` is expected to be a `list of strings`.
 
 Fill in the `_get_prediction_class` in `src/prediction_service.py` to return
 the appropriate class label for your model's outcomes.
 
+
+### Step 3 - Test the prediction service running locally
 When first setting up this template, you are recommended to test the
- prediction service by running it locally. To do this you will need to install
- the Certifai Toolkit and the `daimojo` MOJO Python runtime. You can run the
- prediction service locally using `python src/prediction_service.py`. Follow the [instructions](https://cognitivescale.github.io/cortex-certifai/docs/about)
-under 'Toolkit > CLI Usage' to define and run a scan for your model.
+ prediction service by running it locally.
+
+ 1. Follow the instructions for the
+ [H2O MOJO example](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/h2o_dai_german_credit) to setup the environment.
+
+ 2. Copy the MOJO and H2O license into the generated container folder:
+ ```
+ cp license.txt generated-container-model/license/license.txt
+cp pipeline.mojo generated-container-model/model/pipeline.mojo
+ ```
+
+3. Run the service:
+ ```
+ python generated-container-model/src/prediction_service.py
+ ```
+
+ 4. Test the service as described in the [H2O MOJO example](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/h2o_dai_german_credit)
 
 
-### Step 3 - Copy Certifai packages
+### Step 4 - Copy Certifai packages
 Copy the `packages` folder from inside the toolkit into the generated directory `generated-container-model`:
 
 ```
@@ -61,7 +77,7 @@ NOTE: We copy the entire packages folder for convenience. Only the
 `cortex-certifai-common` and `cortex-model-sdk` packages will be
 built into the Docker image.
 
-### Step 4 - Copy daimojo dependencies
+### Step 5 - Copy daimojo dependencies
 Copy the `daimojo` MOJO Python runtime `linux` dependency (`.whl` file) to `ext_packages` folder:
 
 ```
@@ -73,7 +89,7 @@ The file will be named something like `daimojo-2.4.8-cp36-cp36m-linux_x86_64.whl
 If you do not already have this package, you can download it from the H2O Driverless AI UI, see [instructions](http://docs.h2o.ai/driverless-ai/latest-stable/docs/userguide/scoring-pipeline-cpp.html#downloading-the-scoring-pipeline-runtimes).
 
 
-### Step 5 - Build
+### Step 6 - Build
 Run the following command to build the prediction service docker image.
 
 ```
@@ -84,11 +100,11 @@ This will create a docker image with name specified at `Step 1` with `-i`
 parameter (`certifai-model-container:latest` in this case).
 
 
-### Step 6 - Configure cloud storage
+### Step 7 - Configure cloud storage
 Add respective cloud storage credentials, `MODEL_PATH` and `H2O_LICENSE_PATH` to
 `generated-container-model/environment.yml` file. This will be used in the `RUN` step.
 
-### Step 7 - Run
+### Step 8 - Run
 `Pre-requisite`: Make sure your model `.mojo` file and H2O license are placed at
 the locations defined in `environment.yml` file.
 
@@ -109,7 +125,7 @@ FileNotFoundError: [Errno 2] No such file or directory: 'model/pipeline.mojo'
 make sure you have configured the path to cloud storage and pushed your
 model to that location.
 
-### Step 8 - Test
+### Step 9 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters,
 or use Certifai to test the endpoint against a scan definition
 `certifai definition-test -f scan_def.yaml`

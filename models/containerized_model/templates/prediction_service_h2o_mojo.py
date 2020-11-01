@@ -42,10 +42,10 @@ def read_and_save_file(source_path, destination_path):
 # <Fill in this function and remove the 'raise'>
 def _get_prediction_class(preds):
     """
-    For a binary classification model, _get_prediction_class should return the
-    appropriate class labels for predictions above or below the threshold.
+    For a classification model, _get_prediction_class should return the
+    appropriate class label based on the class probability.
 
-    For example:
+    For example, for a binary classification model:
         if preds[0] > preds[1]:
             return 1
         return 0
