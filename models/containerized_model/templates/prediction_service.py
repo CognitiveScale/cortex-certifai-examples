@@ -32,8 +32,12 @@ def read_and_save_model(model_path, default_model_path):
 
 def main():
     model_path = os.getenv('MODEL_PATH')
-    default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model', os.path.basename(model_path)))
-    read_and_save_model(model_path, default_model_path)
+    if model_path is not None:
+        # Copy files from remote path to local
+        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model', os.path.basename(model_path)))
+        read_and_save_file(model_path, default_model_path)
+    else:
+        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model/model.pkl'))
     model_pickle = pickle.load(open(default_model_path, 'rb'))
     model = model_pickle.get('model')
     encoder = model_pickle.get('encoder')
