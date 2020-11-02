@@ -163,8 +163,13 @@ cp -r <certifai-toolkit-path>/packages generated-container-model/packages
 ### Step 3 - Configure cloud storage
 Add respective cloud storage credentials and `MODEL_PATH` to `generated-container-model/environment.yml` file. This will be used in the `RUN` step.
 
-### Step 4 - Build
-Run the following command to build the prediction service docker image.
+### Step 4 - Add extra-dependencies (optional)
+
+Add extra python dependencies(if needed) in `requirements.txt` file
+
+**Note**: dependencies are installed using `pip install` 
+
+### Step 5 - Build
 
 ```
 ./generated-container-model/container_util.sh build
@@ -172,7 +177,7 @@ Run the following command to build the prediction service docker image.
 
 This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-model-container:latest` in this case).
 
-### Step 5 - Run
+### Step 6 - Run
 `Pre-requisite`: Make sure your model `.pkl` file is placed at the respective location defined in `environment.yml` file.
 
 Run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
@@ -183,5 +188,5 @@ Run the following command which would run the docker image using environment var
 
 This should create a docker container and host the webservice.
 
-### Step 6 - Test
+### Step 7 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.

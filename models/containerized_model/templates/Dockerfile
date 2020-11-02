@@ -8,6 +8,7 @@ WORKDIR /
 
 COPY packages/all/cortex-certifai-common*.zip /tmp/
 COPY packages/all/cortex-certifai-model-sdk*.zip /tmp/
+COPY requirements.txt /tmp/
 
 RUN pip install --no-cache-dir \
      $(find /tmp -name cortex-certifai-common-*.zip)[s3] \
