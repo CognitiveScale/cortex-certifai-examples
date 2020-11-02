@@ -23,7 +23,7 @@ def fetch_model_binary(model_path: str) -> bytes:
         return f.read()
 
 
-def read_and_save_model(model_path, default_model_path):
+def read_and_save_file(model_path, default_model_path):
     # Fetch model binary
     model_binary = fetch_model_binary(model_path)
     with open(default_model_path, 'wb') as f:
