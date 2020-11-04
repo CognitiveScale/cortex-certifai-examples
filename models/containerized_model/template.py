@@ -21,7 +21,46 @@ def main():
             except FileExistsError:
                 pass
 
-    def generate_python():
+    def generate_base_file_metadata():
+        image_name, _ = args.target_docker_image.split(':')
+        deployment_name = image_name.split('/')[-1].strip()
+        file_metadata = {
+            'container_util.sh': {
+                'exec_permission': True,
+                'kwargs': {
+                    'TARGET_DOCKER_IMAGE': args.target_docker_image
+                }
+            },
+            'deployment.yml': {
+                'exec_permission': False,
+                'kwargs': {
+                    'DEPLOYMENT_NAME': deployment_name
+                }
+            }
+        }
+        return file_metadata
+
+    def generate_python(file_metadata):
+
+        file_metadata.update({
+            'environment.yml': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'Dockerfile': {
+                'exec_permission': False,
+                'kwargs': {
+                    'BASE_DOCKER_IMAGE': args.base_docker_image
+                }
+            },
+            'prediction_service.py': {
+                'exec_permission': False,
+                'kwargs': {}
+            }
+        })
+
+        directory_names = {'src', 'model'}
+        src_files = {'prediction_service.py'}
 
         def apply_template(filename, exec_permission=False, **kwargs):
             _template = env.get_template(filename)
@@ -34,42 +73,36 @@ def main():
                 _st = os.stat(os.path.join(BASE_DIR, filename))
                 os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
 
-        directory_names = {'src', 'model'}
-        src_files = {'prediction_service.py'}
-
         create_directories(list(directory_names))
 
         # Templates
         file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
         env = Environment(loader=file_loader)
 
-        file_metadata = {
-            'environment.yml': {
+        for filename, value in file_metadata.items():
+            apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
+
+    def generate_h2o_mojo(file_metadata):
+
+        file_metadata.update({
+            'environment_h2o_mojo.yml': {
                 'exec_permission': False,
                 'kwargs': {}
             },
-            'Dockerfile': {
+            'Dockerfile.h2o_mojo': {
                 'exec_permission': False,
                 'kwargs': {
                     'BASE_DOCKER_IMAGE': args.base_docker_image
                 }
             },
-            'container_util.sh': {
-                'exec_permission': True,
-                'kwargs': {
-                    'TARGET_DOCKER_IMAGE': args.target_docker_image
-                }
-            },
-            'prediction_service.py': {
+            'prediction_service_h2o_mojo.py': {
                 'exec_permission': False,
                 'kwargs': {}
-            },
-        }
+            }
+        })
 
-        for filename, value in file_metadata.items():
-            apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
-
-    def generate_h2o_mojo():
+        directory_names = {'src', 'model', 'ext_packages', 'license'}
+        src_files = {'prediction_service_h2o_mojo.py'}
 
         def apply_template(filename, exec_permission=False, **kwargs):
             _template = env.get_template(filename)
@@ -90,36 +123,10 @@ def main():
                 _st = os.stat(os.path.join(BASE_DIR, filename))
                 os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
 
-        directory_names = {'src', 'model', 'ext_packages', 'license'}
-        src_files = {'prediction_service_h2o_mojo.py'}
-
         create_directories(list(directory_names))
         # Templates
         file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
         env = Environment(loader=file_loader)
-
-        file_metadata = {
-            'environment_h2o_mojo.yml': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-            'Dockerfile.h2o_mojo': {
-                'exec_permission': False,
-                'kwargs': {
-                    'BASE_DOCKER_IMAGE': args.base_docker_image
-                }
-            },
-            'container_util.sh': {
-                'exec_permission': True,
-                'kwargs': {
-                    'TARGET_DOCKER_IMAGE': args.target_docker_image
-                }
-            },
-            'prediction_service_h2o_mojo.py': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-        }
 
         for filename, value in file_metadata.items():
             apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
@@ -135,13 +142,16 @@ def main():
     # Base directory
     BASE_DIR = args.dir
 
+    file_metadata = generate_base_file_metadata()
     if args.model_type == 'h2o_mojo':
-        generate_h2o_mojo()
+        generate_h2o_mojo(file_metadata)
     else:
-        generate_python()
+        generate_python(file_metadata)
 
     # Copy readme into the generated directory
-    shutil.copyfile(os.path.join(CURRENT_PATH, 'README.md'), os.path.join(BASE_DIR, 'README.md'))
+    readme_files = ['README.md', 'DEPLOYMENT.md']
+    for readme in readme_files:
+        shutil.copyfile(os.path.join(CURRENT_PATH, readme), os.path.join(BASE_DIR, readme))
 
 
 if __name__ == '__main__':
