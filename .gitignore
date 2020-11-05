@@ -5,3 +5,5 @@ __pycache__
 .DS_Store
 notebooks/local_reports/*
 models/reports/
+*.mojo
+*license.txt

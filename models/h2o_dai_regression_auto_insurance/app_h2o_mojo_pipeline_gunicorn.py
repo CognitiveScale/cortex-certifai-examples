@@ -19,27 +19,25 @@ class GermanCredit(SimpleModelWrapper):
 
         :return: list of column names
         """
-        columns = ['checkingstatus',
-                   'duration',
-                   'history',
-                   'purpose',
-                   'amount',
-                   'savings',
-                   'employ',
-                   'installment',
-                   'status',
-                   'others',
-                   'residence',
-                   'property',
-                   'age',
-                   'otherplans',
-                   'housing',
-                   'cards',
-                   'job',
-                   'liable',
-                   'telephone',
-                   'foreign'
-                   ]
+        columns = ['State Code',
+                   'Claim Amount',
+                   'Coverage',
+                   'Education',
+                   'EmploymentStatus',
+                   'Gender',
+                   'Income',
+                   'Location Code',
+                   'Marital Status',
+                   'Monthly Premium Auto',
+                   'Months Since Last Claim',
+                   'Months Since Policy Inception',
+                   'Number of Open Complaints',
+                   'Number of Policies',
+                   'Policy',
+                   'Claim Reason',
+                   'Sales Channel',
+                   'Vehicle Class',
+                   'Vehicle Size']
         return columns
 
     def set_global_imports(self):
@@ -61,10 +59,9 @@ class GermanCredit(SimpleModelWrapper):
             if preds[0] > preds[1]:
                 return 1
             return 0
-                """
-        if preds[0] > preds[1]:
-            return 1
-        return 2
+        """
+        # for regression we get only one prediction
+        return preds[0]
 
     def predict(self, npinstances):
         # reference model by using `self.model`
