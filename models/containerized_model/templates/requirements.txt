@@ -1,0 +1,4 @@
+# add python pip install dependencies below e.g.
+# uncomment the default (xgboost) to pip install them inside the container
+
+# xgboost==0.90
