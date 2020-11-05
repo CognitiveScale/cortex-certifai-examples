@@ -13,15 +13,6 @@ import datatable as dt
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-MODEL = None
-
-# <Add columns here>
-COLUMNS = []
-
-if len(COLUMNS) == 0:
-    print('Columns can not be empty. Please update colums in prediction_service.py file.')
-    exit(1)
-
 
 def fetch_model_binary(model_path: str) -> bytes:
     """
@@ -39,27 +30,51 @@ def read_and_save_file(source_path, destination_path):
     with open(destination_path, 'wb') as f:
         f.write(model_binary)
 
-# <Fill in this function and remove the 'raise'>
-def _get_prediction_class(preds):
-    """
-    For a classification model, _get_prediction_class should return the
-    appropriate class label based on the class probability.
-
-    For example, for a binary classification model:
-        if preds[0] > preds[1]:
-            return 1
-        return 0
-    """
-    raise Exception('_get_prediction_class not implemented')
-
-
 
 class MojoModelWrapper(SimpleModelWrapper):
 
+    def __get_columns(self):
+        """
+        user-defined helper method. all user-defined methods must be prefixed by __
+        `__get_columns` is user defined helper method to list column names in order to re-create the dataframe for prediction
+        **Note**: all user defined methods must be declared inside the class as `instance methods`
+                  no user defined methods are allowed outside the scope of the class instantiating the `SimpleModelWrapper`
+                  for e.g. all methods must be declared inside the `GermanCredit` class (in this case) and referenced using `self`
+
+        :return: list of column names
+        """
+        columns = []
+        if not len(columns) == 0:
+            return columns
+        raise Exception('Columns can not be empty. Please update columns in prediction_service.py file.')
+
+    def set_global_imports(self):
+        """
+        overridden method to make external global imports
+        When using external imports override the method to provide necessary imports. Make sure to mark them `global` to
+        be used by certifai interpreter correctly. set once,use throughout.
+        :return: None
+        """
+        global dt
+        import datatable as dt
+
+    # <Fill in this function and remove the 'raise'>
+    def _get_prediction_class(self, preds):
+        """
+        For a classification model, _get_prediction_class should return the
+        appropriate class label based on the class probability.
+
+        For example, for a binary classification model:
+            if preds[0] > preds[1]:
+                return 1
+            return 0
+        """
+        raise Exception('_get_prediction_class not implemented')
+
     def predict(self, npinstances):
         instances = [tuple(instance) for instance in npinstances]
-        input_dt = dt.Frame(instances, names=COLUMNS)
-        predictions = MODEL.predict(input_dt).to_pandas().apply(_get_prediction_class, axis=1)
+        input_dt = dt.Frame(instances, names=self.__get_columns())
+        predictions = self.model.predict(input_dt).to_pandas().apply(self._get_prediction_class, axis=1)
         return predictions.values
 
 
@@ -69,15 +84,17 @@ if __name__ == "__main__":
     if model_path is not None:
         # Copy files from remote path to local
         default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model', os.path.basename(model_path)))
-        default_license_path = os.path.normpath(os.path.join(CURRENT_PATH, '../license', os.path.basename(license_path)))
+        default_license_path = os.path.normpath(
+            os.path.join(CURRENT_PATH, '../license', os.path.basename(license_path)))
         read_and_save_file(model_path, default_model_path)
         read_and_save_file(license_path, default_license_path)
     else:
         default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model/pipeline.mojo'))
         default_license_path = os.path.normpath(os.path.join(CURRENT_PATH, '../license/license.txt'))
     os.environ['DRIVERLESS_AI_LICENSE_FILE'] = default_license_path
-    MODEL = daimojo.model(default_model_path)
 
     # Host is set to 0.0.0.0 to allow this to be run in a docker container
-    app = MojoModelWrapper(host="0.0.0.0")
-    app.run()
+    app = MojoModelWrapper(host="0.0.0.0",
+                           model_type='h2o_mojo',
+                           model_path=default_model_path)
+    app.run(production=True)

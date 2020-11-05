@@ -13,7 +13,6 @@ CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 def main():
-
     def create_directories(directory_list: list):
         for directory in directory_list:
             try:
@@ -26,7 +25,8 @@ def main():
         def apply_template(filename, exec_permission=False, **kwargs):
             _template = env.get_template(filename)
             rendered_template = _template.render(kwargs)
-            file_path = os.path.join(BASE_DIR, 'src', filename) if filename in src_files else os.path.join(BASE_DIR, filename)
+            file_path = os.path.join(BASE_DIR, 'src', filename) if filename in src_files else os.path.join(BASE_DIR,
+                                                                                                           filename)
             with open(file_path, 'w') as f:
                 f.write(rendered_template)
 
@@ -64,6 +64,12 @@ def main():
                 'exec_permission': False,
                 'kwargs': {}
             },
+
+            'requirements.txt': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+
         }
 
         for filename, value in file_metadata.items():
@@ -116,6 +122,11 @@ def main():
                 }
             },
             'prediction_service_h2o_mojo.py': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+
+            'requirements.txt': {
                 'exec_permission': False,
                 'kwargs': {}
             },
