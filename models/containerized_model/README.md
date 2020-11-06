@@ -145,6 +145,8 @@ Generate the code template for containerization of your model:
 This command should create a directory called `generated-container-model`
 in your current directory with the generated code.
 
+Note: Value for `-m` option is `python` (by default)
+
 For more `generate` options:
 ```
 ./generate.sh --help
