@@ -7,7 +7,7 @@
 - A valid `kubeconfig` file with the current context activated.
 
 ## Step 1 - Push image to registry (private)
-The containerized image that has been built as part of `Pipeline 1` will need to be pushed to a private docker registry in order for the `k8s` cluster to pull it from.
+The containerized image that has been built will need to be pushed to a private docker registry in order for the `k8s` cluster to pull it from.
 
 ### Pre-requisites
 - Private docker registry to push containerized image to. This should be the registry that your`k8s` cluster is configured with.
@@ -50,13 +50,17 @@ spec:
 Run the following command in order to deploy the resources mentioned in the `generated-container-model/deployment.yml` file:
 
 ```
-kubectl apply -f containerized_models.yml
+kubectl apply -f generated-container-model/deployment.yml
 ```
 
-This command will deploy a `ResourceQuota`, a `Service` and a `Deployment` under the namespace specified in the `generated-container-model/deployment.yml` file (`containermodel` by default).
+This command will deploy a `Service` and a `Deployment` under the namespace specified in the `generated-container-model/deployment.yml` file (`containermodel` by default).
 
 
 ## Step 4 - Running a remote scan
+
+### Pre-requisites
+- datasets have to be in cloud storage (`s3`) and accessible by the same credentials that the scanner uses for writing reports; scan definition needs to have this url
+- model artifact has to be pushed; model deployment restarted on update of artifact
 
 ### Update Scan definition file with valid endpoints
 Update `predict_endpoint` field under `models` section in your `scan_definition.yaml` file to the service endpoint. The service endpoint can be created as follows:
@@ -69,8 +73,18 @@ Update `predict_endpoint` field under `models` section in your `scan_definition.
 ### SSH into the bastian host 
 This step is only need if you don't have access to kubernetes from your local machine. SSH into the bastian host which has access to the k8s cluster.
 
-If you have local access, then install certifai-client from `packages/all` folder inside the toolkit.
-`pip install cortex-certifai-client*.zip`
+If you have local access, then install certifai packages from `packages/all` folder inside the toolkit.
+```
+pip install cortex-certifai-common*.zip
+pip install cortex-certifai-client*.zip
+```
+
+### Configure remote scan
+Follow the docs [here](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/cli-usage/remote-config-import) to configure certifai remote configuration and create an alias
+
 
 ### Trigger the remote scan
-`certifai remote scan -f <path-to-scan-definition> -o <output-directory-path> --alias <alias>`
+`certifai remote scan -f <path-to-scan-definition> -o --alias <alias>`
+
+## Step 5 -  View Scan results
+- Follow the docs [here](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/cli-usage/console) to view scan status/results
