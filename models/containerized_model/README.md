@@ -41,6 +41,8 @@ For more `generate` options:
 Define the dataset columns in `src/prediction_service.py` under the `COLUMNS`
 variable. `COLUMNS` is expected to be a `list of strings`.
 
+Note: The "outcome" column should not be included.
+
 Fill in the `_get_prediction_class` in `src/prediction_service.py` to return
 the appropriate class label for your model's outcomes.
 
