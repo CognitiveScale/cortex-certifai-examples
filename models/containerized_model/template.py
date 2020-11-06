@@ -22,8 +22,6 @@ def main():
                 pass
 
     def generate_base_file_metadata():
-        image_name, _ = args.target_docker_image.split(':')
-        deployment_name = image_name.split('/')[-1].strip()
         file_metadata = {
             'container_util.sh': {
                 'exec_permission': True,
@@ -34,7 +32,8 @@ def main():
             'deployment.yml': {
                 'exec_permission': False,
                 'kwargs': {
-                    'DEPLOYMENT_NAME': deployment_name
+                    'RESOURCE_NAME': args.k8s_resource_name,
+                    'NAMESPACE': args.k8s_namespace
                 }
             }
         }
@@ -136,7 +135,9 @@ def main():
     parser.add_argument('--dir', help='Directory name to be created for the containerized model.')
     parser.add_argument('--base-docker-image', help='Base docker image for the containerized model.')
     parser.add_argument('--target-docker-image', help='Target docker image to be built.')
-    parser.add_argument('--model-type', help='Type of model you want to generate the code for. e.g h20_mojo, python')
+    parser.add_argument('--model-type', help='Type of model you want to generate the code. For e.g h20_mojo, python')
+    parser.add_argument('--k8s-resource-name', help='Name to be used as name in k8s resources (service, deployment, etc.).')
+    parser.add_argument('--k8s-namespace', help='Name to be used as namespace in k8s resources (service, deployment, etc.).')
     args = parser.parse_args()
 
     # Base directory
