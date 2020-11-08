@@ -6,7 +6,6 @@ The prepared dataset file used in this example is available in the
 [german credit model dataset](../german_credit/german_credit_eval.csv) in this repository, or at `examples/datasets/german_credit_eval.csv` in the
 [Certifai Toolkit](https://www.cognitivescale.com/download-certifai/).
 
-
 # Train and Download the Scoring Pipeline
 
 1. Clone this repository.
@@ -64,7 +63,7 @@ export DRIVERLESS_AI_LICENSE_FILE="license.txt"
 5. Review the code in [app_h2o_mojo_pipeline.py](./app_h2o_mojo_pipeline.py).
 This code runs the MOJO model in a prediction service that Certifai will use.
 
-6. Start the prediction service:
+6. Start the prediction service.
 ```
 python app_h2o_mojo_pipeline.py
 ```
@@ -78,6 +77,14 @@ Loaded 4b16871c-1233-11eb-b801-0242ac110002 from ./pipeline.mojo
  * Debug mode: off
 
 ```
+
+NOTE: For production use, we recommend you use the production version of the
+prediction service. This is illustrated in `app_h2o_mojo_pipeline_gunicorn.py`.
+This runs a gunicorn server with multiple workers (the number can be
+  configured using the `num_workers` parameter).
+
+The production prediction service requires Certifai version 1.3.6 or later.
+It is supported on Linux and Mac, not Windows.
 
 7. Test that you can send requests to the prediction service, which is running
 on http://127.0.0.1:8551/predict:

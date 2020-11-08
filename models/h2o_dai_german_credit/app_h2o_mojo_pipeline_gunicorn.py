@@ -7,15 +7,19 @@ from certifai.model.sdk import SimpleModelWrapper
 
 
 class GermanCredit(SimpleModelWrapper):
+    """
+    This example requires Certifai version 1.3.6 or later.
+    """
 
     @staticmethod
     def __get_columns():
         """
-        user-defined helper method. all user-defined methods must be prefixed by __
-        `__get_columns` is user defined helper method to list column names in order to re-create the dataframe for prediction
-        **Note**: all user defined methods must be declared inside the class as `instance methods`
-                  no user defined methods are allowed outside the scope of the class instantiating the `SimpleModelWrapper`
-                  for e.g. all methods must be declared inside the `GermanCredit` class (in this case) and referenced using `self`
+        `__get_columns` is user defined helper method to list column names in
+        order to create the dataframe for the model
+        **Note**: To work with the gunicorn server (production option)
+        all user defined methods must be declared inside the class as `instance methods`,
+        i.e. in this example, all methods must be declared inside the
+        `GermanCredit` class and referenced using `self`
 
         :return: list of column names
         """
@@ -45,18 +49,32 @@ class GermanCredit(SimpleModelWrapper):
     def set_global_imports(self):
         """
         overridden method to make external global imports
-        When using external imports override the method to provide necessary imports. Make sure to mark them `global` to
-        be used by certifai interpreter correctly. set once,use throughout.
+        When using external imports override the method to provide necessary imports.
+        Make sure to mark the imported dependencies as `global` to
+        be used by certifai interpreter correctly. set once, use throughout.
         :return: None
         """
         global dt
         import datatable as dt
 
+
+    def __get_prediction(self, preds):
+        """
+        `__get_prediction` is user defined helper method to convert the H2O model
+        outputs to the predictions expected by Certifai. In this example,
+        returns the appropriate class label based on the class probability.
+        Specifically, the first label is 1 (loan granted) and the second label is 2 (loan denied)
+        """
+        if preds[0] > preds[1]:
+            return 1
+        return 2
+
+
     def predict(self, npinstances):
         # reference model by using `self.model`
         instances = [tuple(instance) for instance in npinstances]
         input_dt = dt.Frame(instances, names=self.__get_columns())
-        predictions = self.model.predict(input_dt).to_pandas().apply(lambda x: 1 if x[0] > x[1] else 2, axis=1)
+        predictions = self.model.predict(input_dt).to_pandas().apply(self.__get_prediction, axis=1)
         return predictions.values
 
 
