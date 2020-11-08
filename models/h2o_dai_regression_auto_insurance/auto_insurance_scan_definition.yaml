@@ -1,0 +1,55 @@
+model_use_case:
+  atx_performance_metric_name: R-squared
+  author: info@cognitivescale.com
+  description: 'In this use case, each entry in the dataset represents an auto insurance
+    claim. The learning task is to predict the final settled claim amount.
+
+
+    This dataset was originally sourced from Emcien: https://www.sixtusdakurah.com/resources/The_Application_of_Regularization_in_Modelling_Insurance_Claims.pdf
+
+    '
+  model_use_case_id: c12e/datasciencelab/auto_insurance
+  name: 'Insurance: Auto Insurance Claims'
+  performance_metrics:
+  - metric: R-squared
+    name: R-squared
+  task_type: regression
+
+evaluation:
+  description: This evaluation compares the robustness, accuracy, fairness and explanations
+    for 4 candidate models.
+  evaluation_dataset_id: eval
+  test_dataset_id: eval
+  evaluation_types:
+  - robustness
+  - fairness
+  - explainability
+  fairness_grouping_features:
+    - name: Marital Status
+    - name: Gender
+  favorable_outcome_value: increased
+  feature_restrictions:
+  - feature_name: Gender
+    restriction_string: no changes
+  name: Baseline evaluation of 4 models
+  prediction_description: Amount of Settled Claim
+  prediction_favorability: ordered
+  regression_standard_deviation: 0.5
+
+models:
+- author: ''
+  description: H2O Driverless AI Model
+  model_id: dai_model
+  name: H2O MOJO
+  predict_endpoint: http://127.0.0.1:8551/predict
+
+datasets:
+- dataset_id: eval
+  description: 1000 row representative sample of the full dataset
+  file_type: csv
+  has_header: true
+  name: Evaluation dataset
+  url: file:../../notebooks/datasets/auto_insurance_claims_dataset.csv
+
+dataset_schema:
+  outcome_column: Total Claim Amount
