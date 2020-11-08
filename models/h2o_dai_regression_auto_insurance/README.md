@@ -88,29 +88,16 @@ Response from model: [200] {"payload":{"predictions":[269.3346252441406]}}
 
 ## Scan models using Certifai CLI
 
-1. Follow the instructions in the [Certifai documentation](https://cognitivescale.github.io/cortex-certifai/docs/about) under
-'Toolkit > CLI Usage > Define and run scans locally' to define and test a
-scan definition for the German Credit example. The only difference from
-the example in the documentation is that you need to set the `predict_endpoint`
-to http://127.0.0.1:8551/predict
-rather than http://127.0.0.1:5111/german_credit_dtree/predict.
+1. Make sure your prediction service is running in the `daimodel` environment.
 
-  Alternatively, you can use
-  the `auto_insurance_scan_definition.yaml` provided in this folder to
-  perform the trust scan.
-
-2. Make sure your prediction service is running in the `daimodel` environment.
-
-3. Run the scan in the `certifai` environment:
+2. Run the scan in the `certifai` environment:
 ```
 certifai scan -f auto_insurance_scan_definition.yaml
 ```
-  The full trust scan typically runs for 30-60 minutes and creates scan reports in
-  the `./reports` folder. The explanations scan takes about 10 minutes.
-  NOTE: to get an estimate of how long the scan will
-  run and to perform some checks, use the `--preflight` option.
+  The full trust scan typically runs for 20-40 minutes and creates scan reports in
+  the `./reports` folder.
 
-4. To view the reports in the Certifai console:
+3. To view the reports in the Certifai console:
 ```
 certifai console ./reports
 ```
