@@ -17,7 +17,7 @@ H2O's Driverless AI and use it to auto-learn an ML model.
 
 3. Select 'Click for Actions' and then 'Predict'.
 
-4. Set the target column to 'outcome' and launch the experiment.
+4. Set the target column to 'Total Claim Amount' and launch the experiment.
 
 5. After completion of the Driverless AI Experiment, download the scoring pipeline that you want to scan with Certifai.
 
@@ -25,7 +25,7 @@ H2O's Driverless AI and use it to auto-learn an ML model.
 
 # Setup the Certifai Scanning Environment
 
-1. Follow the [Toolkit Setup](https://cognitivescale.github.io/cortex-certifai/docs/about) in the Certifai documentation to install the Certifai toolkit into a conda
+1. Follow [Toolkit > Setup](https://cognitivescale.github.io/cortex-certifai/docs/about) in the Certifai documentation to install the Certifai toolkit into a conda
 environment (e.g. `certifai`).
 
 # Scan H2O Mojo Scoring Pipeline
@@ -50,7 +50,7 @@ pip install toolkit/packages/all/*model*.zip
 the Mojo from python. Follow the [instructions](http://docs.h2o.ai/driverless-ai/latest-stable/docs/userguide/scoring-pipeline-cpp.html#downloading-the-scoring-pipeline-runtimes) to download and install the runtime into your `daimodel` environment.
 
 4. Unzip the MOJO Scoring Pipeline that you downloaded at the end of your
-experiment, and copy `mojo.pipeline` into this folder.
+experiment, and copy `pipeline.mojo` into this folder.
 
 5. To run a Driverless AI H2O pipeline, you must have a license. Put your
 license key in a file in this folder e.g. `license.txt` and set an

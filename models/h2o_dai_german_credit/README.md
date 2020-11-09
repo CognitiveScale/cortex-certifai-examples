@@ -51,7 +51,7 @@ pip install toolkit/packages/all/*model*.zip
 the Mojo from python. Follow the [instructions](http://docs.h2o.ai/driverless-ai/latest-stable/docs/userguide/scoring-pipeline-cpp.html#downloading-the-scoring-pipeline-runtimes) to download and install the runtime into your `daimodel` environment.
 
 4. Unzip the MOJO Scoring Pipeline that you downloaded at the end of your
-experiment, and copy `mojo.pipeline` into this folder.
+experiment, and copy `pipeline.mojo` into this folder.
 
 5. To run a Driverless AI H2O pipeline, you must have a license. Put your
 license key in a file in this folder e.g. `license.txt` and set an
