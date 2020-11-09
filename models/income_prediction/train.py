@@ -52,7 +52,7 @@ def main():
     xg_reg = xgb.train(params=params, dtrain=data_dmatrix, num_boost_round=10)
 
     # calculate accuracy on test-set. using 0.46 as threshold for scoring
-    threshold = 0.46
+    threshold = 0.46 # illustrative - will default to 0.5 in prediction service if not specified
     dtest = xgb.DMatrix(encoder(X_test.values))
     preds = xg_reg.predict(dtest)
     best_preds = map(lambda x: int(x > threshold), preds)
@@ -63,7 +63,8 @@ def main():
     filename = 'adult_income_xgb.pkl'
     model_obj = {
         'model': xg_reg,
-        'encoder': encoder
+        'encoder': encoder,
+        'threshold': threshold
     }
 
     with open(filename, 'wb') as file:

@@ -30,6 +30,7 @@ with open('adult_income_xgb.pkl', 'rb') as f:
     saved = pickle.load(f)
     model = saved.get('model')
     encoder = saved.get('encoder', None)
+    threshold = saved.get('threshold', 0.5)
 
 if __name__ == "__main__":
     # since xgboost is a soft-scoring model with single score for each prediction,
@@ -41,6 +42,7 @@ if __name__ == "__main__":
                   supports_soft_scores=True,
                   model=model,
                   encoder=encoder,
+                  threshold=threshold,
                   score_labels=[0, 1])
     app.run()
     # Replace the previous line with the following to run the production server

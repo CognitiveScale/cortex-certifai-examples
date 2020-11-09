@@ -37,12 +37,12 @@ evaluation:
   prediction_description: Income >50K or <=50K
   prediction_favorability: explicit
   prediction_values:
-  - favorable: true
-    name: Income >50K
-    value: 1
   - favorable: false
     name: Income <=50K
     value: 0
+  - favorable: true
+    name: Income >50K
+    value: 1
   hyperparameters:
     # workaround issue 2935
     - name: min_implicit_target_encoding_cardinality
