@@ -69,6 +69,11 @@ def main():
     with open(filename, 'wb') as file:
         pickle.dump(model_obj, file)
 
+    # Create a smaller eval dataset (workaround 10K limit for Shap)
+    shap_eval_df = df.sample(9000)
+    shap_eval_df.to_csv('shap_eval_dataset.csv', index=False)
+
+
 
 if __name__ == "__main__":
     main()

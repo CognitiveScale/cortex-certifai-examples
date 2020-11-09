@@ -4,6 +4,7 @@ Licensed under CognitiveScale Example Code License https://github.com/CognitiveS
 """
 from certifai.model.sdk import SimpleModelWrapper
 import pickle
+import numpy as np
 import xgboost as xgb # This import is used in the development server
 
 class Wrapper(SimpleModelWrapper):
@@ -16,10 +17,13 @@ class Wrapper(SimpleModelWrapper):
         """
         global xgb
         import xgboost as xgb
+        global np
+        import numpy as np
 
     def soft_predict(self, npinstances):
         # reference model by using `self.model`
-        return self.model.predict(xgb.DMatrix(data=npinstances))
+        results = self.model.predict(xgb.DMatrix(data=npinstances))
+        return np.array([[1. - x, x] for x in results])
 
 
 with open('adult_income_xgb.pkl', 'rb') as f:
@@ -37,7 +41,6 @@ if __name__ == "__main__":
                   supports_soft_scores=True,
                   model=model,
                   encoder=encoder,
-                  threshold=0.46,
                   score_labels=[0, 1])
     app.run()
     # Uncomment the following to run the production server
