@@ -71,11 +71,4 @@ datasets:
   url: file:../../notebooks/datasets/adult_income_explan.csv
 
 dataset_schema:
-  feature_schemas:
-  - feature_name: race
-  - feature_name: gender
-  - feature_name: marital-status
-  - feature_name: age
-  - feature_name: relationship
   outcome_column: income
-

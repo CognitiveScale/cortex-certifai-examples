@@ -58,7 +58,7 @@ python app_test.py
 ```
 The tests create output similar to:
 ```
-Response from model: [200] {"payload":{"labels":[0,1],"predictions":[0],"scores":[0.17713576555252075],"threshold":0.46}}
+Response from model: [200] {"payload":{"labels":[0,1],"predictions":[0],"scores":[[0.8228642344474792,0.17713576555252075]],"threshold":null}}
 ```
 
 ## Explain model

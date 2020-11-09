@@ -43,6 +43,6 @@ if __name__ == "__main__":
                   encoder=encoder,
                   score_labels=[0, 1])
     app.run()
-    # Uncomment the following to run the production server
+    # Replace the previous line with the following to run the production server
     # This requires Certifai version 1.3.6 or later.
-    # app.run(log_level="warning", production=True, num_workers=3)
+    app.run(log_level="warning", production=True, num_workers=3)
