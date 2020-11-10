@@ -47,4 +47,4 @@ if __name__ == "__main__":
     app.run()
     # Replace the previous line with the following to run the production server
     # This requires Certifai version 1.3.6 or later.
-    app.run(log_level="warning", production=True, num_workers=3)
+    # app.run(log_level="warning", production=True, num_workers=3)
