@@ -8,5 +8,6 @@ dependencies:
   - ipython
   - jupyter
   - matplotlib
+  - joblib
   - pip:
     - azureml-sdk==1.4.0
