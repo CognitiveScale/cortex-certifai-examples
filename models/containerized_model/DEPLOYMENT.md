@@ -1,4 +1,4 @@
-# How to deploy the "containarized" model to Kubernetes?
+# How to deploy the "containerized" model to Kubernetes?
 
 ## Pre-requisites
 - A Containerized model.
@@ -70,8 +70,8 @@ Update `predict_endpoint` field under `models` section in your `scan_definition.
 `<service-name>` : should be the same as `metadata.name` under `kind:Service` in `generated-container-model/deployment.yml` file.
 `<namespace` : `containermodel` (default namespace)
 
-### SSH into the bastian host 
-This step is only need if you don't have access to kubernetes from your local machine. SSH into the bastian host which has access to the k8s cluster.
+### SSH into the bastion host
+This step is only needed if you don't have access to kubernetes from your local machine. SSH into the bastion host which has access to the k8s cluster.
 
 If you have local access, then install certifai packages from `packages/all` folder inside the toolkit.
 ```
