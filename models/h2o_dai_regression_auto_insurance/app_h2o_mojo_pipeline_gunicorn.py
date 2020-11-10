@@ -6,7 +6,7 @@ Licensed under CognitiveScale Example Code License https://github.com/CognitiveS
 from certifai.model.sdk import SimpleModelWrapper
 
 
-class GermanCredit(SimpleModelWrapper):
+class ModelWrapper(SimpleModelWrapper):
     """
     This example requires Certifai version 1.3.6 or later.
     """
@@ -19,56 +19,49 @@ class GermanCredit(SimpleModelWrapper):
         **Note**: To work with the gunicorn server (production option)
         all user defined methods must be declared inside the class as `instance methods`,
         i.e. in this example, all methods must be declared inside the
-        `GermanCredit` class and referenced using `self`
+        `ModelWrapper` class and referenced using `self`
 
         :return: list of column names
         """
-        columns = ['checkingstatus',
-                   'duration',
-                   'history',
-                   'purpose',
-                   'amount',
-                   'savings',
-                   'employ',
-                   'installment',
-                   'status',
-                   'others',
-                   'residence',
-                   'property',
-                   'age',
-                   'otherplans',
-                   'housing',
-                   'cards',
-                   'job',
-                   'liable',
-                   'telephone',
-                   'foreign'
-                   ]
+        columns = ['State Code',
+                   'Claim Amount',
+                   'Coverage',
+                   'Education',
+                   'EmploymentStatus',
+                   'Gender',
+                   'Income',
+                   'Location Code',
+                   'Marital Status',
+                   'Monthly Premium Auto',
+                   'Months Since Last Claim',
+                   'Months Since Policy Inception',
+                   'Number of Open Complaints',
+                   'Number of Policies',
+                   'Policy',
+                   'Claim Reason',
+                   'Sales Channel',
+                   'Vehicle Class',
+                   'Vehicle Size']
         return columns
 
     def set_global_imports(self):
         """
         overridden method to make external global imports
         When using external imports override the method to provide necessary imports.
-        Make sure to mark the imported dependencies as `global` to
+        Make sure to mark them `global` to
         be used by certifai interpreter correctly. set once, use throughout.
         :return: None
         """
         global dt
         import datatable as dt
 
-
     def __get_prediction(self, preds):
         """
-        `__get_prediction` is user defined helper method to convert the H2O model
-        outputs to the predictions expected by Certifai. In this example,
-        returns the appropriate class label based on the class probability.
-        Specifically, the first label is 1 (loan granted) and the second label is 2 (loan denied)
+        For a regression model, _get_prediction should return the first and only
+        prediction value.
         """
-        if preds[0] > preds[1]:
-            return 1
-        return 2
-
+        # for regression we get only one prediction
+        return preds[0]
 
     def predict(self, npinstances):
         # reference model by using `self.model`
@@ -80,5 +73,5 @@ class GermanCredit(SimpleModelWrapper):
 
 if __name__ == "__main__":
     # Host is set to 0.0.0.0 to allow this to be run in a docker container
-    app = GermanCredit(host="0.0.0.0", model_type='h2o_mojo', model_path='./pipeline.mojo')
+    app = ModelWrapper(host="0.0.0.0", model_type='h2o_mojo', model_path='./pipeline.mojo')
     app.run(log_level="warning", production=True, num_workers=3)
