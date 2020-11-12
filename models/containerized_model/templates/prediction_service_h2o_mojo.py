@@ -8,29 +8,38 @@ from certifai.common.file.locaters import make_generic_locater
 from certifai.common.file.interface import FilePath
 
 import os
-# import daimojo.model
+import yaml
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-
-def fetch_model_binary(model_path: str) -> bytes:
-    """
-    Fetches model binary from model_path
-    :param model_path: Model path e.g s3://model/dtree.pkl
-    :return: Model Binary as bytes
-    """
-    with make_generic_locater(FilePath(model_path)).reader() as f:
-        return f.read()
-
-
 def read_and_save_file(source_path, destination_path):
-    # Fetch model binary
-    model_binary = fetch_model_binary(source_path)
-    with open(destination_path, 'wb') as f:
-        f.write(model_binary)
+    if source_path is None:
+        return
+    # Fetch file as binary
+    locater = make_generic_locater(FilePath(source_path))
+    if locater.isfile():
+        with locater.reader() as f:
+            contents = f.read()
+        with open(destination_path, 'wb') as f:
+            f.write(contents)
+
+def read_yaml(source_path):
+    if source_path is None:
+        return {}
+    # Read file
+    locater = make_generic_locater(FilePath(source_path))
+    try:
+        with locater.text_reader() as f:
+            contents = f.read()
+        return yaml.safe_load(contents)
+    except FileNotFoundError:
+        return {}
 
 
 class MojoModelWrapper(SimpleModelWrapper):
+    def __init__(self, *args, **kwargs):
+        self.metadata = kwargs.pop('metadata', {})
+        super(self.__class__, self).__init__(*args, **kwargs)
 
     def get_columns(self):
         """
@@ -41,22 +50,27 @@ class MojoModelWrapper(SimpleModelWrapper):
 
         :return: list of column names
         """
-        columns = [] # Fill in the list of columns
+        columns = [] # Fill in the list of columns - this will be used if no metadata
+        cols_from_metadata = self.metadata.get('columns')
+        if cols_from_metadata is not None:
+            columns = cols_from_metadata
+
         if not len(columns) == 0:
             return columns
-        raise Exception('Columns can not be empty. Please update columns in prediction_service.py file.')
+        raise Exception('Columns can not be empty. Please update columns in metadata.yml or prediction_service.py file.')
 
     def get_outcomes(self):
         """
-        get_outcomes lists classification outcome class labels in the order
-        returned by H2O. If this returns an empty list, the labels will be
-        inferred.
+        get_outcomes lists classification outcome class labels.
         **Note**:  all methods used in predict must be declared inside the
         class as instance methods and referenced using `self.` to enable production mode.
 
         :return: list of outcome class labels
         """
-        outcomes = [] # Fill in the list of outcomes for a classification model
+        outcomes = [] # Outcomes for a classification model
+        outcomes_from_metadata = self.metadata.get('outcomes')
+        if outcomes_from_metadata is not None:
+            outcomes = outcomes_from_metadata
         return outcomes
 
     def set_global_imports(self):
@@ -112,10 +126,9 @@ class MojoModelWrapper(SimpleModelWrapper):
 
 if __name__ == "__main__":
     model_path = os.getenv('MODEL_PATH')
-    metadata_path = os.getenv('METADATA_PATH')
     license_path = os.getenv('H2O_LICENSE_PATH')
     default_metadata_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model/metadata.yml'))
-    # read_and_save_file(metadata_path, default_metadata_path)
+    metadata_path = os.getenv('METADATA_PATH', default_metadata_path)
     if model_path is not None:
         # Copy files from remote path to local
         default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model', os.path.basename(model_path)))
@@ -130,9 +143,12 @@ if __name__ == "__main__":
     os.environ['DRIVERLESS_AI_LICENSE_FILE'] = default_license_path
 
     # Host is set to 0.0.0.0 to allow this to be run in a docker container
-    app = MojoModelWrapper(host="0.0.0.0",
-                           model_type='h2o_mojo',
-                           model_path=default_model_path)
+    app = MojoModelWrapper(
+        host="0.0.0.0",
+        model_type='h2o_mojo',
+        model_path=default_model_path,
+        metadata=read_yaml(metadata_path)
+    )
     app.set_global_imports() # needed if not running in production mode
     # Production mode requires Certifai 1.3.6 or higher
     app.run(production=True, log_level='warning', num_workers=3)
