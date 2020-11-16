@@ -49,6 +49,11 @@ spec:
 ## Step 3 - Deploy
 Run the following command in order to deploy the resources mentioned in the `generated-container-model/deployment.yml` file:
 
+Create the namespace (if it doesn't exist already)
+```
+kubectl create namespace <namespace-name>
+```
+
 ```
 kubectl apply -f generated-container-model/deployment.yml
 ```
@@ -59,7 +64,7 @@ This command will deploy a `Service` and a `Deployment` under the namespace spec
 ## Step 4 - Running a remote scan
 
 ### Pre-requisites
-- datasets have to be in cloud storage (`s3`) and accessible by the same credentials that the scanner uses for writing reports; scan definition needs to have this url
+- datasets have to be in cloud storage (`s3`) and accessible by the same credentials that the scanner uses for writing reports; "datasets" section in the scan definition needs to be point to this cloud storage URL.
 - model artifact has to be pushed; model deployment restarted on update of artifact
 
 ### Update Scan definition file with valid endpoints
@@ -78,6 +83,8 @@ If you have local access, then install certifai packages from `packages/all` fol
 pip install cortex-certifai-common*.zip
 pip install cortex-certifai-client*.zip
 ```
+
+Note: Follow [this link](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/setup/install-certifai-cli-lib/) for install/setup instructions
 
 ### Configure remote scan
 Follow the docs [here](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/cli-usage/remote-config-import) to configure certifai remote configuration and create an alias
