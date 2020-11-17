@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{RESOURCE_NAME}}
+  name: {{RESOURCE_NAME}}
+  namespace: {{NAMESPACE}}
+spec:
+  ports:
+    - name: {{RESOURCE_NAME}}
+      port: 8551
+      protocol: TCP
+      targetPort: 8551
+  selector:
+    app: {{RESOURCE_NAME}}
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{RESOURCE_NAME}}
+  name: {{RESOURCE_NAME}}
+  namespace: {{NAMESPACE}}
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: {{RESOURCE_NAME}}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{RESOURCE_NAME}}
+      name: {{RESOURCE_NAME}}
+      namespace: {{NAMESPACE}}
+    spec:
+      containers:
+        - image: "<your-docker-image>"
+          imagePullPolicy: IfNotPresent
+          name: {{RESOURCE_NAME}}
+          ports:
+            - containerPort: 8551
+              protocol: TCP
+          env:
+            - name: MODEL_PATH
+              value: "s3://bucket/model.pkl"
+            - name: BUCKET_ENDPOINT
+              value: "<your-s3-bucket-endpoint>"
+            - name: BUCKET_SECRET_KEY
+              value: "<your-s3-secret-key>"
+            - name: BUCKET_ACCESS_KEY
+              value: "<your-s3-access-key>"
+          resources:
+            requests:
+              memory: "1Gi"
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
