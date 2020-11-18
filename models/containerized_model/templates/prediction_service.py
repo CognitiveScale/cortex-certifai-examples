@@ -40,7 +40,7 @@ def read_yaml(source_path):
 class Wrapper(SimpleModelWrapper):
     def __init__(self, *args, **kwargs):
         self.metadata = kwargs.pop('metadata', {})
-        super(self.__class__, self).__init__(*args, **kwargs)
+        SimpleModelWrapper.__init__(self, *args, **kwargs)
 
     def set_global_imports(self):
         """
