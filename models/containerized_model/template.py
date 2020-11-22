@@ -27,6 +27,8 @@ def main():
             rendered_template = _template.render(kwargs)
             if filename in src_files:
                 file_path = os.path.join(BASE_DIR, 'src', filename)
+            elif filename == 'metadata.yml':
+                file_path = os.path.join(BASE_DIR, 'models', 'metadata.yml')
             else:
                 os.path.join(BASE_DIR, filename)
 
@@ -72,6 +74,10 @@ def main():
                 'exec_permission': False,
                 'kwargs': {}
             },
+            'metadata.yml': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
 
         }
 
@@ -86,6 +92,8 @@ def main():
 
             if filename in src_files:
                 file_path = os.path.join(BASE_DIR, 'src', 'prediction_service.py')
+            elif filename == 'metadata.yml':
+                file_path = os.path.join(BASE_DIR, 'model', 'metadata.yml')
             elif filename == 'Dockerfile.h2o_mojo':
                 file_path = os.path.join(BASE_DIR, 'Dockerfile')
             elif filename == 'environment_h2o_mojo.yml':
@@ -130,6 +138,11 @@ def main():
             },
 
             'requirements.txt': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+
+            'metadata.yml': {
                 'exec_permission': False,
                 'kwargs': {}
             },
