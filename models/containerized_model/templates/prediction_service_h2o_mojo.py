@@ -78,13 +78,13 @@ class MojoModelWrapper(SimpleModelWrapper):
         Certifai predict API.
         """
         instances = [tuple(instance) for instance in npinstances]
-        input_dt = dt.Frame(instances, names=self.get_columns())
-        if self.outcomes is None or len(outcomes) == 0:
-            largest = preds.idxmax() # index label of largest value
-            self.outcomes = self._try_as_int(largest.rsplit('.', 1)[1])
+        input_dt = dt.Frame(instances, names=self.columns)
+        predictions = self.model.predict(input_dt).to_pandas()
+        if (self.outcomes is None or len(self.outcomes) == 0) and len(predictions.columns) > 1:
+            self.outcomes = [self._try_as_int(label.rsplit('.', 1)[1])
+                for label in predictions.columns]
         get_preds = lambda preds: self.get_prediction(preds, self.outcomes)
-        predictions = self.model.predict(input_dt).to_pandas().apply(get_preds, axis=1)
-        return predictions.values
+        return predictions.apply(get_preds, axis=1).values
 
     def get_prediction(self, preds, outcomes=None):
         """
