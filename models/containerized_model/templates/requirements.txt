@@ -1,4 +1,5 @@
 # add python pip install dependencies below e.g.
-# uncomment the default (xgboost) to pip install them inside the container
+# uncomment the xgboost to pip install it inside the container
 
-# xgboost==0.90
+pyyaml # required by prediction service - do not remove
+# xgboost==1.2.0

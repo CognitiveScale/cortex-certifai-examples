@@ -39,39 +39,20 @@ def read_yaml(source_path):
 class MojoModelWrapper(SimpleModelWrapper):
     def __init__(self, *args, **kwargs):
         self.metadata = kwargs.pop('metadata', {})
-        SimpleModelWrapper.__init__(self, *args, **kwargs)
-
-    def get_columns(self):
-        """
-        get_columns lists column names in order to re-create the dataframe for prediction
-        **Note**:  must be declared inside the class as instance methods and referenced
-        using `self.` to enable production mode.
-            pass
-
-        :return: list of column names
-        """
-        columns = [] # Fill in the list of columns - this will be used if no metadata
-        cols_from_metadata = self.metadata.get('columns')
-        if cols_from_metadata is not None:
-            columns = cols_from_metadata
-
-        if not len(columns) == 0:
-            return columns
-        raise Exception('Columns can not be empty. Please update columns in metadata.yml or prediction_service.py file.')
-
-    def get_outcomes(self):
-        """
-        get_outcomes lists classification outcome class labels.
-        **Note**:  all methods used in predict must be declared inside the
-        class as instance methods and referenced using `self.` to enable production mode.
-
-        :return: list of outcome class labels
-        """
-        outcomes = [] # Outcomes for a classification model
+        self.outcomes = []
         outcomes_from_metadata = self.metadata.get('outcomes')
         if outcomes_from_metadata is not None:
-            outcomes = outcomes_from_metadata
-        return outcomes
+            self.outcomes = outcomes_from_metadata
+
+        self.columns = []
+        cols_from_metadata = self.metadata.get('columns')
+        if cols_from_metadata is not None:
+            self.columns = cols_from_metadata
+        if len(self.columns) == 0:
+            raise Exception('Columns can not be empty. Please update "columns"'
+                + ' in metadata.yml or prediction_service.py file.')
+        SimpleModelWrapper.__init__(self, *args, **kwargs)
+
 
     def set_global_imports(self):
         """
@@ -90,28 +71,6 @@ class MojoModelWrapper(SimpleModelWrapper):
         except ValueError:
             return val
 
-    def get_prediction(self, preds):
-        """
-        For an H2O classification model, get_prediction returns the
-        appropriate class label based on the class probability, based on the
-        values in get_outcomes. If get_outcomes returns None or an
-        empty list, get_prediction will use values inferred from the index
-        labels of the returned predictions.
-
-        For a regression model, get_prediction returns the single probability.
-        """
-        if len(preds) == 1:
-            return preds[0] # regression
-        if len(preds) > 1:
-            outcomes = self.get_outcomes()
-            if outcomes is None or len(outcomes) == 0:
-                largest = preds.idxmax() # index label of largest value
-                return self._try_as_int(largest.rsplit('.', 1)[1])
-            index = preds.values.argmax() # position of largest value
-            return outcomes[index]
-
-        raise Exception('No prediction returned by H2O MOJO')
-
     def predict(self, npinstances):
         """
         Calls predict on the H2O Mojo model, applying the get_prediction
@@ -120,26 +79,52 @@ class MojoModelWrapper(SimpleModelWrapper):
         """
         instances = [tuple(instance) for instance in npinstances]
         input_dt = dt.Frame(instances, names=self.get_columns())
-        predictions = self.model.predict(input_dt).to_pandas().apply(self.get_prediction, axis=1)
+        if self.outcomes is None or len(outcomes) == 0:
+            largest = preds.idxmax() # index label of largest value
+            self.outcomes = self._try_as_int(largest.rsplit('.', 1)[1])
+        get_preds = lambda preds: self.get_prediction(preds, self.outcomes)
+        predictions = self.model.predict(input_dt).to_pandas().apply(get_preds, axis=1)
         return predictions.values
 
+    def get_prediction(self, preds, outcomes=None):
+        """
+        Given an array of soft output and the list of expected class labels,
+        get_prediction returns the appropriate class label based on the class
+        probabilities.
+
+        For a regression model, get_prediction returns the single probability.
+        """
+        if len(preds) == 1:
+            return preds[0] # regression
+        if len(preds) > 1:
+            if outcomes is None or len(outcomes) == 0:
+                raise Exception('No outcome labels provided for classification' +
+                    ' model. Please update "outcomes" in metadata.yml.')
+            index = preds.argmax() # position of largest value
+            return outcomes[index]
+
+        raise Exception('No prediction returned by model')
 
 if __name__ == "__main__":
     model_path = os.getenv('MODEL_PATH')
     license_path = os.getenv('H2O_LICENSE_PATH')
-    default_metadata_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model/metadata.yml'))
+    default_metadata_path = os.path.normpath(os.path.join(CURRENT_PATH,
+        '../model/metadata.yml'))
     metadata_path = os.getenv('METADATA_PATH', default_metadata_path)
     if model_path is not None:
         # Copy files from remote path to local
-        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model', os.path.basename(model_path)))
+        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH,
+            '../model', os.path.basename(model_path)))
         default_license_path = os.path.normpath(
             os.path.join(CURRENT_PATH, '../license', os.path.basename(license_path)))
         read_and_save_file(model_path, default_model_path)
         read_and_save_file(license_path, default_license_path)
     else:
         # allows local testing
-        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model/pipeline.mojo'))
-        default_license_path = os.path.normpath(os.path.join(CURRENT_PATH, '../license/license.txt'))
+        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH,
+            '../model/pipeline.mojo'))
+        default_license_path = os.path.normpath(os.path.join(CURRENT_PATH,
+            '../license/license.txt'))
     os.environ['DRIVERLESS_AI_LICENSE_FILE'] = default_license_path
 
     # Host is set to 0.0.0.0 to allow this to be run in a docker container

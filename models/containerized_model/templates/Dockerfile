@@ -19,6 +19,8 @@ RUN pip install --no-cache-dir \
 #     $(find /tmp -name cortex-certifai-common-*.zip)[gcp] \
 #     $(find /tmp -name cortex-certifai-common-*.zip)[azure]
 
+RUN pip install -r /tmp/requirements.txt
+
 COPY src /src
 COPY model /model
 

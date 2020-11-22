@@ -40,12 +40,22 @@ def read_yaml(source_path):
 class Wrapper(SimpleModelWrapper):
     def __init__(self, *args, **kwargs):
         self.metadata = kwargs.pop('metadata', {})
+        self.outcomes = []
+        outcomes_from_metadata = self.metadata.get('outcomes')
+        if outcomes_from_metadata is not None:
+            self.outcomes = outcomes_from_metadata
+
+        self.columns = []
+        cols_from_metadata = self.metadata.get('columns')
+        if cols_from_metadata is not None:
+            self.columns = cols_from_metadata
         SimpleModelWrapper.__init__(self, *args, **kwargs)
 
     def set_global_imports(self):
         """
         Override this method to make external global imports
-        When using external imports override the method to provide necessary imports. Make sure to mark them `global` to
+        When using external imports override the method to provide necessary imports.
+        Make sure to mark them `global` to
         be used by certifai interpreter correctly. set once,use throughout.
         :return: None
         """
@@ -77,18 +87,38 @@ class Wrapper(SimpleModelWrapper):
         # reference model by using `self.model` e.g self.model.predict(npinstances)
         return self.model.predict(npinstances)
 
+    def get_prediction(self, preds, outcomes=None):
+        """
+        Given an array of soft output and the list of expected class labels,
+        get_prediction returns the appropriate class label based on the class
+        probabilities.
+
+        For a regression model, get_prediction returns the single probability.
+        """
+        if len(preds) == 1:
+            return preds[0] # regression
+        if len(preds) > 1:
+            if outcomes is None or len(outcomes) == 0:
+                raise Exception('No outcome labels provided for classification model')
+            index = preds.argmax() # position of largest value
+            return outcomes[index]
+
+        raise Exception('No prediction returned by model')
 
 def main():
     model_path = os.getenv('MODEL_PATH')
-    default_metadata_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model/metadata.yml'))
+    default_metadata_path = os.path.normpath(os.path.join(CURRENT_PATH,
+        '../model/metadata.yml'))
     metadata_path = os.getenv('METADATA_PATH', default_metadata_path)
     if model_path is not None:
         # Copy files from remote path to local
-        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model', os.path.basename(model_path)))
+        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH,
+            '../model', os.path.basename(model_path)))
         read_and_save_file(model_path, default_model_path)
     else:
         # allows local testing
-        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH, '../model/model.pkl'))
+        default_model_path = os.path.normpath(os.path.join(CURRENT_PATH,
+            '../model/model.pkl'))
     model_pickle = pickle.load(open(default_model_path, 'rb'))
     model = model_pickle.get('model')
     encoder = model_pickle.get('encoder')
@@ -103,9 +133,9 @@ def main():
                   )
     app.set_global_imports() # needed if not running in production mode
     # Production mode requires Certifai 1.3.6 or higher
-    # app.run(production=True, log_level='warning', num_workers=3)
+    app.run(production=True, log_level='warning', num_workers=3)
     # Replace above with following to run in development mode
-    app.run()
+    # app.run()
 
 if __name__ == '__main__':
     main()

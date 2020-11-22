@@ -25,8 +25,11 @@ def main():
         def apply_template(filename, exec_permission=False, **kwargs):
             _template = env.get_template(filename)
             rendered_template = _template.render(kwargs)
-            file_path = os.path.join(BASE_DIR, 'src', filename) if filename in src_files else os.path.join(BASE_DIR,
-                                                                                                           filename)
+            if filename in src_files:
+                file_path = os.path.join(BASE_DIR, 'src', filename)
+            else:
+                os.path.join(BASE_DIR, filename)
+
             with open(file_path, 'w') as f:
                 f.write(rendered_template)
 
