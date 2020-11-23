@@ -1,0 +1,5 @@
+!**/pipeline.mojo
+!**/model.pkl
+certifai_toolkit/
+daimojo*.whl
+generated-container-model/
