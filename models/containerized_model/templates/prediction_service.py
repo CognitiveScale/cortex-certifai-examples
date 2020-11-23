@@ -42,7 +42,7 @@ def main():
     model = model_pickle.get('model')
     encoder = model_pickle.get('encoder')
     app = SimpleModelWrapper(model=model, encoder=encoder, host='0.0.0.0')
-    app.run(production=True)
+    app.run()
 
 
 if __name__ == '__main__':
