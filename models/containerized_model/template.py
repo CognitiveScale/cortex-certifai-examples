@@ -28,7 +28,7 @@ def main():
             if filename in src_files:
                 file_path = os.path.join(BASE_DIR, 'src', filename)
             elif filename == 'metadata.yml':
-                file_path = os.path.join(BASE_DIR, 'models', 'metadata.yml')
+                file_path = os.path.join(BASE_DIR, 'model', 'metadata.yml')
             else:
                 os.path.join(BASE_DIR, filename)
 
