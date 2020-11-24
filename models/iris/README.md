@@ -11,6 +11,7 @@ This example uses the [Iris plants dataset](https://scikit-learn.org/stable/data
  Specifically, it shows how to use the Certifai toolkit to:
   * wrap a single model as a service, using a customized wrapper
   * scan the model
+  * use either an sklearn or xgboost classifier as the model
 
 ## Wrap a single model using a customized wrapper  
 
@@ -19,13 +20,21 @@ This example uses the [Iris plants dataset](https://scikit-learn.org/stable/data
 conda activate certifai
 ```
 
-2. To train the example model:
+2. Install `xgboost` using conda:
+```
+conda install -c conda-forge xgboost
+```
+
+If you do not want to install `xgboost`, comment out the lines in `train.py`
+that train and save the xgboost model.
+
+3. To train the example model:
 ```
 python train.py
 ```
 This generates the trained model as `iris_svm.pkl`.
 
-3. To wrap the model and run it as a service:
+4. To wrap the model and run it as a service:
 ```
 python app_svm.py
 ```
@@ -36,7 +45,9 @@ The code in `app_svm.py` shows how to use a customized wrapper. In this case,
 it maps the model responses from numbers (0, 1, 2) to the names of the
 Iris species.
 
-4. To test the model service, in another terminal activate your Certifai toolkit
+The code in `app_xgb.py` is identical except that it runs the XGBoost classifier.
+
+5. To test the model service, in another terminal activate your Certifai toolkit
 environment and run the test script:
 ```
 conda activate certifai

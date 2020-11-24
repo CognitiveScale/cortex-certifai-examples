@@ -12,6 +12,8 @@ is less than or greater than $50K.
  Specifically, it shows how to use the Certifai toolkit to:
   * wrap a single model as a service, using a customized wrapper
   * scan the model
+  * use an XGBoost model with DMatrix. See the [iris example](../iris) for
+  use of XGBClassifier, which behaves like sklearn models.
 
 ## Wrap a single model using a customized wrapper  
 
@@ -45,9 +47,9 @@ You should see output similar to:
 * Debug mode: off
 ```
 
-This production gunicorn prediction service requires Certifai version 1.3.6 or later.
-It is supported on Linux and Mac, not Windows. To run with the development
-server, see [the H2O German Credit example](../h20_dai_german_credit/app_h2o_mojo_pipeline.py)
+See the comments in the source file for how to run the production 
+gunicorn prediction service, which requires Certifai version 1.3.6 or later
+and is supported on Linux and Mac, not Windows.
 
 
 4. To test the model service, in another terminal activate your Certifai toolkit
