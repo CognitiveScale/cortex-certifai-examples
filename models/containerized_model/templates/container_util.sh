@@ -25,7 +25,7 @@ elif [ "$COMMAND" = "run" ]; then
     ENV_PATH=$3
   fi
   echo "Reading ENV variables from $ENV_PATH"
-  docker run -p 8551:8551 --env-file $ENV_PATH -it $DOCKER_IMAGE_NAME
+  docker run -p 8551:8551 --env-file $ENV_PATH -t $DOCKER_IMAGE_NAME
 else
   echo "Param should be one of [\"build\", \"run\"]"
 fi
