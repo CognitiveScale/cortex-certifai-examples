@@ -1,0 +1,5 @@
+# A template for prediction service metadata
+columns: []
+outcomes: []
+supports_soft_scores: true
+task_type: regression  # or binary-classification

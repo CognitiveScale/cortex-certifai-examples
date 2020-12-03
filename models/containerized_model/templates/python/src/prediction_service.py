@@ -8,18 +8,9 @@ from certifai.model.sdk import SimpleModelWrapper
 # instance methods in the wrapper class, or in imported modules
 # defined in set_global_imports
 
-class SklearnWrapper(SimpleModelWrapper):
+class PythonModelWrapper(SimpleModelWrapper):
     def __init__(self, *args, **kwargs):
         self.metadata = kwargs.pop('metadata', {})
-        self.outcomes = []
-        outcomes_from_metadata = self.metadata.get('outcomes')
-        if outcomes_from_metadata is not None:
-            self.outcomes = outcomes_from_metadata
-
-        self.columns = []
-        cols_from_metadata = self.metadata.get('columns')
-        if cols_from_metadata is not None:
-            self.columns = cols_from_metadata
         SimpleModelWrapper.__init__(self, *args, **kwargs)
 
     def set_global_imports(self):
@@ -30,9 +21,9 @@ class SklearnWrapper(SimpleModelWrapper):
         be used by certifai interpreter correctly. set once,use throughout.
         :return: None
         """
-        # e.g .
-        # global xgb
-        # import xgboost as xgb
+        if self.metadata.get('xgboost'):
+            global xgb
+            import xgboost as xgb
 
     def soft_predict(self, npinstances):
         """
@@ -58,24 +49,6 @@ class SklearnWrapper(SimpleModelWrapper):
         # reference model by using `self.model` e.g self.model.predict(npinstances)
         return self.model.predict(npinstances)
 
-    def get_prediction(self, preds, outcomes=None):
-        """
-        Given an array of soft output and the list of expected class labels,
-        get_prediction returns the appropriate class label based on the class
-        probabilities.
-
-        For a regression model, get_prediction returns the single probability.
-        """
-        if len(preds) == 1:
-            return preds[0] # regression
-        if len(preds) > 1:
-            if outcomes is None or len(outcomes) == 0:
-                raise Exception('No outcome labels provided for classification model')
-            index = preds.argmax() # position of largest value
-            return outcomes[index]
-
-        raise Exception('No prediction returned by model')
-
 # These imports are used in launching the prediction service. They are not
 # used within the prediction service
 import os
@@ -88,12 +61,12 @@ def main():
     model_pickle = pickle.load(open(local_model_path, 'rb'))
     model = model_pickle.get('model')
     encoder = model_pickle.get('encoder')
-    app = SklearnWrapper(model=model,
+    threshold = model_pickle.get('threshold')
+    app = PythonModelWrapper(model=model,
                   encoder=encoder,
                   host='0.0.0.0',
-                  supports_soft_scores=False,
-                  threshold=None,
-                  score_labels=metadata.get('outcomes'),
+                  supports_soft_scores=metadata.get('supports_soft_scoring', False),
+                  threshold=model_pickle.get('threshold'),
                   metadata=metadata
                   )
     app.set_global_imports() # needed if not running in production mode

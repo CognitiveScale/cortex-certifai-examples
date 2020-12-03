@@ -150,59 +150,59 @@ or use Certifai to test the endpoint against a scan definition
 
 Generate the code template for containerization of your model:
 ```
-./generate.sh -i certifai-model-container:latest
+./generate.sh -i certifai-model-container:latest -m python
 ```
 
 This command should create a directory called `generated-container-model`
 in your current directory with the generated code.
 
-Note: Value for `-m` option is `python` (by default)
+This template is designed to work with a standard scikit-learn model,
+and with an XGBClassifier or XGBRegressor model. For an xgboost model using
+DMatrix, use `-m python-xgboost-dmatrix`.
 
 For more `generate` options:
 ```
 ./generate.sh --help
 ```
+
 ### Step 2 - Update the prediction service with information for your use case
 
 The prediction service works out of the box with a standard scikit-learn model.
 
-For other models, you will need to update the `set_global_imports` method in
+For an XGBClassifier or XGBRegressor model, update `model/metadata.yml` to
+set `xgboost: true`. For an example, see the
+[xgboost_iris test case](tests/xgboost_iris/model/metadata.yml).
+
+For other models, you may need to update the `set_global_imports` method in
 `generated-container-model/src/prediction_service.py` to
 import any required dependencies, and the `predict` and/or `soft_predict`
 methods to predict using the model and return results in the expected
 format.
 
-If you are using `soft_predict`, make sure `supports_soft_scores=True` is
-set on the model Wrapper, and `supports_soft_scoring: true`
-is specified for the model in the scan definition.
-
-For a classification model, you should also fill in the 'outcomes' field
-in `generated-container-model/model/metadata.yml`.
-This field is an array listing the outcome values that should be returned
-by the prediction service, in the order that the probabilities are returned
-by the model. The values should be the same as the prediction
-values in the Certifai scan definition.
-
-An example of a prediction service for an xgboost model used for
-binary classification is given in the
-[income_prediction model](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/income_prediction).
+If you are using `soft_predict` (e.g. for Shap), make sure `supports_soft_scoring: true`
+is specified for the model in `generated-container-model/model/metadata.yml`
+and in your scan definition.
 
 
 ### Step 3 - Test the prediction service running locally
 When first setting up this template, you are recommended to test the
  prediction service by running it locally.
 
-1.  2. Copy the model into the generated container folder:
+1.  Copy the model into the generated container folder:
  ```
  cp mymodel.pkl generated-container-model/model/model.pkl
  ```
 
-1. Run the service:
+2. Run the service:
  ```
  python generated-container-model/src/prediction_service.py
  ```
 
- 2. Test the service as described in the [income_prediction model](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/income_prediction)
+ 3. Test the service by making a request to
+ `http://127.0.0.1:8551/predict` with the respective parameters (see e.g.
+   [app_test.py](../iris/app_test.py) in the iris example),
+ or use Certifai to test the endpoint against your scan definition
+ `certifai definition-test -f scan_def.yaml`
 
 
 ### Step 4 - Copy artifacts
@@ -218,8 +218,13 @@ Add respective cloud storage credentials and `MODEL_PATH` to `generated-containe
 
 ### Step 6 - Add extra-dependencies (optional)
 
-Add extra python dependencies (if needed) in `requirements.txt` file. For example,
-if you are wrapping an xgboost model, you will need to add xgboost to this file.
+The dependencies work out of the box with a standard scikit-learn model,
+providing the model was trained with version 0.23.2 of scikit-learn. If
+you are using a different version, you should update
+`generated-container-model/requirements.txt`.
+
+If you are using xgboost or other models, you will need
+to add relevant dependencies to `generated-container-model/requirements.txt`.
 
 **Note**: dependencies are installed using `pip install`
 
@@ -229,7 +234,8 @@ if you are wrapping an xgboost model, you will need to add xgboost to this file.
 ./generated-container-model/container_util.sh build
 ```
 
-This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-model-container:latest` in this case).
+This will create a docker image with name specified at `Step 1` with `-i`
+parameter (`certifai-model-container:latest` in this case).
 
 ### Step 8 - Run
 `Pre-requisite`: Make sure your model `.pkl` file is placed at the respective location defined in `environment.yml` file.

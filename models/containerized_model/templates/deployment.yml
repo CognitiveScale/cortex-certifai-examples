@@ -54,6 +54,8 @@ spec:
           env:
             - name: MODEL_PATH
               value: "s3://bucket/model.pkl"
+            - name: METADATA_PATH
+              value: "s3://bucket/metadata.yml"
             - name: BUCKET_ENDPOINT
               value: "<your-s3-bucket-endpoint>"
             - name: BUCKET_SECRET_KEY

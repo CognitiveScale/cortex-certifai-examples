@@ -1,1 +1,2 @@
+xgboost: true
 supports_soft_scoring: false

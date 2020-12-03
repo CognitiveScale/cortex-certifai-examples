@@ -7,7 +7,7 @@ model_use_case:
     This dataset was originally sourced from Emcien: https://www.sixtusdakurah.com/resources/The_Application_of_Regularization_in_Modelling_Insurance_Claims.pdf
 
     '
-  model_use_case_id: h2o/auto_insurance
+  model_use_case_id: test/auto_insurance
   name: 'Insurance: Auto Insurance Claims'
   task_type: regression
 

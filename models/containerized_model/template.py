@@ -117,7 +117,7 @@ def main():
     # Base directory
     BASE_DIR = args.dir
     model_type = args.model_type
-    valid_types = ['python', 'python_sklearn', 'h2o_mojo']
+    valid_types = ['python', 'h2o_mojo', 'python_xgboost_dmatrix']
     if model_type not in valid_types:
         print(f"'--model-type' must be one of {valid_types}")
         exit(1)
@@ -125,7 +125,6 @@ def main():
     if args.model_type == 'h2o_mojo':
         generate_h2o_mojo(model_type)
     else:
-        model_type = 'python_sklearn' if model_type == 'python' else model_type
         generate_python(model_type)
 
     # Copy readme into the generated directory
