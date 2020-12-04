@@ -23,7 +23,10 @@ class PythonModelWrapper(SimpleModelWrapper):
         """
         if self.metadata.get('xgboost'):
             global xgb
-            import xgboost as xgb
+            try:
+                import xgboost as xgb
+            except ImportError:
+                pass
 
     def soft_predict(self, npinstances):
         """

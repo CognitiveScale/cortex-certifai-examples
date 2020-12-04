@@ -167,11 +167,8 @@ For more `generate` options:
 
 ### Step 2 - Update the prediction service with information for your use case
 
-The prediction service works out of the box with a standard scikit-learn model.
-
-For an XGBClassifier or XGBRegressor model, update `model/metadata.yml` to
-set `xgboost: true`. For an example, see the
-[xgboost_iris test case](tests/xgboost_iris/model/metadata.yml).
+The prediction service works out of the box with a standard scikit-learn model
+and with an XGBClassifier or XGBRegressor model.
 
 For other models, you may need to update the `set_global_imports` method in
 `generated-container-model/src/prediction_service.py` to
