@@ -5,6 +5,9 @@
 - `kubectl`.
 - Private docker registry to push containerized image to.
 - A valid `kubeconfig` file with the current context activated.
+- To generate the deployment yaml using the provided template:
+  - Python 3, Jinja2 and PyYAML (`pip install Jinja2 PyYAML`)
+
 
 ## Step 1 - Push image to registry (private)
 The containerized image that has been built will need to be pushed to a private docker registry in order for the `k8s` cluster to pull it from.

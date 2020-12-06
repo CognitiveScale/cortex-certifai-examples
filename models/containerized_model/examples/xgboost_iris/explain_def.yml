@@ -43,7 +43,6 @@ evaluation:
    - explanation
   prediction_favorability: none # equiv. to unordered multi-class
 
-  # prediction_values can be specified for reference, but there is no 'favorable' outcome
   prediction_values:
   - name: "Iris - setosa"
     value: 0

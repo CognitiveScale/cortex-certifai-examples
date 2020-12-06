@@ -1,3 +1,2 @@
 columns: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
-# outcomes: [0,1,2]
-outcomes: ["Iris-setosa","Iris-versicolor","Iris-virginica"]
+outcomes: [0,1,2]

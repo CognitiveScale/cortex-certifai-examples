@@ -3,6 +3,7 @@ kind: Service
 metadata:
   labels:
     app: {{RESOURCE_NAME}}
+    certifai_model_use_case: {{MODEL_USE_CASE_ID}}
   name: {{RESOURCE_NAME}}
   namespace: {{NAMESPACE}}
 spec:
@@ -14,7 +15,7 @@ spec:
   selector:
     app: {{RESOURCE_NAME}}
   sessionAffinity: None
-  type: ClusterIP
+  type: LoadBalancer
 status:
   loadBalancer: {}
 ---
@@ -23,6 +24,7 @@ kind: Deployment
 metadata:
   labels:
     app: {{RESOURCE_NAME}}
+    certifai_model_use_case: {{MODEL_USE_CASE_ID}}
   name: {{RESOURCE_NAME}}
   namespace: {{NAMESPACE}}
 spec:
@@ -45,7 +47,7 @@ spec:
       namespace: {{NAMESPACE}}
     spec:
       containers:
-        - image: "<your-docker-image>"
+        - image: {{IMAGE_NAME}}
           imagePullPolicy: IfNotPresent
           name: {{RESOURCE_NAME}}
           ports:
@@ -53,15 +55,17 @@ spec:
               protocol: TCP
           env:
             - name: MODEL_PATH
-              value: "s3://bucket/model.pkl"
+              value: "{{CERTIFAI_DATA_URL}}/{{MODEL_USE_CASE_ID}}/models/{{MODEL_FILE}}"
             - name: METADATA_PATH
-              value: "s3://bucket/metadata.yml"
+              value: "{{CERTIFAI_DATA_URL}}/{{MODEL_USE_CASE_ID}}/models/metadata.yml"
+            - name: H2O_LICENSE_PATH
+              value: "{{CERTIFAI_DATA_URL}}/files/license.txt"
             - name: BUCKET_ENDPOINT
-              value: "<your-s3-bucket-endpoint>"
-            - name: BUCKET_SECRET_KEY
-              value: "<your-s3-secret-key>"
+              value: "http://test-minio.default.svc.cluster.local:9000"
             - name: BUCKET_ACCESS_KEY
-              value: "<your-s3-access-key>"
+              value: "minio"
+            - name: BUCKET_SECRET_KEY
+              value: "minio123"
           resources:
             requests:
               memory: "1Gi"

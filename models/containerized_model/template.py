@@ -27,13 +27,6 @@ def main():
                 'kwargs': {
                     'TARGET_DOCKER_IMAGE': args.target_docker_image
                 }
-            },
-            'deployment.yml': {
-                'exec_permission': False,
-                'kwargs': {
-                    'RESOURCE_NAME': args.k8s_resource_name,
-                    'NAMESPACE': args.k8s_namespace
-                }
             }
         }
         return file_metadata
@@ -41,7 +34,10 @@ def main():
 
     def apply_template(env, filename, exec_permission=False, **kwargs):
         _template = env.get_template(filename)
-        rendered_template = _template.render(kwargs)
+        if kwargs is not None:
+            rendered_template = _template.render(kwargs)
+        else:
+            rendered_template = _template
         file_path = os.path.join(BASE_DIR, filename)
 
         with open(file_path, 'w') as f:
@@ -55,10 +51,10 @@ def main():
         file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, template_path))
         env = Environment(loader=file_loader)
         for filename, value in file_metadata.items():
-            apply_template(env, filename, value.get('exec_permission'), **value.get('kwargs'))
+            apply_template(env, filename, value.get('exec_permission'), **value.get('kwargs', {}))
 
     def generate_base(model_type):
-        directory_names = {'src', 'model'}
+        directory_names = {'src', 'model', 'templates'}
         create_directories(list(directory_names))
 
         # Common templates
@@ -68,7 +64,6 @@ def main():
         file_metadata = {
             'environment.yml': {
                 'exec_permission': False,
-                'kwargs': {}
             },
             'Dockerfile': {
                 'exec_permission': False,
@@ -78,19 +73,15 @@ def main():
             },
             'src/prediction_service.py': {
                 'exec_permission': False,
-                'kwargs': {}
             },
             'src/utils.py': {
                 'exec_permission': False,
-                'kwargs': {}
             },
             'requirements.txt': {
                 'exec_permission': False,
-                'kwargs': {}
             },
             'model/metadata.yml': {
                 'exec_permission': False,
-                'kwargs': {}
             },
         }
         apply_templates(f'templates/{model_type}', file_metadata)
@@ -127,11 +118,17 @@ def main():
     else:
         generate_python(model_type)
 
-    # Copy readme into the generated directory
+    # Copy non-template files into the generated directory
+    additional_files = ['config_deploy.sh','template_deploy.py',
+        'deployment_template.yml', 'deployment_config.yml']
+    for file in additional_files:
+        shutil.copyfile(os.path.join(CURRENT_PATH, 'templates', file),
+            os.path.join(BASE_DIR, file))
+
+    # Copy readme files into the generated directory
     readme_files = ['README.md', 'DEPLOYMENT.md']
     for readme in readme_files:
         shutil.copyfile(os.path.join(CURRENT_PATH, readme), os.path.join(BASE_DIR, readme))
-
 
 if __name__ == '__main__':
     main()
