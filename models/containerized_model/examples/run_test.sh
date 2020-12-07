@@ -95,8 +95,6 @@ function end_prediction_service_minikube() {
   kubectl delete deployment ${resource_name} --ignore-not-found --namespace $NAMESPACE
 }
 
-trap end_prediction_service EXIT
-
 function build() {
   image_name=$1
   echo "***Building ${image_name}***"
@@ -106,6 +104,8 @@ function build() {
 function minikube_setup() {
   eval $(minikube docker-env) # build images in shared registry
   # setup minio server on local port 9000
+  set +e 
+  kubectl create namespace $NAMESPACE
   kubectl apply -f examples/minikube/test-minio.yml
   kubectl get svc test-minio 2>&1 > /dev/null
   if [ "$?" -ne 0 ]; then
@@ -121,6 +121,7 @@ function minikube_setup() {
     mc mb minikube/certifai
   fi
   mc cp ${THIS_DIR}/license.txt minikube/certifai/files/license.txt
+  set -e
 }
 
 function data_setup() {
@@ -177,7 +178,6 @@ fi
 #
 # MAIN EXECUTION STARTS HERE
 #
-set -exv
 
 if [ $target == "local" ]; then
   echo "Running local prediction service tests"
@@ -189,6 +189,8 @@ else
   exit 1
 fi
 
+set -exv
+trap end_prediction_service EXIT
 
 # Predict service for H2O MOJO
 h2o_setup h2o_mojo h2o_mojo_predict
