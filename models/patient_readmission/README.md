@@ -29,7 +29,7 @@ conda activate certifai
 python train.py
 ```
 This generates the trained model as `model_mlp.pkl`.  It also generates the datasets that will be used
-by the example analysis after some light preprocessing to convert diagnstic codes
+by the example analysis after some light preprocessing to convert diagnostic codes
 to something more sensible.  Optionally `train.py` takes a single integer parameter
 that specifies the size of the explanation set to generate.  This defaults to
 1000, which is smaller than would justify the use of fast explanations, but is used
