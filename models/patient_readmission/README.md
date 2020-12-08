@@ -62,12 +62,12 @@ a scan that generates explanations for the model.
 
 1. To scan the model, first run the model service (if not already running):
 ```
-python app_mlp.py
+python app.py
 ```
 
 2. In another terminal, run Certifai:
 ```
-certifai scan -f explain_def.yml
+certifai explain -f explain_def.yml
 ```
 This will create scan reports in the `./reports` folder.  An explanation dataframe
 will also be saved in the usecase folder under `reports` containing a Pandas DataFrame
@@ -90,13 +90,13 @@ complete.  However, it need be performed only once for a given use-case and mode
 which it serves to support arbitrary numbers of generated explanations (see next step)
 
 ```
-certifai scan -f explain_def.yml --precalculate
+certifai explain -f explain_def.yml --precalculate
 ```
 
 ## Perform a fast explanation
 
 ```
-certifai scan -f explain_def.yml --fast
+certifai explain -f explain_def.yml --fast
 ```
 
 This will create a report and CSV containing the explanations, exactly as the regular
