@@ -12,7 +12,7 @@ Specifically, it shows how to use the Certifai toolkit to:
  * set up fast-explanation, for generating large numbers of explanations at scale
 
 *Note*:  Fast explanation is currently a beta feature.  To enable it you will need to
-edit your `~/.certifai/certiafi_conf.ini` file to add:
+edit your `~/.certifai/certifai_conf.ini` file to add:
 ```
 [scanner]
 support_fast_explanations_beta = True
@@ -78,12 +78,12 @@ explanations.  It is provided just for comparative purposes, and this step may b
 
 ## Perform one-time precalculation needed to support fast explanations
 
-We will now run the scan in `precalulate` mode.  This derives an exemplar clustering
+We will now run the scan in `precalculate` mode.  This derives an exemplar clustering
 of the training set (which should be a large sample - in this example it is over 100K rows).
 It then calculates full counterfactuals for the exemplars and saves both the clustering
 and counterfactual information along with some other metadata in a cache directory
 associated with the use-case (in the reports folder).  This saved data is not human-readable
-and is intended soley to be used by the fast-explanations step of a subsequent Certifai invokation.
+and is intended solely to be used by the fast-explanations step of a subsequent Certifai invokation.
 
 *Note*: This step is computationally expensive, and may take several hours to
 complete.  However, it need be performed only once for a given use-case and model, after
