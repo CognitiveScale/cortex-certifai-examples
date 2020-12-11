@@ -1,3 +1,7 @@
+"
+Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
+"
 # train_german_credit.R
 
 ## This example uses the German Credit dataset originally sourced from
