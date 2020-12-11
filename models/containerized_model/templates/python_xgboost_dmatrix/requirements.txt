@@ -1,0 +1,3 @@
+# add python pip install dependencies below
+pyyaml # required by prediction service - do not remove
+xgboost==1.2.0 # pin to match the environment in which the model was pickled

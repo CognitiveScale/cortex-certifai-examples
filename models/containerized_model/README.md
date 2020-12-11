@@ -38,13 +38,24 @@ For more `generate` options:
 ```
 
 ### Step 2 - Update the prediction service with information for your use case
-Define the dataset columns in `src/prediction_service.py` under the `COLUMNS`
-variable. `COLUMNS` is expected to be a `list of strings`.
 
-Note: The "outcome" column should not be included.
+Fill in the 'columns' field in the `metadata.yml` in the
+`generated-container-model` folder. This field should identify the column names
+of the data in the input instances that will be sent by Certifai.
+This is the same as the columns in the evaluation dataset,
+omitting outcome fields and any fields marked in the scan definition as "hidden".
 
-Fill in the `_get_prediction_class` in `src/prediction_service.py` to return
-the appropriate class label for your model's outcomes.
+The columns metadata is used in the
+prediction service to transform the fields in the input instances to the
+form that is expected by the model.
+
+For a classification model, you should also fill in the 'outcomes' field.
+This field is an array of the outcome values that should be returned
+by the prediction service, in the order the probabilities are returned in
+the results by the Mojo model. The values should be the same as the prediction
+values in the Certifai scan definition. If these values are not provided, the
+prediction service will attempt to infer them from the labels on the results
+array.
 
 
 ### Step 3 - Test the prediction service running locally
@@ -139,20 +150,59 @@ or use Certifai to test the endpoint against a scan definition
 
 Generate the code template for containerization of your model:
 ```
-./generate.sh -i certifai-model-container:latest
+./generate.sh -i certifai-model-container:latest -m python
 ```
 
 This command should create a directory called `generated-container-model`
 in your current directory with the generated code.
 
-Note: Value for `-m` option is `python` (by default)
+This template is designed to work with a standard scikit-learn model,
+and with an XGBClassifier or XGBRegressor model. For an xgboost model using
+DMatrix, use `-m python-xgboost-dmatrix`.
 
 For more `generate` options:
 ```
 ./generate.sh --help
 ```
 
-### Step 2 - Copy artifacts
+### Step 2 - Update the prediction service with information for your use case
+
+The prediction service works out of the box with a standard scikit-learn model
+and with an XGBClassifier or XGBRegressor model.
+
+For other models, you may need to update the `set_global_imports` method in
+`generated-container-model/src/prediction_service.py` to
+import any required dependencies, and the `predict` and/or `soft_predict`
+methods to predict using the model and return results in the expected
+format.
+
+If you are using `soft_predict` (e.g. for Shap), make sure `supports_soft_scoring: true`
+is specified for the model in `generated-container-model/model/metadata.yml`
+and in your scan definition.
+
+
+### Step 3 - Test the prediction service running locally
+When first setting up this template, you are recommended to test the
+ prediction service by running it locally.
+
+1.  Copy the model into the generated container folder:
+ ```
+ cp mymodel.pkl generated-container-model/model/model.pkl
+ ```
+
+2. Run the service:
+ ```
+ python generated-container-model/src/prediction_service.py
+ ```
+
+ 3. Test the service by making a request to
+ `http://127.0.0.1:8551/predict` with the respective parameters (see e.g.
+   [app_test.py](../iris/app_test.py) in the iris example),
+ or use Certifai to test the endpoint against your scan definition
+ `certifai definition-test -f scan_def.yaml`
+
+
+### Step 4 - Copy artifacts
 Copy the `packages` folder from inside the toolkit into the generated
 directory `generated-container-model`:
 
@@ -160,19 +210,31 @@ directory `generated-container-model`:
 cp -r <certifai-toolkit-path>/packages generated-container-model/packages
 ```
 
-### Step 3 - Configure cloud storage
+### Step 5 - Configure cloud storage
 Add respective cloud storage credentials and `MODEL_PATH` to `generated-container-model/environment.yml` file. This will be used in the `RUN` step.
 
-### Step 4 - Build
-Run the following command to build the prediction service docker image.
+### Step 6 - Add extra-dependencies (optional)
+
+The dependencies work out of the box with a standard scikit-learn model,
+providing the model was trained with version 0.23.2 of scikit-learn. If
+you are using a different version, you should update
+`generated-container-model/requirements.txt`.
+
+If you are using xgboost or other models, you will need
+to add relevant dependencies to `generated-container-model/requirements.txt`.
+
+**Note**: dependencies are installed using `pip install`
+
+### Step 7 - Build
 
 ```
 ./generated-container-model/container_util.sh build
 ```
 
-This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-model-container:latest` in this case).
+This will create a docker image with name specified at `Step 1` with `-i`
+parameter (`certifai-model-container:latest` in this case).
 
-### Step 5 - Run
+### Step 8 - Run
 `Pre-requisite`: Make sure your model `.pkl` file is placed at the respective location defined in `environment.yml` file.
 
 Run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
@@ -183,5 +245,7 @@ Run the following command which would run the docker image using environment var
 
 This should create a docker container and host the webservice.
 
-### Step 6 - Test
-Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
+### Step 9 - Test
+Make a request to `http://127.0.0.1:8551/predict` with the respective parameters,
+or use Certifai to test the endpoint against a scan definition
+`certifai definition-test -f scan_def.yaml`

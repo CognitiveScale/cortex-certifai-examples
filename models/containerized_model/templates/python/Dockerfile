@@ -8,6 +8,7 @@ WORKDIR /
 
 COPY packages/all/cortex-certifai-common*.zip /tmp/
 COPY packages/all/cortex-certifai-model-sdk*.zip /tmp/
+COPY requirements.txt /tmp/
 
 RUN pip install --no-cache-dir \
      $(find /tmp -name cortex-certifai-common-*.zip)[s3] \
@@ -18,9 +19,11 @@ RUN pip install --no-cache-dir \
 #     $(find /tmp -name cortex-certifai-common-*.zip)[gcp] \
 #     $(find /tmp -name cortex-certifai-common-*.zip)[azure]
 
+RUN pip install -r /tmp/requirements.txt
+
 COPY src /src
 COPY model /model
 
 EXPOSE 8551
 
-ENTRYPOINT ["python", "-m", "src.prediction_service"]
+ENTRYPOINT ["python", "src/prediction_service.py"]

@@ -1,0 +1,4 @@
+# add python pip install dependencies below
+pyyaml # required by prediction service - do not remove
+scikit-learn==0.23.2
+#xgboost==1.2.0  # uncomment if using xgboost and pin to same version as model
