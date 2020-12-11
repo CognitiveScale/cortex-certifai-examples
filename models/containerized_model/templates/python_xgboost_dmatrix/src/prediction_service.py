@@ -100,4 +100,7 @@ def main():
     # app.run()
 
 if __name__ == '__main__':
+    from pathlib import Path
+    os.environ[
+        "PYTHONPATH"] = str(Path.joinpath(Path(__file__).parent).resolve())
     main()
