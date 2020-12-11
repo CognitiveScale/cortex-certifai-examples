@@ -86,6 +86,10 @@ import pickle
 from utils import fetch_model, load_metadata, setup_license_file
 
 if __name__ == "__main__":
+    from pathlib import Path
+    os.environ[
+        "PYTHONPATH"] = str(Path.joinpath(Path(__file__).parent).resolve())
+
     metadata = load_metadata()
     local_model_path = fetch_model()
     setup_license_file()
@@ -99,6 +103,6 @@ if __name__ == "__main__":
     )
     app.set_global_imports() # needed if not running in production mode
     # Production mode requires Certifai 1.3.6 or higher
-    # app.run(production=True, log_level='warning', num_workers=3)
+    app.run(production=True, log_level='warning', num_workers=3)
     # Replace above with following to run in development mode
-    app.run()
+    # app.run()

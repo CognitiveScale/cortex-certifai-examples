@@ -5,6 +5,9 @@ containerized using the default prediction services.
 
 The test script builds, runs and tests each of the examples in turn.
 
+The prediction services can either be run in docker locally, or in
+kubernetes using minikube. The scanner is run locally.
+
 ## H2O MOJO examples
 
 h2o_auto_insurance - h2o mojo, regression
@@ -34,13 +37,25 @@ To train and test the models:
 * Certifai toolkit installed in the current conda environment
 * conda install -c conda-forge xgboost
 
-To build/run the images: Docker
+To build/run the prediction services: Docker
+
+To run the prediction services in minikube:
+* minikube must be installed
+* mc (minio command line) must be installed
+* minikube must be started e.g. `minikube start --cpus 6 --memory 8192`
+* a tunnel must have been established to expose load balancer services: `minikube tunnel`
 
 ### Running the tests
 
-To run the tests:
+To run the tests with prediction services running locally:
 ```
-sh run_test.sh
+sh run_test.sh local
+```
+
+To run the tests with prediction services running in minikube, first make sure
+you have started minikube with a tunnel as described above, then:
+```
+sh run_test.sh minikube
 ```
 
 The tests build four images, `h2o_mojo_predict`, `sklearn_predict`,  

@@ -1,1 +1,2 @@
-supports_soft_scoring: false
+supports_soft_scoring: true
+outcomes: [0,1,2]

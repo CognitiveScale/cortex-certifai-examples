@@ -39,7 +39,7 @@ evaluation:
 
 models:
 - description: Scikit Learn Decision Tree model for German Credit
-  model_id: sklearn_credit_dtree
+  model_id: dtree
   name: Decision Tree
   predict_endpoint: http://127.0.0.1:8551/predict
 
