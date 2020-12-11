@@ -65,7 +65,9 @@ for (num in num_col) {
   encoder$scale[num] <- attr(X_train[[num]], "scaled:scale")    #persist scaled$scale for predict pipeline
 }
 
-#model train
+# model train
+# using odd. no of trees to avoid random tie breaks; refer to doc linked below
+# NOTE2: https://www.rdocumentation.org/packages/randomForest/versions/4.6-14/topics/predict.randomForest
 model <- randomForest(x = X_train, y = as.factor(y_train), ntree = 101, type = 'classification')
 
 #encoder pipeline: for applying same encodings to new raw data
