@@ -6,3 +6,5 @@ __pycache__
 notebooks/local_reports/*
 models/reports/
 .RDataFiles/
+*.mojo
+*license.txt

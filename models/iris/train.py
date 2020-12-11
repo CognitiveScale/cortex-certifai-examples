@@ -1,3 +1,8 @@
+"""
+Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
+"""
+
 import time
 import random
 import pickle
@@ -32,6 +37,12 @@ def main():
     svm.fit(encoded_x_train, y_train)
     svm_acc = svm.score(encoded_x_test,y_test)
 
+    # Train an xgboost model
+    from xgboost import XGBClassifier
+    xgb = XGBClassifier()
+    xgb.fit(encoded_x_train, y_train)
+    xgb_acc = xgb.score(encoded_x_test,y_test)
+
     # function to pickle our models for later access
     def pickle_model(model, encoder, model_name, test_accuracy, description, filename):
         model_obj = {'model': model, 'encoder': encoder, 'name': model_name,
@@ -43,6 +54,7 @@ def main():
 
     # Save models as pickle files
     pickle_model(svm, encoder, 'Support Vector Machine', svm_acc, 'Support Vector Machine classifier', 'iris_svm.pkl')
+    pickle_model(xgb, encoder, 'XGBoost Classifier', xgb_acc, 'XGBoost classifier', 'iris_xgb.pkl')
 
 
 if __name__ == "__main__":

@@ -5,7 +5,7 @@ Licensed under CognitiveScale Example Code License https://github.com/CognitiveS
 import os
 import json
 import numpy as np
-from sklearn.externals import joblib
+import joblib
 import traceback
 
 
@@ -16,7 +16,7 @@ def init():
     # It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
     # For multiple models, it points to the folder containing all deployed models (./azureml-models)
     model_dir = os.getenv("AZUREML_MODEL_DIR")
-    model_path = os.path.join(model_dir, f'{model_dir.split("/")[1]}.pkl')
+    model_path = os.path.join(model_dir, f'{model_dir.split("/")[1]}.joblib')
     # deserialize the model_obj file back into a sklearn model and scaler object
     model_obj = joblib.load(model_path)
     model = model_obj.get("model")

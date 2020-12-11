@@ -1,0 +1,112 @@
+model_use_case:
+  name: readmission
+  model_use_case_id: readmission
+  task_type: binary-classification
+dataset_schema:
+  outcome_column: readmitted
+  feature_schemas:
+  - feature_name: race
+    data_type: categorical
+  - feature_name: gender
+    data_type: categorical
+  - feature_name: diag_1
+    data_type: categorical
+  - feature_name: diag_2
+    data_type: categorical
+  - feature_name: diag_3
+    data_type: categorical
+  - feature_name: max_glu_serum
+    data_type: categorical
+  - feature_name: A1Cresult
+    data_type: categorical
+  - feature_name: metformin
+    data_type: categorical
+  - feature_name: repaglinide
+    data_type: categorical
+  - feature_name: nateglinide
+    data_type: categorical
+  - feature_name: chlorpropamide
+    data_type: categorical
+  - feature_name: glimepiride
+    data_type: categorical
+  - feature_name: acetohexamide
+    data_type: categorical
+  - feature_name: glipizide
+    data_type: categorical
+  - feature_name: glyburide
+    data_type: categorical
+  - feature_name: tolbutamide
+    data_type: categorical
+  - feature_name: pioglitazone
+    data_type: categorical
+  - feature_name: rosiglitazone
+    data_type: categorical
+  - feature_name: acarbose
+    data_type: categorical
+  - feature_name: miglitol
+    data_type: categorical
+  - feature_name: troglitazone
+    data_type: categorical
+  - feature_name: tolazamide
+    data_type: categorical
+  - feature_name: insulin
+    data_type: categorical
+  - feature_name: glyburide-metformin
+    data_type: categorical
+  - feature_name: glipizide-metformin
+    data_type: categorical
+  - feature_name: glimepiride-pioglitazone
+    data_type: categorical
+  - feature_name: metformin-rosiglitazone
+    data_type: categorical
+  - feature_name: metformin-pioglitazone
+    data_type: categorical
+  - feature_name: change
+    data_type: categorical
+  - feature_name: diabetesMed
+    data_type: categorical
+evaluation:
+  feature_restrictions:
+  - feature_name: num_lab_procedures
+    restriction_string: no changes
+  # - feature_name: number_outpatient
+  #   restriction_string: no changes
+  # - feature_name: number_inpatient
+  #   restriction_string: no changes
+  # - feature_name: race
+  #   restriction_string: no changes
+  evaluation_dataset_id: evaluation
+  explanation_dataset_id: explanation
+  evaluation_types:
+  - explanation
+  prediction_values:
+  - name: Readmitted
+    value: 1
+    favorable: false
+  - name: Not Readmitted
+    value: 0
+    favorable: true
+  hyperparameters:
+  - name: num_counterfactuals
+    value: 1
+
+  prediction_favorability: explicit
+  name: readmission
+  prediction_description: Determine whether a patient will be readmitted
+datasets:
+- dataset_id: evaluation
+  url: diabetic_data_diagnostic_mapped.csv
+  has_header: true
+  file_type: csv
+  delimiter: ','
+  quote_character: '"'
+- dataset_id: explanation
+  url: diabetic_data_diagnostic_mapped_explain.csv
+  has_header: true
+  file_type: csv
+  delimiter: ','
+  quote_character: '"'
+models:
+- model_id: mlp
+  name: mlp
+  predict_endpoint: http://localhost:8551/predict
