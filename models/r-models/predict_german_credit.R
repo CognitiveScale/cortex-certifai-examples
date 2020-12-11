@@ -21,7 +21,7 @@ library(plumber)
 ## load model and artifacts from disk
 model.list <<- readRDS(file = 'german_credit_rf.rds')
 
-## filter bad request with ill-fromed schema
+## filter bad request with ill-formed schema
 #' @filter badrequest
 function(req, res) {
   if (is.null(fromJSON(req$postBody)$payload$instances))
@@ -40,7 +40,7 @@ calculate_prediction <- function(payload, res) {
   tryCatch(
   {
     ## payload should contain "instances", which is a list of vectors of inputs,
-    ## test data doesn't need the groud truth for prediction
+    ## test data doesn't need the ground truth for prediction
     ## make sure only the features needed by model for prediction are passed
     ## here colnames(data)[-21] is used so as to map request data to first 20 feature cols
     ## response should be structured as {"payload": { "predictions": [list of predictions] } }
