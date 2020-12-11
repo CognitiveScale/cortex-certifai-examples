@@ -62,7 +62,7 @@ for (num in num_col) {
 }
 
 #model train
-model <- randomForest(x = X_train, y = as.factor(y_train), ntree = 100, type = 'classification')
+model <- randomForest(x = X_train, y = as.factor(y_train), ntree = 190, type = 'classification')
 
 #encoder pipeline: for applying same encodings to new raw data
 encoder_pipeline <- function(df, artifacts) {

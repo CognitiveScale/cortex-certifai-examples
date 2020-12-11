@@ -47,7 +47,7 @@ calculate_prediction <- function(payload, res) {
     test_data <- as.data.frame(payload)
     colnames(test_data) <- model.list$artifacts$colsnames[-21]
     # predict and return resula
-    pred <- as.numeric(predict(model.list$model, model.list$encoder(test_data, model.list$artifacts)))
+    pred <- as.numeric(predict(model.list$model, newdata=model.list$encoder(test_data, model.list$artifacts)))
     # create response json { "payload" : {"predictions" : pred} }
     pred_list <<- list(payload = list(predictions = pred))
     pred_json <<- toJSON(pred_list)

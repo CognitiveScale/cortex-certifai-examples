@@ -1,27 +1,36 @@
-To install the necessary packages (only needed the first time), run
+# R Random Forest Example 
 
-```install.packages('plumber')```
+## Install Dependencies
 
-To set up the api, run (e.g.):
+Run the below command in R Console to install required R packages
 
-1. execute the `train_german_credit.R` script in R Console to train and persist the model to disk 
+```
+install.packages("randomForest")
+install.packages("caret")
+install.packages('plumber')
+```
 
-2. execute the below code snippet in R console to start the model server on port 8551
+Running the example:
 
-    ```
-    library(plumber)
-    pr <- plumber::plumb("predict_german_credit.R")
-    pr$run(port=8551)
-    ```
-   Starts the webserver on port 8551 using file `predict_german_credit.R` 
-    ```
-    Running plumber API at http://127.0.0.1:8551
-    Running swagger Docs at http://127.0.0.1:8551/__docs__/
-    ```
+1. Open R Console with working directory set as `r-models`. Alternatively you can set working directory in R console using `setwd("cortex-certifai-examples/models/r-models")`
 
+
+2. Run the `train_german_credit.R` script in R Console to train and persist the model to disk 
+
+
+3. Run the `run_server.R` script in R Console to start the model server on port 8551
+
+Above command starts the webserver on port 8551 using file `predict_german_credit.R`  
+ 
+```
+ Running plumber API at http://127.0.0.1:8551
+ Running swagger Docs at http://127.0.0.1:8551/__docs__/
+ ```
 
 ## Predict
 
+
+**Request**
 ```
 curl --location --request POST '127.0.0.1:8551/german_credit_rf/predict' \
 --header 'Content-Type: application/json' \
@@ -54,3 +63,13 @@ curl --location --request POST '127.0.0.1:8551/german_credit_rf/predict' \
     }
 }'
 ```
+
+**Response**
+
+```
+{"payload":{"predictions":[1]}}
+```
+
+## Certifai Scan
+
+`certifai scan -f scanner_definition.yaml`
