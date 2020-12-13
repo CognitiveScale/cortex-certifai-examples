@@ -8,4 +8,4 @@ models/reports/
 .RDataFiles/
 *.mojo
 *license.txt
-*german_credit_rf.rds
+*.rds
