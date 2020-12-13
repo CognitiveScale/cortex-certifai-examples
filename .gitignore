@@ -5,5 +5,7 @@ __pycache__
 .DS_Store
 notebooks/local_reports/*
 models/reports/
+.RDataFiles/
 *.mojo
 *license.txt
+*.rds
