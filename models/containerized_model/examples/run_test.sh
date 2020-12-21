@@ -104,9 +104,9 @@ function build() {
 function minikube_setup() {
   eval $(minikube docker-env) # build images in shared registry
   # setup minio server on local port 9000
-  set +e 
+  set +e
   kubectl create namespace $NAMESPACE
-  kubectl apply -f examples/minikube/test-minio.yml
+  kubectl apply -f ${THIS_DIR}/minikube/test-minio.yml
   kubectl get svc test-minio 2>&1 > /dev/null
   if [ "$?" -ne 0 ]; then
     kubectl expose deployment test-minio --type=LoadBalancer --port 9000 --target-port 9000
