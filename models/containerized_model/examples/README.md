@@ -35,7 +35,7 @@ The current conda environment has been setup with:
 
 To train and test the models:
 * Certifai toolkit installed in the current conda environment
-* conda install -c conda-forge xgboost
+* conda install -c conda-forge xgboost==1.2.0
 
 To build/run the prediction services: Docker
 
