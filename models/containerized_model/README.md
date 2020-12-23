@@ -192,7 +192,7 @@ Make a request to `http://127.0.0.1:8551/predict` with the respective parameters
 
 Generate the code template for containerization of your model:
 ```
-./generate.sh -d generated-container-proxy -i certifai-proxy-container:latest -m proxy -n containerproxy -r container-proxy
+./generate.sh -d generated-container-proxy -i certifai-proxy-container:latest -m proxy
 ```
 
 This command should create a directory called `generated-container-proxy`
@@ -216,8 +216,14 @@ Add `HOSTED_MODEL_URL`  env variable to `generated-container-proxy/environment.y
 
 Optionally, add any additional auth/secret header token to above file. Don't forget to reference the same additional env variable in `src/prediction_service.py`
 
+## Step 4 - Update request/response transformer methods inside src/prediction_service.py
 
-### Step 4 - Build
+- `transform_request_to_hosted_model_schema`: update this method to apply custom transformation to hosted model service request (/POST) 
+- `transform_response_to_certifai_predict_schema`: update this method to apply custom transformation on hosted model service response to transform to certifai predict schema
+
+**More info. available as docstring in `src/prediction_serice.py`** 
+
+### Step 5 - Build
 Run the following command to build the prediction service docker image.
 
 ```
@@ -226,7 +232,7 @@ Run the following command to build the prediction service docker image.
 
 This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-proxy-container:latest` in this case).
 
-### Step 5 - Run
+### Step 6 - Run
 Run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
 
 ```
@@ -235,6 +241,5 @@ Run the following command which would run the docker image using environment var
 
 This should create a docker container and host the webservice.
 
-### Step 6 - Test
+### Step 7 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
-

@@ -139,17 +139,24 @@ if __name__ == "__main__":
     opt_args = {
         'headers': {
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Authorization': f'Bearer {os.getenv("HOSTED_MODEL_AUTH_HEADER_TOKEN")}'
+            'Accept': 'application/json'
         },
         'columns': []
     }
 
+    # optional model auth header bearer token
+    hosted_model_auth_header = f'Bearer {os.getenv("HOSTED_MODEL_AUTH_HEADER_TOKEN")}' if os.getenv(
+        'HOSTED_MODEL_AUTH_HEADER_TOKEN') else None
+    if hosted_model_auth_header:
+        opt_args['headers']['Authorization'] = hosted_model_auth_header
+
+    # hosted model url
     default_hosted_model_url = ''
     hosted_model_url = os.getenv('HOSTED_MODEL_URL') if os.getenv(
         'HOSTED_MODEL_URL') else default_hosted_model_url
     if not hosted_model_url:
         raise ValueError('either `HOSTED_MODEL_URL` env variable is not set or `default_hosted_model_url` is empty')
+
     app = Proxy(hosted_model_url=hosted_model_url,
                 host="0.0.0.0",
                 **opt_args)
