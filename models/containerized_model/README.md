@@ -185,3 +185,61 @@ This should create a docker container and host the webservice.
 
 ### Step 6 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
+
+
+## [Proxy Template](#proxy-template)
+### Step 1 - Template generation
+
+Generate the code template for containerization of your model:
+```
+./generate.sh -d generated-container-proxy -i certifai-proxy-container:latest -m proxy
+```
+
+This command should create a directory called `generated-container-proxy`
+in your current directory with the generated code.
+
+For more `generate` options:
+```
+./generate.sh --help
+```
+
+### Step 2 - Copy artifacts
+Copy the `packages` folder from inside the toolkit into the generated
+directory `generated-container-proxy`:
+
+```
+cp -r <certifai-toolkit-path>/packages generated-container-proxy/packages
+```
+
+### Step 3 - Configure hosted model url
+Add `HOSTED_MODEL_URL`  env variable to `generated-container-proxy/environment.yml` file. This will be used in the `RUN` step.
+
+Optionally, add any additional auth/secret header token to above file. Don't forget to reference the same additional env variable in `src/prediction_service.py`
+
+### Step 4 - Update request/response transformer methods inside src/prediction_service.py
+
+- `transform_request_to_hosted_model_schema`: update this method to apply custom transformation to hosted model service request (/POST)
+- `transform_response_to_certifai_predict_schema`: update this method to apply custom transformation on hosted model service response to transform to Certifai predict schema
+
+**More info. available as docstring in `src/prediction_service.py`**
+
+### Step 5 - Build
+Run the following command to build the prediction service docker image.
+
+```
+./generated-container-proxy/container_util.sh build
+```
+
+This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-proxy-container:latest` in this case).
+
+### Step 6 - Run
+Run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
+
+```
+./generated-container-proxy/container_util.sh run
+```
+
+This should create a docker container and host the webservice.
+
+### Step 7 - Test
+Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
