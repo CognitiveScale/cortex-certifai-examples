@@ -211,17 +211,17 @@ directory `generated-container-proxy`:
 cp -r <certifai-toolkit-path>/packages generated-container-proxy/packages
 ```
 
-### Step 3 - Configure hosted model url 
+### Step 3 - Configure hosted model url
 Add `HOSTED_MODEL_URL`  env variable to `generated-container-proxy/environment.yml` file. This will be used in the `RUN` step.
 
 Optionally, add any additional auth/secret header token to above file. Don't forget to reference the same additional env variable in `src/prediction_service.py`
 
-## Step 4 - Update request/response transformer methods inside src/prediction_service.py
+### Step 4 - Update request/response transformer methods inside src/prediction_service.py
 
-- `transform_request_to_hosted_model_schema`: update this method to apply custom transformation to hosted model service request (/POST) 
-- `transform_response_to_certifai_predict_schema`: update this method to apply custom transformation on hosted model service response to transform to certifai predict schema
+- `transform_request_to_hosted_model_schema`: update this method to apply custom transformation to hosted model service request (/POST)
+- `transform_response_to_certifai_predict_schema`: update this method to apply custom transformation on hosted model service response to transform to Certifai predict schema
 
-**More info. available as docstring in `src/prediction_serice.py`** 
+**More info. available as docstring in `src/prediction_service.py`**
 
 ### Step 5 - Build
 Run the following command to build the prediction service docker image.
