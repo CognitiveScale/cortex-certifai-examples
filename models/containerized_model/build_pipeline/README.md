@@ -4,12 +4,15 @@ This folder contains a build script that illustrates how to build images
 for models with different prediction service source code.
 
 The build script takes two parameters:
+* the service name (e.g. h2o_german_credit)
 * the model type (h2o_mojo, python_sklearn)
-* the model name (e.g. sklearn_german_credit)
 
-It builds an image `<model_name>:latest`. When used in a real pipeline,
-you will want to extend this script to tag with a gitsha and push to docker
-registry.
+There should be a `<service_name>` folder for each prediction service to be
+built, containing `src/prediction_service.py`.
+
+The script builds an image `<prefix><model_name>:latest` e.g.
+`c12e/h2o_german_credit:latest` and also tags it with a git SHA. Update the
+script to set the appropriate prefix for your organization's docker repository.
 
 ### Prerequisites
 
@@ -25,9 +28,14 @@ The current conda environment has been setup with:
 
 ### Build the image
 
-To run the build:
+To run the build for the example MOJO model prediction service:
 ```
 sh run_build.sh h2o_german_credit h2o_mojo
+```
+
+To run the build for the example sklearn model prediction service:
+```
+sh run_build.sh sklearn_german_credit python-sklearn
 ```
 
 ### Run the prediction service locally
