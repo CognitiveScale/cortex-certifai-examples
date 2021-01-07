@@ -6,3 +6,4 @@ columns: ['State Code', 'Claim Amount', 'Coverage', 'Education',
        'Vehicle Class', 'Vehicle Size']
 # outcomes: [0,1,2]
 outcomes: []
+supports_soft_scoring: false #necessary override for regression models pending fix in model wrapper

@@ -19,6 +19,7 @@ models:
   predict_endpoint: http://localhost:8551/predict
   performance_metric_values: []
   author: ''
+  supports_soft_scoring: true
 
 dataset_schema:
  outcome_column: species
@@ -38,11 +39,14 @@ datasets:
   url: explain.csv
 
 evaluation:
-  name: "Baseline evaluation"
+  name: Counterfactual and Shap explanations
   evaluation_dataset_id: eval
   explanation_dataset_id: explan
   evaluation_types:  # Note: fairness is not applicable
    - explanation
+  explanation_types:
+  - counterfactual
+  - shap
   prediction_favorability: none # equiv. to unordered multi-class
 
   prediction_values:

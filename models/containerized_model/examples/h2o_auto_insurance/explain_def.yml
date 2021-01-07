@@ -17,7 +17,10 @@ evaluation:
   explanation_dataset_id: explan
   evaluation_types:
   - explanation
-  name: Counterfactual explanations
+  explanation_types:
+  - counterfactual
+  - shap
+  name: Counterfactual and Shap explanations
   feature_restrictions:
   - feature_name: Gender
     restriction_string: no changes
@@ -31,6 +34,7 @@ models:
   model_id: dai_mojo
   name: H2O Driverless AI Auto Insurance
   predict_endpoint: http://127.0.0.1:8551/predict
+  supports_soft_scoring: true
 
 datasets:
 - dataset_id: eval

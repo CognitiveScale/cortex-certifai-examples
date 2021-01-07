@@ -12,11 +12,7 @@ from certifai.model.sdk import SimpleModelWrapper
 class MojoModelWrapper(SimpleModelWrapper):
     def __init__(self, *args, **kwargs):
         self.metadata = kwargs.pop('metadata', {})
-        self.outcomes = []
-        outcomes_from_metadata = self.metadata.get('outcomes')
-        if outcomes_from_metadata is not None:
-            self.outcomes = outcomes_from_metadata
-
+        self.outcomes = kwargs.get('score_labels')
         self.columns = []
         cols_from_metadata = self.metadata.get('columns')
         if cols_from_metadata is not None:
@@ -26,6 +22,20 @@ class MojoModelWrapper(SimpleModelWrapper):
                 + ' in metadata.yml or prediction_service.py file.')
         SimpleModelWrapper.__init__(self, *args, **kwargs)
 
+    def _try_as_int(self, val):
+        try:
+            return int(val)
+        except ValueError:
+            return val
+
+    def _get_outcomes(self):
+        if len(self.model.output_names) == 1:
+            # regression model does not have labels
+            return None
+        if self.outcomes is None or len(self.outcomes) == 0:
+            self.outcomes = [self._try_as_int(label.rsplit('.', 1)[1])
+                for label in self.model.output_names]
+        return self.outcomes
 
     def set_global_imports(self):
         """
@@ -38,11 +48,12 @@ class MojoModelWrapper(SimpleModelWrapper):
         global dt
         import datatable as dt
 
-    def _try_as_int(self, val):
-        try:
-            return int(val)
-        except ValueError:
-            return val
+    def soft_predict(self, npinstances):
+        instances = [tuple(instance) for instance in npinstances]
+        input_dt = dt.Frame(instances, names=self.columns)
+        predictions = self.model.predict(input_dt).to_numpy()
+        self.score_labels = self._get_outcomes()
+        return predictions
 
     def predict(self, npinstances):
         """
@@ -53,10 +64,8 @@ class MojoModelWrapper(SimpleModelWrapper):
         instances = [tuple(instance) for instance in npinstances]
         input_dt = dt.Frame(instances, names=self.columns)
         predictions = self.model.predict(input_dt).to_pandas()
-        if (self.outcomes is None or len(self.outcomes) == 0) and len(predictions.columns) > 1:
-            self.outcomes = [self._try_as_int(label.rsplit('.', 1)[1])
-                for label in predictions.columns]
-        get_preds = lambda preds: self.get_prediction(preds, self.outcomes)
+        outcomes = self._get_outcomes()
+        get_preds = lambda preds: self.get_prediction(preds, outcomes)
         return predictions.apply(get_preds, axis=1).values
 
     def get_prediction(self, preds, outcomes=None):
@@ -99,7 +108,10 @@ if __name__ == "__main__":
         host="0.0.0.0",
         model_type='h2o_mojo',
         model_path=local_model_path,
-        metadata=metadata
+        metadata=metadata,
+        # Regression models must set supports_soft_scores to False pending update to wrapper
+        supports_soft_scores=metadata.get('supports_soft_scoring', True),
+        score_labels=metadata.get('outcomes')
     )
     app.set_global_imports() # needed if not running in production mode
     # Production mode requires Certifai 1.3.6 or higher

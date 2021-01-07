@@ -21,12 +21,15 @@ evaluation:
   explanation_dataset_id: explan
   evaluation_types:
   - explanation
+  explanation_types:
+  - counterfactual
+  - shap
   feature_restrictions:
   - feature_name: age
     restriction_string: no changes
   - feature_name: status
     restriction_string: no changes
-  name: Baseline evaluation of 4 models
+  name: Counterfactual and Shap explanations
   prediction_description: Will a loan be granted?
   prediction_favorability: explicit
   prediction_values:
@@ -42,6 +45,7 @@ models:
   model_id: dai_mojo
   name: H2O Driverless AI German Credit
   predict_endpoint: http://127.0.0.1:8551/predict
+  supports_soft_scoring: true
 
 datasets:
 - dataset_id: eval
