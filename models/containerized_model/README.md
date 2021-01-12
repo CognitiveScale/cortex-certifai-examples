@@ -158,7 +158,7 @@ in your current directory with the generated code.
 
 This template is designed to work with a standard scikit-learn model,
 and with an XGBClassifier or XGBRegressor model. For an xgboost model using
-DMatrix, use `-m python-xgboost-dmatrix`.
+DMatrix, use `-m python_xgboost_dmatrix`.
 
 For more `generate` options:
 ```

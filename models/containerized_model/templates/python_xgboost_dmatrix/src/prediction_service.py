@@ -4,6 +4,7 @@ Licensed under CognitiveScale Example Code License https://github.com/CognitiveS
 """
 from certifai.model.sdk import SimpleModelWrapper
 
+
 # All user-defined code that is to be used in the prediction wrapper must be in
 # instance methods in the wrapper class, or in imported modules
 # defined in set_global_imports
@@ -11,19 +12,15 @@ from certifai.model.sdk import SimpleModelWrapper
 class XgboostWrapper(SimpleModelWrapper):
     def __init__(self, *args, **kwargs):
         self.metadata = kwargs.pop('metadata', {})
-        self.outcomes = []
-        outcomes_from_metadata = self.metadata.get('outcomes')
-        if outcomes_from_metadata is not None:
-            self.outcomes = outcomes_from_metadata
-        self.task_type = self.metadata.get('task_type', 'regression')
+        self.task_type = self.metadata.get('task_type', 'binary-classification')
         SimpleModelWrapper.__init__(self, *args, **kwargs)
 
     def set_global_imports(self):
-        """
-        Override this method to make external global imports
+        """Override this method to make external global imports
         When using external imports override the method to provide necessary imports.
         Make sure to mark them `global` to
         be used by certifai interpreter correctly.
+
         :return: None
         """
         global xgb
@@ -32,51 +29,37 @@ class XgboostWrapper(SimpleModelWrapper):
         import numpy as np
 
     def soft_predict(self, npinstances):
-        """
-        Override this method for custom soft scoring model predictions
+        """Override this method for custom soft scoring model predictions (binary/multiclass)
+
         :param npinstances: np.ndarray
         :return: np.ndarray
         """
         results = self.model.predict(xgb.DMatrix(data=npinstances))
         if self.task_type == 'binary-classification':
-            return np.array([[1. - x, x] for x in results])
-        # elif self.task_type == 'multiclass-classification':
+            # certifai needs scores for both classes to create `score -> outcome label` mappings, whereas
+            # XGBoost-DMatrix predict returns a single score for binary-classification
+            return np.column_stack((1. - results, results))
         else:
+            # multiclass-classification case (XGBoost DMatrix returns scores for all classes)
             return results
 
     def predict(self, npinstances):
-        """
-        Converts XGBoost output to regression or classification labels.
+        """Predict override for hard models. In case of XGBoost-DMatrix this is invoked only in case of regression use-case
+
         :param npinstances: np.ndarray
         :return: np.ndarray
         """
-        results = self.soft_predict(npinstances)
-        get_preds = lambda preds: self.get_prediction(preds, self.outcomes)
-        return np.apply_along_axis(get_preds, 1, results)
+        # regression uses `predict`(hard models) as compared to `soft_predict`(soft scoring models)
+        results = self.model.predict(xgb.DMatrix(data=npinstances))
+        return results
 
-    def get_prediction(self, preds, outcomes=None):
-        """
-        Given an array of soft output and the list of expected class labels,
-        get_prediction returns the appropriate class label based on the class
-        probabilities.
-
-        For a regression model, get_prediction returns the single probability.
-        """
-        if len(preds) == 1:
-            return preds[0] # regression
-        if len(preds) > 1:
-            if outcomes is None or len(outcomes) == 0:
-                raise Exception('No outcome labels provided for classification model')
-            index = preds.argmax() # position of largest value
-            return outcomes[index]
-
-        raise Exception('No prediction returned by model')
 
 # These imports are used in launching the prediction service. They are not
 # used within the prediction service
 import os
 import pickle
 from utils import fetch_model, load_metadata
+
 
 def main():
     metadata = load_metadata()
@@ -85,22 +68,30 @@ def main():
     model = model_pickle.get('model')
     encoder = model_pickle.get('encoder')
     threshold = model_pickle.get('threshold')
+
+    # soft-scoring by design is intended to be used with classification
+    # regression is represented as hard-scoring model
+    supports_soft_scores = False if metadata.get('task_type') == 'regression' else True
+    if supports_soft_scores and not metadata.get('outcomes'):
+        raise ValueError('outcome labels not provided for soft-scoring models. check metadata.yml')
     app = XgboostWrapper(model=model,
-                  encoder=encoder,
-                  host='0.0.0.0',
-                  supports_soft_scores=metadata.get('supports_soft_scoring', True),
-                  threshold=threshold,
-                  score_labels=metadata.get('outcomes'),
-                  metadata=metadata
-                  )
-    app.set_global_imports() # needed if not running in production mode
+                         encoder=encoder,
+                         host='0.0.0.0',
+                         supports_soft_scores=supports_soft_scores,
+                         threshold=threshold,
+                         score_labels=metadata.get('outcomes', None),
+                         metadata=metadata
+                         )
+    app.set_global_imports()  # needed if not running in production mode
     # Production mode requires Certifai 1.3.6 or higher
     app.run(production=True, log_level='warning', num_workers=3)
     # Replace above with following to run in development mode
     # app.run()
 
+
 if __name__ == '__main__':
     from pathlib import Path
+
     os.environ[
         "PYTHONPATH"] = str(Path.joinpath(Path(__file__).parent).resolve())
     main()
