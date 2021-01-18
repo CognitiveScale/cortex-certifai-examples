@@ -39,6 +39,60 @@ def main():
         }
         return file_metadata
 
+    def generate_proxy(file_metadata):
+        file_metadata.update({
+            'environment_proxy.yml': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'Dockerfile.proxy': {
+                'exec_permission': False,
+                'kwargs': {
+                    'BASE_DOCKER_IMAGE': args.base_docker_image
+                }
+            },
+            'proxy_service.py': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'requirements_proxy.txt': {
+                'exec_permission': False,
+                'kwargs': {}
+            }
+        })
+
+        directory_names = {'src'}
+        src_files = {'proxy_service.py'}
+
+        def apply_template(filename, exec_permission=False, **kwargs):
+            _template = env.get_template(filename)
+            rendered_template = _template.render(kwargs)
+
+            if filename in src_files:
+                file_path = os.path.join(BASE_DIR, 'src', 'prediction_service.py')
+            elif filename == 'Dockerfile.proxy':
+                file_path = os.path.join(BASE_DIR, 'Dockerfile')
+            elif filename == 'environment_proxy.yml':
+                file_path = os.path.join(BASE_DIR, 'environment.yml')
+            elif filename == 'requirements_proxy.txt':
+                file_path = os.path.join(BASE_DIR, 'requirements.txt')
+            else:
+                file_path = os.path.join(BASE_DIR, filename)
+            with open(file_path, 'w') as f:
+                f.write(rendered_template)
+
+            if exec_permission:
+                _st = os.stat(os.path.join(BASE_DIR, filename))
+                os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
+
+        create_directories(list(directory_names))
+        # Templates
+        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
+        env = Environment(loader=file_loader)
+
+        for filename, value in file_metadata.items():
+            apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
+
     def generate_python(file_metadata):
 
         file_metadata.update({
@@ -146,6 +200,8 @@ def main():
     file_metadata = generate_base_file_metadata()
     if args.model_type == 'h2o_mojo':
         generate_h2o_mojo(file_metadata)
+    elif args.model_type == 'proxy':
+        generate_proxy(file_metadata)
     else:
         generate_python(file_metadata)
 
