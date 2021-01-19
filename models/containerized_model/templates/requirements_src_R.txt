@@ -1,0 +1,7 @@
+# non-binary packages to be installed go here.
+# note: these packages are built from source and hence take more time
+# should be used for packages whose binaries are not available
+
+# install.packages("randomForest")
+# install.packages("caret")
+# install.packages('plumber')

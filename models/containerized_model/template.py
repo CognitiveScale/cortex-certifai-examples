@@ -93,6 +93,81 @@ def main():
         for filename, value in file_metadata.items():
             apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
 
+    def generate_r_model(file_metadata):
+        file_metadata.update({
+            'environment_R.yml': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'Dockerfile.R': {
+                'exec_permission': False,
+                'kwargs': {
+                    'BASE_DOCKER_IMAGE': args.base_docker_image
+                }
+            },
+            'prediction_service.R': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'run_server.R': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'requirements_bin_R.txt': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'requirements_src_R.txt': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'metadata_R.yml': {
+                'exec_permission': False,
+                'kwargs': {}
+            },
+            'deployment_R.yml': {
+                'exec_permission': False,
+                'kwargs': {}
+            }
+        })
+
+        directory_names = {'src', 'model'}
+        src_files = {'prediction_service.R', 'run_server.R'}
+        model_files = {'metadata_R.yml'}
+
+        def apply_template(filename, exec_permission=False, **kwargs):
+            _template = env.get_template(filename)
+            rendered_template = _template.render(kwargs)
+
+            if filename in src_files:
+                file_path = os.path.join(BASE_DIR, 'src', filename)
+            elif filename in model_files:
+                file_path = os.path.join(BASE_DIR, 'model', 'metadata.yml')
+            elif filename == 'Dockerfile.R':
+                file_path = os.path.join(BASE_DIR, 'Dockerfile')
+            elif filename == 'environment_R.yml':
+                file_path = os.path.join(BASE_DIR, 'environment.yml')
+            elif filename == 'deployment_R.yml':
+                file_path = os.path.join(BASE_DIR, 'deployment.yml')
+            elif '_R.txt' in filename:
+                file_path = os.path.join(BASE_DIR, filename)
+            else:
+                file_path = os.path.join(BASE_DIR, filename)
+            with open(file_path, 'w') as f:
+                f.write(rendered_template)
+
+            if exec_permission:
+                _st = os.stat(os.path.join(BASE_DIR, filename))
+                os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
+
+        create_directories(list(directory_names))
+        # Templates
+        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
+        env = Environment(loader=file_loader)
+
+        for filename, value in file_metadata.items():
+            apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
+
     def generate_python(file_metadata):
 
         file_metadata.update({
@@ -202,6 +277,8 @@ def main():
         generate_h2o_mojo(file_metadata)
     elif args.model_type == 'proxy':
         generate_proxy(file_metadata)
+    elif args.model_type == 'r_model':
+        generate_r_model(file_metadata)
     else:
         generate_python(file_metadata)
 

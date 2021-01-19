@@ -1,0 +1,5 @@
+r-cran-plumber
+r-cran-jsonlite
+r-cran-caret
+r-cran-yaml
+r-cran-aws.s3

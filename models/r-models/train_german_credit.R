@@ -103,11 +103,10 @@ artifacts$defaultValues <- defaultValues
 
 
 #persist model and encoder_pipeline to disk
-model.list <- vector(mode = 'list')
-model.list$encoder <- encoder_pipeline
-model.list$artifacts <- artifacts
-model.list$model <- model
+model$encoder <- encoder_pipeline
+model$artifacts <- artifacts
+model$model <- model
 
 file_name <- "german_credit_rf.rds"
 paste("saving model and artifacts to disk as", file_name)
-saveRDS(object = model.list, file = file_name)
+saveRDS(object = model, file = file_name)

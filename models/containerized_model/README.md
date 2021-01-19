@@ -4,7 +4,7 @@
 - Pre-requisites
 - H2O Mojo Template
 - Python Template
-
+- R Model Template
 
 ## [Pre-requisites](#pre-req)
 
@@ -242,4 +242,71 @@ Run the following command which would run the docker image using environment var
 This should create a docker container and host the webservice.
 
 ### Step 7 - Test
+Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
+
+## [R Model Template](#r-template)
+### Step 1 - Template generation
+
+Generate the code template for containerization of your model:
+```
+./generate.sh -i  certifai-model-container:latest -m r_model -b rocker/r-apt:bionic
+```
+
+This command should create a directory called `generated-container-model`
+in your current directory with the generated code.
+
+Note: Value for `-m` option is `r_model` (by default)
+
+For more `generate` options:
+```
+./generate.sh --help
+```
+
+### Step 2 - Configure Model Metadata
+Provide list of column names in `columns` field in `metadata.yml` file located inside directory `generated-container-model/model`:
+
+### Step 3 - Configure dependencies
+- Add any binary dependencies to `requirements_bin_R.txt` e.g. `r-cran-randomforest`
+- Add any other dependencies (whole prebuilt binary isn't available on r-cran) to `requirements_src_R.txt` e.g. `install.packages('custom-non-binary-package')`
+
+**Note**: building binaries from source takes few minutes
+
+### Step 4 - Configure prediction service
+- For loading model dependencies add `library(packageName)` to file `src/prediction_serivice.R` e.g. `library(randomForest)` to load random forest package for prediction 
+- Model is assumed to be an `.rds` file. Persisted Model may contain additional functions and artifacts needed for data transformation at run-time. Supported list include
+    - `encoder`: function to encode (scale etc.) incoming data. accessed using `model$encoder`
+    - `artifacts`: an optional object that may be passed to encoder along with new data. accessed using `model$artifacts`
+
+**Sample Usage**: `predict(model, newdata=model$encoder(test_data, model$artifacts))`. Refer to concrete example in `models/r-models`
+
+### Step 5 - Configure cloud storage
+Add S3 cloud storage credentials and `MODEL_PATH` to `generated-container-model/environment.yml` file. This will be used in the `RUN` step.
+
+**Note**: When working with local models leave the `MODEL_PATH` empty and copy your `model.rds` file to directory `generated-container-model/model`
+
+### Step 6 - Build
+Run the following command to build the prediction service docker image.
+
+```
+./generated-container-model/container_util.sh build
+```
+
+This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-model-container:latest` in this case).
+
+### Step 7 - Run
+`Pre-requisite`: Make sure your model `.rds` file is either 
+
+- placed at `model/model.rds`  or
+- cloud storage and model path is configured in `environment.yml`
+
+
+Run the following command which would run the docker image using environment variables from the environments file (`environment.yml`) that is being passed:
+
+```
+./generated-container-model/container_util.sh run
+```
+
+This should create a docker container and host the webservice.
+
+### Step 8 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
