@@ -277,7 +277,7 @@ Provide list of column names in `columns` field in `metadata.yml` file located i
     - `encoder`: function to encode (scale etc.) incoming data. accessed using `model$encoder`
     - `artifacts`: an optional object that may be passed to encoder along with new data. accessed using `model$artifacts`
 
-**Sample Usage**: `predict(model, newdata=model$encoder(test_data, model$artifacts))`. Refer to concrete example in `models/r-models`
+**Sample Usage**: `predict(model$model, newdata=model$encoder(test_data, model$artifacts))`. Refer to concrete example in `models/r-models`
 
 ### Step 5 - Configure cloud storage
 Add S3 cloud storage credentials and `MODEL_PATH` to `generated-container-model/environment.yml` file. This will be used in the `RUN` step.
