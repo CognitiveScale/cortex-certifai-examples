@@ -136,7 +136,7 @@ or use Certifai to test the endpoint against a scan definition
 
 
 
-## Python Template
+## [Python Template](#python-template)
 ### Step 1 - Template generation
 
 Generate the code template for containerization of your model:
@@ -246,7 +246,7 @@ This should create a docker container and host the webservice.
 ### Step 7 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
 
-## R Model Template
+## [R Model Template](#r-model-template)
 ### Step 1 - Template generation
 
 Generate the code template for containerization of your model:
