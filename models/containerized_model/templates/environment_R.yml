@@ -1,0 +1,10 @@
+# environment file for R models
+
+MODEL_PATH=
+
+# S3 credentials
+# BUCKET_ENDPOINT=<your-s3-bucket-endpoint>
+
+AWS_SECRET_ACCESS_KEY=
+AWS_ACCESS_KEY_ID=
+AWS_DEFAULT_REGION=

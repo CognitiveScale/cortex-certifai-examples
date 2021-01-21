@@ -3,28 +3,30 @@ Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
 Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
 "
 
-# predict_german_credit.R
-
-
-#jsonlite is needed for dealing with json request
-if (!require(jsonlite)) {
-  install.packages("jsonlite")
-}
-#plumber is needed for creating the service api
-if (!require(plumber)) {
-  install.packages("plumber")
-}
-
 library(caret)
-library(randomForest)
 library(plumber)
+library(yaml)
+library(jsonlite)
+
+# load the necessary model packages for predict method to be available
+# for example to load randomForest pakcage un-comment below line
+# library(randomForest)
 
 
 ## below section creates a web service endpoint and
 ## invokes function (`calculate_prediction`) to return model predictions when endpoint is invoked
 
 ## load model and artifacts from disk
-model.list <<- readRDS(file = 'german_credit_rf.rds')
+model <<- readRDS(file = '../model/model.rds')
+
+## load metadata file containing column names
+metadata <<- yaml.load_file('../model/metadata.yml')
+
+if (length(metadata$columns) == 0) {
+  print('columns list empty in metadata.yml')
+  quit(status = 400)
+
+}
 
 ## filter bad request with ill-formed schema
 #' @filter badrequest
@@ -38,8 +40,8 @@ function(req, res) {
     plumber::forward()
   }
 }
-#' predict '1 (loan granted)/2 (loan denied)' for set of inputs with  random forest
-#' @post /german_credit_rf/predict
+
+#' @post /predict
 #' @serializer html
 calculate_prediction <- function(payload, res) {
   tryCatch(
@@ -50,17 +52,27 @@ calculate_prediction <- function(payload, res) {
     ## here colnames(data)[-21] is used so as to map request data to first 20 feature cols
     ## response should be structured as {"payload": { "predictions": [list of predictions] } }
     test_data <- as.data.frame(payload)
-    colnames(test_data) <- model.list$artifacts$colsnames[-21]
-    # predict and return resula
-    pred <- as.numeric(predict(model$model, newdata=model$encoder(test_data, model$artifacts)))
+    colnames(test_data) <- metadata$columns
+    # predict and return results
+
+    # if no encoder is present call predict on test data directly
+    if (is.null(model$encoder)) {
+      pred <- predict(model$model, newdata = test_data)
+    }
+    else if (!is.null(model$encoder) && is.null(model$artifacts)) {
+      pred <- predict(model$model, newdata = model$encoder(test_data))
+    }
+    else {
+      pred <- predict(model$model, newdata = model$encoder(test_data, model$artifacts))
+    }
     # create response json { "payload" : {"predictions" : pred} }
     pred_list <<- list(payload = list(predictions = pred))
     pred_json <<- toJSON(pred_list)
     res$status <- 200
     return(pred_json)
   },
-  # handle error and return error message
-  # create error response as {"payload":{"error": ["error message"]} }
+    # handle error and return error message
+    # create error response as {"payload":{"error": ["error message"]} }
     error = function(cond) {
       error_list <<- list(payload = list(error = cond))
       error_json <<- toJSON(error_list, force = TRUE)
@@ -71,5 +83,4 @@ calculate_prediction <- function(payload, res) {
 
   )
 }
-
 
