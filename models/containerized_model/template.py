@@ -124,10 +124,6 @@ def main():
             'metadata_R.yml': {
                 'exec_permission': False,
                 'kwargs': {}
-            },
-            'deployment_R.yml': {
-                'exec_permission': False,
-                'kwargs': {}
             }
         })
 
@@ -147,8 +143,6 @@ def main():
                 file_path = os.path.join(BASE_DIR, 'Dockerfile')
             elif filename == 'environment_R.yml':
                 file_path = os.path.join(BASE_DIR, 'environment.yml')
-            elif filename == 'deployment_R.yml':
-                file_path = os.path.join(BASE_DIR, 'deployment.yml')
             elif '_R.txt' in filename:
                 file_path = os.path.join(BASE_DIR, filename)
             else:
