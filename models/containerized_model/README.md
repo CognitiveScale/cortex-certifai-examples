@@ -1,12 +1,13 @@
 # How to create containerized models?
 
 ## Index
-- Pre-requisites
-- H2O Mojo Template
-- Python Template
-- R Model Template
+- [Pre-requisites](#pre-requisites)
+- [H2O Mojo Template](#h2o-mojo-template)
+- [Python Template](#python-template)
+- [Proxy Template](#proxy-template)
+- [R Model Template](#r-model-template)
 
-## [Pre-requisites](#pre-req)
+## Pre-requisites
 
 - Certifai toolkit (from [CognitiveScale website](https://www.cognitivescale.com/try-certifai/)).
 - A model (H2O MOJO pipeline or pickle).
@@ -17,7 +18,7 @@
     - To build/run the image: Docker
 
 
-## [H2O Mojo Template](#h2o-mojo-template)
+## H2O Mojo Template
 ### Step 1 - Template generation
 
 Generate the code template for containerization of your model. Replace `certifai-model-container:latest`
@@ -134,7 +135,7 @@ or use Certifai to test the endpoint against a scan definition
 
 
 
-## [Python Template](#python-template)
+## Python Template
 ### Step 1 - Template generation
 
 Generate the code template for containerization of your model:
@@ -244,7 +245,7 @@ This should create a docker container and host the webservice.
 ### Step 7 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
 
-## [R Model Template](#r-template)
+## R Model Template
 ### Step 1 - Template generation
 
 Generate the code template for containerization of your model:
@@ -272,7 +273,7 @@ Provide list of column names in `columns` field in `metadata.yml` file located i
 **Note**: building binaries from source takes few minutes
 
 ### Step 4 - Configure prediction service
-- For loading model dependencies add `library(packageName)` to file `src/prediction_serivice.R` e.g. `library(randomForest)` to load random forest package for prediction 
+- For loading model dependencies add `library(packageName)` to file `src/prediction_service.R` e.g. `library(randomForest)` to load random forest package for prediction
 - Model is assumed to be an `.rds` file. Persisted Model may contain additional functions and artifacts needed for data transformation at run-time. Supported list include
     - `encoder`: function to encode (scale etc.) incoming data. accessed using `model$encoder`
     - `artifacts`: an optional object that may be passed to encoder along with new data. accessed using `model$artifacts`
@@ -294,7 +295,7 @@ Run the following command to build the prediction service docker image.
 This will create a docker image with name specified at `Step 1` with `-i` parameter (`certifai-model-container:latest` in this case).
 
 ### Step 7 - Run
-`Pre-requisite`: Make sure your model `.rds` file is either 
+`Pre-requisite`: Make sure your model `.rds` file is either
 
 - placed at `model/model.rds`  or
 - cloud storage and model path is configured in `environment.yml`
@@ -306,7 +307,7 @@ Run the following command which would run the docker image using environment var
 ./generated-container-model/container_util.sh run
 ```
 
-This should create a docker container and host the webservice.
+This should create a docker container that hosts the prediction service.
 
 ### Step 8 - Test
 Make a request to `http://127.0.0.1:8551/predict` with the respective parameters.
