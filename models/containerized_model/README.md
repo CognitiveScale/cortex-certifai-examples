@@ -7,7 +7,8 @@
 - [Proxy Template](#proxy-template)
 - [R Model Template](#r-model-template)
 
-## Pre-requisites
+
+## [Pre-requisites](#pre-req)
 
 - Certifai toolkit (from [CognitiveScale website](https://www.cognitivescale.com/try-certifai/)).
 - A model (H2O MOJO pipeline or pickle).
@@ -18,7 +19,7 @@
     - To build/run the image: Docker
 
 
-## H2O Mojo Template
+## [H2O Mojo Template](#h2o-mojo-template)
 ### Step 1 - Template generation
 
 Generate the code template for containerization of your model. Replace `certifai-model-container:latest`
