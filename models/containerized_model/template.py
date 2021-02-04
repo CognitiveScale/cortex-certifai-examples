@@ -178,6 +178,10 @@ def main():
             'prediction_service.py': {
                 'exec_permission': False,
                 'kwargs': {}
+            },
+            'requirements.txt': {
+                'exec_permission': False,
+                'kwargs': {}
             }
         })
 
