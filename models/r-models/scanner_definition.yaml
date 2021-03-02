@@ -13,7 +13,7 @@ model_use_case:
 
     '
   model_use_case_id: c12e/datasciencelab/german_credit
-  name: 'Banking: Loan Approval'
+  name: 'Banking: Loan Approval in R'
   performance_metrics:
   - metric: Accuracy
     name: Accuracy
@@ -25,7 +25,7 @@ model_use_case:
 
 evaluation:
   description: This evaluation compares the robustness, performance, fairness
-    and explainability for 4 candidate models.
+    and explainability for random forest model in R.
   evaluation_dataset_id: eval
   evaluation_types:
   - robustness
@@ -41,7 +41,7 @@ evaluation:
     restriction_string: no changes
   - feature_name: status
     restriction_string: no changes
-  name: Baseline evaluation of 4 models
+  name: Baseline evaluation of random forest in R
   prediction_description: Will a loan be granted?
   prediction_favorability: explicit
   prediction_values:

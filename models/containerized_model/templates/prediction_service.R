@@ -28,17 +28,13 @@ if (length(metadata$columns) == 0) {
 
 }
 
-## filter bad request with ill-formed schema
-#' @filter badrequest
-function(req, res) {
-  if (is.null(fromJSON(req$postBody)$payload$instances))
-  {
-    res$status <- 400 # Bad Request
-    return(list(error = "Missing `instances` key"))
-  }
-  else {
-    plumber::forward()
-  }
+#' Return "service health"
+#' @get /health
+#' @serializer html
+function(req,res){
+  res$status <- 200
+  return("OK")
+
 }
 
 #' @post /predict
@@ -57,13 +53,13 @@ calculate_prediction <- function(payload, res) {
 
     # if no encoder is present call predict on test data directly
     if (is.null(model$encoder)) {
-      pred <- predict(model$model, newdata = test_data)
+      pred <- as.numeric(predict(model$model, newdata = test_data))
     }
     else if (!is.null(model$encoder) && is.null(model$artifacts)) {
-      pred <- predict(model$model, newdata = model$encoder(test_data))
+      pred <- as.numeric(predict(model$model, newdata = model$encoder(test_data)))
     }
     else {
-      pred <- predict(model$model, newdata = model$encoder(test_data, model$artifacts))
+      pred <- as.numeric(predict(model$model, newdata = model$encoder(test_data, model$artifacts)))
     }
     # create response json { "payload" : {"predictions" : pred} }
     pred_list <<- list(payload = list(predictions = pred))
