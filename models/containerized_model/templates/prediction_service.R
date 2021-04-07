@@ -17,10 +17,10 @@ library(jsonlite)
 ## invokes function (`calculate_prediction`) to return model predictions when endpoint is invoked
 
 ## load model and artifacts from disk
-model <<- readRDS(file = '../model/model.rds')
+model <<- readRDS(file = Sys.getenv("MODEL_ON_DISK_PATH"))
 
 ## load metadata file containing column names
-metadata <<- yaml.load_file('../model/metadata.yml')
+metadata <<- yaml.load_file(input = Sys.getenv("METADATA_ON_DISK_PATH"))
 
 if (length(metadata$columns) == 0) {
   print('columns list empty in metadata.yml')
