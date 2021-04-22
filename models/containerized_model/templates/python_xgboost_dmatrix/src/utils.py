@@ -10,7 +10,15 @@ from certifai.common.file.locaters import make_generic_locater
 from certifai.common.file.interface import FilePath
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
-ROOT_PATH=os.path.normpath(os.path.join(CURRENT_PATH,'..'))
+ROOT_PATH = os.path.normpath(os.path.join(CURRENT_PATH, '..'))
+
+
+def _create_state_store():
+    _model_store_tmp_path = '/tmp'
+    if not os.path.exists(_model_store_tmp_path):
+        os.makedirs(_model_store_tmp_path)
+    return _model_store_tmp_path
+
 
 def read_and_save_file(source_path, destination_path):
     if source_path is None:
@@ -20,8 +28,22 @@ def read_and_save_file(source_path, destination_path):
     if locater.isfile():
         with locater.reader() as f:
             contents = f.read()
-        with open(destination_path, 'wb') as f:
-            f.write(contents)
+        try:
+            with open(destination_path, 'wb') as f:
+                f.write(contents)
+        except PermissionError as e:
+            _model_store_tmp_path = _create_state_store()
+            print(
+                f"can't persist model to container permission error \n{str(e)}\ndefaulting persist to "
+                f"{_model_store_tmp_path}")
+            destination_path = os.path.join(_model_store_tmp_path, os.path.basename(destination_path))
+            with open(destination_path, 'wb') as f:
+                f.write(contents)
+    else:
+        raise ValueError(f'{destination_path} is not a file object')
+
+    return destination_path
+
 
 def read_yaml(source_path):
     if source_path is None:
@@ -45,7 +67,7 @@ def load_metadata(root_path=ROOT_PATH):
     :return: metadata object
     """
     default_metadata_path = os.path.normpath(os.path.join(root_path,
-        'model/metadata.yml'))
+                                                          'model/metadata.yml'))
     metadata_path = os.getenv('METADATA_PATH', default_metadata_path)
     metadata = read_yaml(metadata_path)
     if metadata is None:
@@ -64,11 +86,12 @@ def fetch_model(root_path=ROOT_PATH):
     model_path = os.getenv('MODEL_PATH')
     if model_path is not None:
         # Copy files from remote path to local
+
         local_model_path = os.path.normpath(os.path.join(root_path,
-            'model', os.path.basename(model_path)))
-        read_and_save_file(model_path, local_model_path)
+                                                         'model', os.path.basename(model_path)))
+        local_model_path = read_and_save_file(model_path, local_model_path)
     else:
         # allows local testing
         local_model_path = os.path.normpath(os.path.join(root_path,
-            'model/model.pkl'))
+                                                         'model/model.pkl'))
     return local_model_path
