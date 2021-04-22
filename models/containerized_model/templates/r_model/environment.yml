@@ -1,0 +1,10 @@
+# environment file for R models
+
+MODEL_PATH=
+METADATA_PATH=
+
+# S3 credentials
+
+BUCKET_SECRET_KEY=
+BUCKET_ACCESS_KEY=
+BUCKET_ENDPOINT=
