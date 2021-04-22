@@ -85,7 +85,34 @@ def main():
         }
         apply_templates(f'templates/{model_type}', file_metadata)
 
-    def generate_r(model_type):
+    def generate_proxy_base(model_type):
+        directory_names = {'src', 'templates'}
+        create_directories(list(directory_names))
+
+        # Common templates
+        apply_templates('templates', generate_base_file_metadata())
+
+        # Model-specific templates
+        file_metadata = {
+            'environment.yml': {
+                'exec_permission': False,
+            },
+            'Dockerfile': {
+                'exec_permission': False,
+                'kwargs': {
+                    'BASE_DOCKER_IMAGE': args.base_docker_image
+                }
+            },
+            'src/prediction_service.py': {
+                'exec_permission': False,
+            },
+            'requirements.txt': {
+                'exec_permission': False,
+            }
+        }
+        apply_templates(f'templates/{model_type}', file_metadata)
+
+    def generate_r_base(model_type):
         directory_names = {'src', 'model', 'templates'}
         create_directories(list(directory_names))
 
@@ -130,10 +157,10 @@ def main():
         create_directories(list(extra_directory_names))
 
     def generate_r_model(model_type):
-        generate_r(model_type)
+        generate_r_base(model_type)
 
     def generate_proxy(model_type):
-        pass
+        generate_proxy_base(model_type)
 
     # Argparse
     parser = argparse.ArgumentParser()

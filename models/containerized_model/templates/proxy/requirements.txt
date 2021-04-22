@@ -1,5 +1,4 @@
 # add pip requirements for any additional proxy service dependencies
 # for e.g.
 
-# FLASK==1.1
-# requests>=2.12.4,<3.0
+requests>=2.12.4,<3.0

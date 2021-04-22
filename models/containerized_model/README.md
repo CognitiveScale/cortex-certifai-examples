@@ -332,8 +332,8 @@ For more `generate` options:
 Provide list of column names in `columns` field in `metadata.yml` file located inside directory `generated-container-model/model`:
 
 ### Step 3 - Configure dependencies
-- Add any binary dependencies to `requirements_bin_R.txt` e.g. `r-cran-randomforest`
-- Add any other dependencies (whole prebuilt binary isn't available on r-cran) to `requirements_src_R.txt` e.g. `install.packages('custom-non-binary-package')`
+- Add any binary dependencies to `requirements_bin.txt` e.g. `r-cran-randomforest`
+- Add any other dependencies (whole prebuilt binary isn't available on r-cran) to `requirements_src.txt` e.g. `install.packages('custom-non-binary-package')`
 
 **Note**: building binaries from source takes few minutes
 
