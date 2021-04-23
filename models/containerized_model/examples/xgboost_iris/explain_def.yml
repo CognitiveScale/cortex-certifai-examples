@@ -45,10 +45,10 @@ evaluation:
 
   prediction_values:
   - name: "Iris - setosa"
-    value: 0
+    value: "Iris-setosa"
   - name: "Iris - versicolor"
-    value: 1
+    value: "Iris-versicolor"
   - name: "Iris - virginica"
-    value: 2
+    value: "Iris-virginica"
 
   prediction_description: "Iris species"

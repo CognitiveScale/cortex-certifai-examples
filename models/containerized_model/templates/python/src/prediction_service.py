@@ -69,6 +69,7 @@ def main():
                   encoder=encoder,
                   host='0.0.0.0',
                   supports_soft_scores=metadata.get('supports_soft_scoring', False),
+                  score_labels=metadata.get('outcomes', None),
                   threshold=model_pickle.get('threshold'),
                   metadata=metadata
                   )
