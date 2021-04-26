@@ -1,0 +1,2 @@
+supports_soft_scoring: true
+outcomes: ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']

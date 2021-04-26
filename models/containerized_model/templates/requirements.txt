@@ -1,2 +1,0 @@
-# add pip installable dependencies below for e.g.
-# requests>=2.12.4,<3.0

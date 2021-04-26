@@ -1,0 +1,11 @@
+deployment:
+  params:
+    # Set MODEL_ID and MODEL_USE_CASE_ID to the values used in the scan definition
+    MODEL_ID: xgboost
+    MODEL_FILE: "model.pkl"
+    IMAGE_NAME: "xgboost_dmatrix_predict"
+    # IMAGE_NAME: "711601140448.dkr.ecr.us-east-1.amazonaws.com/kaiser-registry:christine_xgboost_predict"
+    MODEL_USE_CASE_ID: test_income  # limit 63 chars lowercase _ -
+    RESOURCE_NAME: "test-income-xgboost" # lowercase - only
+    NAMESPACE: certifai-models
+    CERTIFAI_DATA_URL: "s3://certifai"

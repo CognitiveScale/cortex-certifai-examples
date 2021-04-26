@@ -1,0 +1,66 @@
+model_use_case:
+  author: info@cognitivescale.com
+  description: 'In this use case, each entry in the dataset represents attributes
+    of a de-identified individual. The learning task is predicting the income bracket
+    which has two possible values ">50K" and "<=50K" .
+
+
+    This dataset was sourced from UCI: https://archive.ics.uci.edu/ml/datasets/census+income
+
+    '
+  model_use_case_id: test/income
+  name: 'Finance: Income Prediction'
+  task_type: binary-classification
+
+evaluation:
+  description: This scan explains predictions made by the adult income model
+  evaluation_dataset_id: eval
+  explanation_dataset_id: explan
+  evaluation_types:
+  - explanation
+  feature_restrictions:
+  - feature_name: race
+    restriction_string: no changes
+  - feature_name: gender
+    restriction_string: no changes
+  - feature_name: marital-status
+    restriction_string: no changes
+  - feature_name: age
+    restriction_string: no changes
+  - feature_name: relationship
+    restriction_string: no changes
+  name: Counterfactual explanations for XGBoost model
+  prediction_description: Income >50K or <=50K
+  prediction_favorability: explicit
+  prediction_values:
+  - favorable: false
+    name: Income <=50K
+    value: 0
+  - favorable: true
+    name: Income >50K
+    value: 1
+
+models:
+- author: ''
+  description: XGBoost model
+  model_id: xgboost
+  name: XGBoost
+  supports_soft_scoring: true
+  predict_endpoint: http://127.0.0.1:8551/predict
+
+datasets:
+- dataset_id: eval
+  description: Full dataset
+  file_type: csv
+  has_header: true
+  name: Evaluation dataset
+  url: file:../../../../notebooks/datasets/adult_income_eval.csv
+- dataset_id: explan
+  description: Explanations dataset
+  file_type: csv
+  has_header: true
+  name: Explanations dataset
+  url: file:./explain.csv
+
+dataset_schema:
+  outcome_column: income

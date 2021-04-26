@@ -5,6 +5,9 @@
 - `kubectl`.
 - Private docker registry to push containerized image to.
 - A valid `kubeconfig` file with the current context activated.
+- To generate the deployment yaml using the provided template:
+  - Python 3, Jinja2 and PyYAML (`pip install Jinja2 PyYAML`)
+
 
 ## Step 1 - Push image to registry (private)
 The containerized image that has been built will need to be pushed to a private docker registry in order for the `k8s` cluster to pull it from.
@@ -24,7 +27,8 @@ docker push <your-private-registry-url>:<docker-image-with-tag>
 ```
 
 ## Step 2 - Update deployment configuration and credentials
-Update `MODEL_PATH`,  cloud storage credentials (e.g s3) and the `docker image` name in the `generated-container-model/deployment.yml` file.
+Update `MODEL_PATH`,  `METADATA_PATH`, cloud storage credentials (e.g s3)
+and the `docker image` name in the `generated-container-model/deployment.yml` file.
 Below is the snippet from `generated-container-model/deployment.yml` that needs to be updated:
 ```
 spec:
@@ -38,6 +42,8 @@ spec:
       env:
         - name: MODEL_PATH
           value: "s3://bucket/model.pkl"
+        - name: METADATA_PATH
+          value: "s3://bucket/metadata.yml"
         - name: BUCKET_ENDPOINT
           value: "<your-s3-bucket-endpoint>"
         - name: BUCKET_SECRET_KEY

@@ -13,7 +13,6 @@ CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
 def main():
-
     def create_directories(directory_list: list):
         for directory in directory_list:
             try:
@@ -28,146 +27,42 @@ def main():
                 'kwargs': {
                     'TARGET_DOCKER_IMAGE': args.target_docker_image
                 }
-            },
-            'deployment.yml': {
-                'exec_permission': False,
-                'kwargs': {
-                    'RESOURCE_NAME': args.k8s_resource_name,
-                    'NAMESPACE': args.k8s_namespace
-                }
             }
         }
         return file_metadata
 
-    def generate_proxy(file_metadata):
-        file_metadata.update({
-            'environment_proxy.yml': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-            'Dockerfile.proxy': {
-                'exec_permission': False,
-                'kwargs': {
-                    'BASE_DOCKER_IMAGE': args.base_docker_image
-                }
-            },
-            'proxy_service.py': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-            'requirements_proxy.txt': {
-                'exec_permission': False,
-                'kwargs': {}
-            }
-        })
-
-        directory_names = {'src'}
-        src_files = {'proxy_service.py'}
-
-        def apply_template(filename, exec_permission=False, **kwargs):
-            _template = env.get_template(filename)
+    def apply_template(env, filename, exec_permission=False, **kwargs):
+        _template = env.get_template(filename)
+        if kwargs is not None:
             rendered_template = _template.render(kwargs)
+        else:
+            rendered_template = _template
+        file_path = os.path.join(BASE_DIR, filename)
 
-            if filename in src_files:
-                file_path = os.path.join(BASE_DIR, 'src', 'prediction_service.py')
-            elif filename == 'Dockerfile.proxy':
-                file_path = os.path.join(BASE_DIR, 'Dockerfile')
-            elif filename == 'environment_proxy.yml':
-                file_path = os.path.join(BASE_DIR, 'environment.yml')
-            elif filename == 'requirements_proxy.txt':
-                file_path = os.path.join(BASE_DIR, 'requirements.txt')
-            else:
-                file_path = os.path.join(BASE_DIR, filename)
-            with open(file_path, 'w') as f:
-                f.write(rendered_template)
+        with open(file_path, 'w') as f:
+            f.write(rendered_template)
 
-            if exec_permission:
-                _st = os.stat(os.path.join(BASE_DIR, filename))
-                os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
+        if exec_permission:
+            _st = os.stat(os.path.join(BASE_DIR, filename))
+            os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
 
-        create_directories(list(directory_names))
-        # Templates
-        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
+    def apply_templates(template_path, file_metadata):
+        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, template_path))
         env = Environment(loader=file_loader)
-
         for filename, value in file_metadata.items():
-            apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
+            apply_template(env, filename, value.get('exec_permission'), **value.get('kwargs', {}))
 
-    def generate_r_model(file_metadata):
-        file_metadata.update({
-            'environment_R.yml': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-            'Dockerfile.R': {
-                'exec_permission': False,
-                'kwargs': {
-                    'BASE_DOCKER_IMAGE': args.base_docker_image
-                }
-            },
-            'prediction_service.R': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-            'run_server.R': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-            'requirements_bin_R.txt': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-            'requirements_src_R.txt': {
-                'exec_permission': False,
-                'kwargs': {}
-            },
-            'metadata_R.yml': {
-                'exec_permission': False,
-                'kwargs': {}
-            }
-        })
-
-        directory_names = {'src', 'model'}
-        src_files = {'prediction_service.R', 'run_server.R'}
-        model_files = {'metadata_R.yml'}
-
-        def apply_template(filename, exec_permission=False, **kwargs):
-            _template = env.get_template(filename)
-            rendered_template = _template.render(kwargs)
-
-            if filename in src_files:
-                file_path = os.path.join(BASE_DIR, 'src', filename)
-            elif filename in model_files:
-                file_path = os.path.join(BASE_DIR, 'model', 'metadata.yml')
-            elif filename == 'Dockerfile.R':
-                file_path = os.path.join(BASE_DIR, 'Dockerfile')
-            elif filename == 'environment_R.yml':
-                file_path = os.path.join(BASE_DIR, 'environment.yml')
-            elif '_R.txt' in filename:
-                file_path = os.path.join(BASE_DIR, filename)
-            else:
-                file_path = os.path.join(BASE_DIR, filename)
-            with open(file_path, 'w') as f:
-                f.write(rendered_template)
-
-            if exec_permission:
-                _st = os.stat(os.path.join(BASE_DIR, filename))
-                os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
-
+    def generate_base(model_type):
+        directory_names = {'src', 'model', 'templates'}
         create_directories(list(directory_names))
-        # Templates
-        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
-        env = Environment(loader=file_loader)
 
-        for filename, value in file_metadata.items():
-            apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
+        # Common templates
+        apply_templates('templates', generate_base_file_metadata())
 
-    def generate_python(file_metadata):
-
-        file_metadata.update({
+        # Model-specific templates
+        file_metadata = {
             'environment.yml': {
                 'exec_permission': False,
-                'kwargs': {}
             },
             'Dockerfile': {
                 'exec_permission': False,
@@ -175,112 +70,135 @@ def main():
                     'BASE_DOCKER_IMAGE': args.base_docker_image
                 }
             },
-            'prediction_service.py': {
+            'src/prediction_service.py': {
                 'exec_permission': False,
-                'kwargs': {}
+            },
+            'src/utils.py': {
+                'exec_permission': False,
             },
             'requirements.txt': {
                 'exec_permission': False,
-                'kwargs': {}
-            }
-        })
+            },
+            'model/metadata.yml': {
+                'exec_permission': False,
+            },
+        }
+        apply_templates(f'templates/{model_type}', file_metadata)
 
-        directory_names = {'src', 'model'}
-        src_files = {'prediction_service.py'}
-
-        def apply_template(filename, exec_permission=False, **kwargs):
-            _template = env.get_template(filename)
-            rendered_template = _template.render(kwargs)
-            file_path = os.path.join(BASE_DIR, 'src', filename) if filename in src_files else os.path.join(BASE_DIR, filename)
-            with open(file_path, 'w') as f:
-                f.write(rendered_template)
-
-            if exec_permission:
-                _st = os.stat(os.path.join(BASE_DIR, filename))
-                os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
-
+    def generate_proxy_base(model_type):
+        directory_names = {'src', 'templates'}
         create_directories(list(directory_names))
 
-        # Templates
-        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
-        env = Environment(loader=file_loader)
+        # Common templates
+        apply_templates('templates', generate_base_file_metadata())
 
-        for filename, value in file_metadata.items():
-            apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
-
-    def generate_h2o_mojo(file_metadata):
-
-        file_metadata.update({
-            'environment_h2o_mojo.yml': {
+        # Model-specific templates
+        file_metadata = {
+            'environment.yml': {
                 'exec_permission': False,
-                'kwargs': {}
             },
-            'Dockerfile.h2o_mojo': {
+            'Dockerfile': {
                 'exec_permission': False,
                 'kwargs': {
                     'BASE_DOCKER_IMAGE': args.base_docker_image
                 }
             },
-            'prediction_service_h2o_mojo.py': {
+            'src/prediction_service.py': {
                 'exec_permission': False,
-                'kwargs': {}
+            },
+            'requirements.txt': {
+                'exec_permission': False,
             }
-        })
+        }
+        apply_templates(f'templates/{model_type}', file_metadata)
 
-        directory_names = {'src', 'model', 'ext_packages', 'license'}
-        src_files = {'prediction_service_h2o_mojo.py'}
-
-        def apply_template(filename, exec_permission=False, **kwargs):
-            _template = env.get_template(filename)
-            rendered_template = _template.render(kwargs)
-
-            if filename in src_files:
-                file_path = os.path.join(BASE_DIR, 'src', 'prediction_service.py')
-            elif filename == 'Dockerfile.h2o_mojo':
-                file_path = os.path.join(BASE_DIR, 'Dockerfile')
-            elif filename == 'environment_h2o_mojo.yml':
-                file_path = os.path.join(BASE_DIR, 'environment.yml')
-            else:
-                file_path = os.path.join(BASE_DIR, filename)
-            with open(file_path, 'w') as f:
-                f.write(rendered_template)
-
-            if exec_permission:
-                _st = os.stat(os.path.join(BASE_DIR, filename))
-                os.chmod(os.path.join(BASE_DIR, filename), _st.st_mode | stat.S_IEXEC)
-
+    def generate_r_base(model_type):
+        directory_names = {'src', 'model', 'templates'}
         create_directories(list(directory_names))
-        # Templates
-        file_loader = FileSystemLoader(os.path.join(CURRENT_PATH, 'templates'))
-        env = Environment(loader=file_loader)
 
-        for filename, value in file_metadata.items():
-            apply_template(filename, value.get('exec_permission'), **value.get('kwargs'))
+        # Common templates
+        apply_templates('templates', generate_base_file_metadata())
+
+        # Model-specific templates
+        file_metadata = {
+            'environment.yml': {
+                'exec_permission': False,
+            },
+            'Dockerfile': {
+                'exec_permission': False,
+                'kwargs': {
+                    'BASE_DOCKER_IMAGE': args.base_docker_image
+                }
+            },
+            'src/run_server.R': {
+                'exec_permission': False,
+            },
+            'src/prediction_service.R': {
+                'exec_permission': False,
+            },
+            'requirements_bin.txt': {
+                'exec_permission': False,
+            },
+            'requirements_src.txt': {
+                'exec_permission': False,
+            },
+            'model/metadata.yml': {
+                'exec_permission': False,
+            },
+        }
+        apply_templates(f'templates/{model_type}', file_metadata)
+
+    def generate_python(model_type):
+        generate_base(model_type)
+
+    def generate_h2o_mojo(model_type):
+        generate_base(model_type)
+        extra_directory_names = {'ext_packages', 'license'}
+        create_directories(list(extra_directory_names))
+
+    def generate_r_model(model_type):
+        generate_r_base(model_type)
+
+    def generate_proxy(model_type):
+        generate_proxy_base(model_type)
 
     # Argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help='Directory name to be created for the containerized model.')
     parser.add_argument('--base-docker-image', help='Base docker image for the containerized model.')
     parser.add_argument('--target-docker-image', help='Target docker image to be built.')
-    parser.add_argument('--model-type', help='Type of model you want to generate the code. For e.g h20_mojo, python')
-    parser.add_argument('--k8s-resource-name', help='Name to be used as name in k8s resources (service, deployment, etc.).')
-    parser.add_argument('--k8s-namespace', help='Name to be used as namespace in k8s resources (service, deployment, etc.).')
+    parser.add_argument('--k8s-resource-name',
+                        help='Name to be used as name in k8s resources (service, deployment, etc.).')
+    parser.add_argument('--k8s-namespace',
+                        help='Name to be used as namespace in k8s resources (service, deployment, etc.).')
+    parser.add_argument('--model-type', help='Type of model you want to generate the code for. e.g h2o_mojo, python')
     args = parser.parse_args()
 
     # Base directory
     BASE_DIR = args.dir
+    model_type = args.model_type
+    valid_types = ['python', 'h2o_mojo', 'python_xgboost_dmatrix', 'r_model', 'proxy']
+    if model_type not in valid_types:
+        print(f"'--model-type' must be one of {valid_types}")
+        exit(1)
 
-    file_metadata = generate_base_file_metadata()
     if args.model_type == 'h2o_mojo':
-        generate_h2o_mojo(file_metadata)
-    elif args.model_type == 'proxy':
-        generate_proxy(file_metadata)
+        generate_h2o_mojo(model_type)
     elif args.model_type == 'r_model':
-        generate_r_model(file_metadata)
+        generate_r_model(model_type)
+    elif args.model_type == 'proxy':
+        generate_proxy(model_type)
     else:
-        generate_python(file_metadata)
+        generate_python(model_type)
 
-    # Copy readme into the generated directory
+    # Copy non-template files into the generated directory
+    additional_files = ['config_deploy.sh', 'template_deploy.py',
+                        'deployment_template.yml', 'deployment_config.yml']
+    for file in additional_files:
+        shutil.copyfile(os.path.join(CURRENT_PATH, 'templates', file),
+                        os.path.join(BASE_DIR, file))
+
+    # Copy readme files into the generated directory
     readme_files = ['README.md', 'DEPLOYMENT.md']
     for readme in readme_files:
         shutil.copyfile(os.path.join(CURRENT_PATH, readme), os.path.join(BASE_DIR, readme))

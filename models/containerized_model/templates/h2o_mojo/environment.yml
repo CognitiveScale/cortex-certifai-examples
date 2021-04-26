@@ -3,6 +3,7 @@
 
 # Default location for local model
 MODEL_PATH=model/pipeline.mojo
+METADATA_PATH=model/metadata.yml
 
   # S3 credentials
 # BUCKET_ENDPOINT=<your-s3-bucket-endpoint>
