@@ -1,0 +1,33 @@
+
+scikit_0.23:
+  deployment: scikit_0.23_deployment.yml
+  default_base_image:
+    name: python36_scikit
+    value: gcr.io/certifai-dev/certifai-model-container:1
+  available_base_images:
+  - name: python36_scikit
+    value: gcr.io/certifai-dev/certifai-model-container:1
+h2o_mojo:
+  deployment: h2o_mojo_deployment.yml
+  default_base_image:
+    name: h2o_dai
+    value: gcr.io/certifai-dev/certifai-h2o-model-container:1
+  available_base_images:
+  - name: h2o_dai
+    value: gcr.io/certifai-dev/certifai-h2o-model-container:1
+r_model:
+  deployment: r_model_deployment.yml
+  default_base_image:
+    name: r_model
+    value: gcr.io/certifai-dev/certifai-r-model-container:2
+  available_base_images:
+  - name: r_model
+    value: gcr.io/certifai-dev/certifai-r-model-container:2
+proxied_model:
+  deployment: hosted_model_proxy_deployment.yml
+  default_base_image:
+    name: certifai-proxy
+    value: gcr.io/certifai-dev/certifai-proxy-default:1
+  available_base_images:
+  - name: certifai-proxy
+    value: gcr.io/certifai-dev/certifai-proxy-default:1
