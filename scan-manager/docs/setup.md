@@ -26,9 +26,9 @@
 - Default `config.yaml` is provided inside `setup_artifacts/deployment` directory for initial setup
 - [Add](#adding-templates) corresponding templates for the given model types and base-image
 - Make sure to update the `license.txt` file for h2o-mojo in the `setup_artifacts/files` directory (when working with h2o-mojo models)
-- Run the `sh upload_artifact.sh <AWS_BUCKET>` script from the `setup_artifacts` directory   
-  to make the updated artifacts available for Scan Manager to get started
-- `AWS_BUCKET` is the same bucket configured when installing Scan Manager
+- Run the `sh upload_artifact.sh <END_POINT> <ACCESS_KEY> <SECRET_KEY> <BUCKET_NAME>` script from the `setup_artifacts` directory   
+  to make the updated artifacts available for Scan Manager to get started[Minio Client should be installed before running sh upload_artifact.sh]
+- `BUCKET_NAME` is the same bucket configured when installing Scan Manager
 - Use the Scan Manager App UI to create use-cases and run scans
 
   
