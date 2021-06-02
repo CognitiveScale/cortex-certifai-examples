@@ -19,6 +19,7 @@
 - Certifai Scan Manager artifacts:  
   - deployment  
   - files  
+- Minio Client(CLI) should be installed in local
   
 ## [Setup](#setup)
 - [Create and push base-images](#creating-base-images) to container registry for working with different model types (scikit, h2o, r etc.)
@@ -27,7 +28,7 @@
 - [Add](#adding-templates) corresponding templates for the given model types and base-image
 - Make sure to update the `license.txt` file for h2o-mojo in the `setup_artifacts/files` directory (when working with h2o-mojo models)
 - Run the `bash upload_artifact.sh <END_POINT> <ACCESS_KEY> <SECRET_KEY> <BUCKET_NAME>` script from the `setup_artifacts` directory   
-  to make the updated artifacts available for Scan Manager to get started[Minio Client should be installed before running sh upload_artifact.sh]
+  to make the updated artifacts available for Scan Manager to get started
 - `BUCKET_NAME` is the same bucket configured when installing Scan Manager
 - Use the Scan Manager App UI to create use-cases and run scans
 
