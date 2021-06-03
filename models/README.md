@@ -1,10 +1,10 @@
 # Cortex Certifai Models  
-  
+
 The *models* folder contains examples of using the Certifai Model SDK to  
-wrap trained models in a service  
+wrap trained models in a prediction service  
 that can be scanned using the Certifai scanner CLI. See the *notebooks* folder  
 for examples of scanning models in a Jupyter notebook using the Certifai API.  
-  
+
 
 ## Certifai Documentation
 
