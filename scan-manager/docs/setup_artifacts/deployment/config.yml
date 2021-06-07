@@ -23,7 +23,7 @@ r_model:
   available_base_images:
   - name: r_model
     value: c12e/cortex-certifai-model-r:v2
-hosted_model:
+proxied_model:
   deployment: hosted_model_proxy_deployment.yml
   default_base_image:
     name: certifai-proxy
