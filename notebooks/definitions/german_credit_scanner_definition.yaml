@@ -1,7 +1,3 @@
-scan:
-  output:
-    path: ../local_reports
-
 model_use_case:
   atx_performance_metric_name: Accuracy
   author: info@cognitivescale.com
