@@ -52,6 +52,8 @@ spec:
             - containerPort: 8551
               protocol: TCP
           env:
+            - name: METADATA_PATH
+              value: "{{METADATA_PATH}}"
             - name: MODEL_PATH
               value: "{{MODEL_PATH}}"
             - name: BUCKET_ENDPOINT
