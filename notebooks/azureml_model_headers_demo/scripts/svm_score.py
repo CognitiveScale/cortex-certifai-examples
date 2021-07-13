@@ -12,9 +12,12 @@ import traceback
 def init():
     global model
     global encoder
-    # AZUREML_MODEL_DIR is an environment variable created during deployment.
-    # It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
-    # For multiple models, it points to the folder containing all deployed models (./azureml-models)
+    """
+    AZUREML_MODEL_DIR is an environment variable created during deployment.
+    It is the path to the model folder (./azureml-models/$MODEL_NAME/$VERSION)
+    For multiple models, it points to the folder containing all deployed models (./azureml-models)
+    https://docs.microsoft.com/en-us/azure/machine-learning/how-to-deploy-advanced-entry-script#azureml_model_dir    
+    """
     model_dir = os.getenv("AZUREML_MODEL_DIR")
     # add the model.joblib file name to the model_path
     model_path = os.path.join(model_dir, os.listdir(model_dir)[0])
