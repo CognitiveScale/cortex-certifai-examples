@@ -5,7 +5,7 @@ metadata:
     app: {{RESOURCE_NAME}}
     certifai_model_use_case: {{MODEL_USE_CASE_ID}}
   name: {{RESOURCE_NAME}}
-  namespace: {{NAMESPACE}}
+  namespace: '{{NAMESPACE}}'
 spec:
   ports:
     - name: {{RESOURCE_NAME}}
@@ -26,7 +26,7 @@ metadata:
     app: {{RESOURCE_NAME}}
     certifai_model_use_case: {{MODEL_USE_CASE_ID}}
   name: {{RESOURCE_NAME}}
-  namespace: {{NAMESPACE}}
+  namespace: '{{NAMESPACE}}'
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
@@ -44,7 +44,7 @@ spec:
       labels:
         app: {{RESOURCE_NAME}}
       name: {{RESOURCE_NAME}}
-      namespace: {{NAMESPACE}}
+      namespace: '{{NAMESPACE}}'
     spec:
       containers:
         - image: {{IMAGE_NAME}}
