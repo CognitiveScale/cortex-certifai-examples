@@ -1,3 +1,7 @@
+model_use_case:
+  name: test_user_case
+  model_use_case_id: test_user_case
+  task_type: binary-classification
 evaluation:
   evaluation_dataset_id: evaluation
   evaluation_types:
@@ -26,10 +30,6 @@ datasets:
   file_type: csv
   delimiter: ','
   quote_character: '"'
-model_use_case:
-  name: test_user_case
-  model_use_case_id: test_user_case
-  task_type: binary-classification
 models:
 - model_id: logistic_regression
   name: logistic_regression
