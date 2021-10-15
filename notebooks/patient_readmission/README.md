@@ -22,7 +22,7 @@ Certifai to analyze the trust scores for the models:
 5. Investigate the trust scores in the [patient-readmission-trust-results.ipynb](patient-readmission-trust-results.ipynb) notebook.
 
 After at least completing steps 1 and 2 above, follow the steps below to use
-Certifai to explain a model via counterfactual sampling.
+Certifai to explain a model via counterfactual sampling. The following two notebooks require at least Certifai version of 1.3.13.
 
 6. Run two scans to explain a single model via counterfactual sampling using the [patient-readmission-sampling-scan.ipynb](patient-readmission-sampling-scan.ipynb) notebook. The first scan will have direct access to the model, whereas the second will only have the historical predictions from the model. The results can then be viewed in the Certifai Console.
 7. Investigate the explanations in the [patient-readmission-sampling-results.ipynb](patient-readmission-sampling-results.ipynb) notebook and compare the results between the two scans.
