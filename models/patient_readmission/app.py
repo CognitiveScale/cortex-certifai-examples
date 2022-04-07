@@ -7,6 +7,7 @@ from certifai.model.sdk import SimpleModelWrapper
 import pickle
 from clean_pipeline import CleanPipeline
 
+
 with open('readmission_mlp.pkl', 'rb') as f:
     saved = pickle.load(f)
     model = saved.get('model')
@@ -14,7 +15,3 @@ with open('readmission_mlp.pkl', 'rb') as f:
 
 app = SimpleModelWrapper(model=model, encoder=encoder)
 app.run(production=True)
-
-
-if __name__ == '__main__':
-    main()
