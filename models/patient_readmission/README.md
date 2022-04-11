@@ -43,8 +43,7 @@ python app.py
 The model is surfaced on endpoint `http://127.0.0.1:8551/predict`
 
 
-4. To test the model service and Certifai installation, in another terminal activate your Certifai toolkit
-environment and run the command:
+4. To test the model service and Certifai installation, in another terminal activate your Certifai toolkit environment and run the command:
 ```
 conda activate certifai
 certifai definition-test -f explain_def.yml
