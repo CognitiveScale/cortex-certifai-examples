@@ -60,6 +60,7 @@ def _map_diagnostics(df: pd.DataFrame):
 def _convert_to_diagnostic_mapped(dataset_filename: str, converted_filename: str) -> pd.DataFrame:
     df = pd.read_csv(dataset_filename)
     df = _map_diagnostics(df)
+    df['readmitted'] = np.where(df['readmitted']!='NO',1,0)
     df.to_csv(converted_filename, index=False)
     return df
 
@@ -86,7 +87,7 @@ def main():
     df_explain = df[:explain_size]
     df_explain.to_csv('diabetic_data_diagnostic_mapped_explain.csv', index=False)
 
-    y = np.where(df['readmitted']!='NO',1,0)
+    y = df['readmitted']
     df.drop('readmitted', axis=1, inplace=True)
 
     encoder = CleanPipeline()
