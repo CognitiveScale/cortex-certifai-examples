@@ -175,7 +175,7 @@ certifai console ./reports
 
 A scan definition for soft scoring model is provided in `german_credit_shap_explanation_scanner_definition.yaml`. It
 defines a scan that evaluates SHAP and Counterfactual Explanations for a soft model on a subsample 100 row of
-the [germanCreditDataset](#german-credit-example)
+the [German Credit dataset](#german-credit-example).
 
 1. To scan the model, first run the soft scoring model service:
     ```
