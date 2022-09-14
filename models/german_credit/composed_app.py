@@ -3,30 +3,32 @@ Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
 Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
 """
 
-from certifai.model.sdk import SimpleModelWrapper, ComposedModelWrapper
 import pickle
-with open('german_credit_dtree.pkl', 'rb') as f:
+
+from certifai.model.sdk import ComposedModelWrapper, SimpleModelWrapper
+
+with open('models/german_credit_dtree.pkl', 'rb') as f:
     saved = pickle.load(f)
     dtree_app = SimpleModelWrapper(
         model=saved.get('model'),
         encoder=saved.get('encoder', None)
     )
 
-with open('german_credit_logit.pkl', 'rb') as f:
+with open('models/german_credit_logit.pkl', 'rb') as f:
     saved = pickle.load(f)
     logit_app = SimpleModelWrapper(
         model=saved.get('model'),
         encoder=saved.get('encoder', None)
     )
 
-with open('german_credit_mlp.pkl', 'rb') as f:
+with open('models/german_credit_mlp.pkl', 'rb') as f:
     saved = pickle.load(f)
     mlp_app = SimpleModelWrapper(
         model=saved.get('model'),
         encoder=saved.get('encoder', None)
     )
 
-with open('german_credit_svm.pkl', 'rb') as f:
+with open('models/german_credit_svm.pkl', 'rb') as f:
     saved = pickle.load(f)
     svm_app = SimpleModelWrapper(
         model=saved.get('model'),
