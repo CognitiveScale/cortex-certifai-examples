@@ -4,12 +4,14 @@ Licensed under CognitiveScale Example Code License https://github.com/CognitiveS
 """
 
 import pickle
+
 import pandas as pd
+
 
 def main():
 
     # Load the trained model and its encoder
-    with open('german_credit_dtree.pkl', 'rb') as f:
+    with open('models/german_credit_dtree.pkl', 'rb') as f:
         saved = pickle.load(f)
         model = saved.get('model')
         encoder = saved.get('encoder', None)

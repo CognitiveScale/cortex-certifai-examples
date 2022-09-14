@@ -2,15 +2,17 @@
 Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
 Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
 """
-
-import time
-import random
+import os
 import pickle
+import random
+import time
 import warnings
+
 import numpy as np
 import pandas as pd
-from sklearn.model_selection import train_test_split
 from certifai.common.utils.encoding import CatEncoder
+from sklearn.model_selection import train_test_split
+
 # supress all warnings
 warnings.filterwarnings('ignore')
 
@@ -84,10 +86,12 @@ def main():
         print(f"Saved: {model_name}")
 
     # Save models as pickle files
-    pickle_model(dtree, encoder, 'Decision Tree', dtree_acc, 'Basic Decision Tree model', 'german_credit_dtree.pkl')
-    pickle_model(logit, encoder, 'LOGIT', logit_acc, 'Basic LOGIT model', 'german_credit_logit.pkl')
-    pickle_model(mlp, encoder, 'MLP', mlp_acc, 'Basic MLP model', 'german_credit_mlp.pkl')
-    pickle_model(SVM, encoder, 'SVM', svm_acc, 'Basic SVM model', 'german_credit_svm.pkl')
+    os.makedirs('models', exist_ok=True)
+    pickle_model(dtree, encoder, 'Decision Tree', dtree_acc, 'Basic Decision Tree model',
+                 'models/german_credit_dtree.pkl')
+    pickle_model(logit, encoder, 'LOGIT', logit_acc, 'Basic LOGIT model', 'models/german_credit_logit.pkl')
+    pickle_model(mlp, encoder, 'MLP', mlp_acc, 'Basic MLP model', 'models/german_credit_mlp.pkl')
+    pickle_model(SVM, encoder, 'SVM', svm_acc, 'Basic SVM model', 'models/german_credit_svm.pkl')
 
 
 if __name__ == "__main__":
