@@ -178,3 +178,25 @@ certifai console ./reports
     Response from shutdown: [200] Shutting down
     ```
    At the end of the tests, the service is shutdown using the `shutdown` endpoint.
+
+## Scan soft scoring models using CLI
+
+A scan definition for soft scoring model is provided in `german_credit_shap_explanation_scanner_definition.yaml`. It
+defines a scan that evaluates SHAP and Counterfactual Explanations for a soft model on a subsample 100 row of
+the [German Credit dataset](#german-credit-example).
+
+1. To scan the model, first run the soft scoring model service:
+    ```
+    python app_mlp_soft_scoring.py
+    ```
+
+2. In another terminal, run Certifai:
+    ```
+    certifai scan -f german_credit_shap_explanation_scanner_definition.yaml
+    ```
+   This will create scan reports in the `./reports` folder.
+
+3. To view the reports in the Certifai console:
+    ```
+    certifai console ./reports
+    ```
