@@ -21,9 +21,9 @@ with open('models/german_credit_dtree.pkl', 'rb') as f:
     encoder = saved.get('encoder', None)
 
 # columns are supported as a keyword argument
-# whereas all other arguments for `pandas.DataFrame()` can be set in the `df_kwargs` parameter
-app = PandasModelWrapper(columns=columns, model=model, encoder=encoder,
-                         df_kwargs={'dtype': 'float'})
+# whereas all other arguments for `pandas.DataFrame()` can be set in the `pandas_kwargs` parameter
+app = PandasModelWrapper(model=model, encoder=encoder,
+                         pandas_kwargs={'dtype': 'float', 'columns': columns})
 app.run()
 ```
 
