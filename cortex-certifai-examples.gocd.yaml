@@ -1,0 +1,63 @@
+format_version: 10
+common:
+  serviceBuild: &serviceBuild
+    - build:
+        clean_workspace: true
+        jobs:
+          Build:
+            elastic_profile_id: integrationTestAgent
+            environment_variables:
+              CERTIFAI_BRANCH: develop
+              SNYK_ORG: "certifai-sast-sca-develop" # TODO(LA): Not sure about this?
+            secure_variables:
+              SNYK_TOKEN: "AES:YPGwuiZCgnaozn08HsQ12w==:M3uKdrsaQnU95Idd/Kx20K7U8Is3l8vLqArd3yI8WFItdNfxgkjVsnPBrmhV/zuF"
+            tasks:
+              - fetch:
+                    pipeline: certifai-toolkit-rc
+                    stage: build
+                    job: build
+                    source: certifai_toolkit.zip
+                    is_file: yes
+              - script: |
+                  set -eux
+                  mkdir -p artifacts
+                  cp -f certifai_toolkit.zip artifacts/
+                  c12e-ci
+    - scan:
+        clean_workspace: true
+        environment_variables:
+          CERTIFAI_BRANCH: develop
+          SNYK_ORG: "certifai-sast-sca-develop" # TODO(LA): Not sure about this?
+        secure_variables:
+          SNYK_TOKEN: "AES:YPGwuiZCgnaozn08HsQ12w==:M3uKdrsaQnU95Idd/Kx20K7U8Is3l8vLqArd3yI8WFItdNfxgkjVsnPBrmhV/zuF"
+        tasks:
+          - script: |
+              set -eux
+              touch .snyk && echo "SNYK_TOKEN=${SNYK_TOKEN}" > .snyk
+              echo "SNYK_ORG=${SNYK_ORG}" >> .snyk
+              echo "TODO: Scanning!"
+pipelines:
+  cortex-certifai-examples-build:
+    group: certifai
+    materials:
+      cortex-certifai-examples:
+        git: git@github.com:CognitiveScale/cortex-certifai-examples.gocd.yaml
+        branch: 4602-prediction-service-python38 #master
+      certifai-toolkit:
+        pipeline: certifai-toolkit
+        stage: build
+    stages: *serviceBuild
+
+  # TODO: Do we need a PR pipeline?
+#  cortex-certifai-examples-pr:
+#    group: pull-requests
+#    label_template: ${COUNT}
+#    materials:
+#      cortex-certifai-examples:
+#        plugin_configuration:
+#          id: github.pr
+#          version: 1
+#        options:
+#          url: git@github.com:CognitiveScale/cortex-certifai-examples.git
+#          defaultBranch: master
+#      stages: *serviceBuild
