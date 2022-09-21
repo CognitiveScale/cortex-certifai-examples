@@ -13,11 +13,11 @@ common:
               SNYK_TOKEN: "AES:YPGwuiZCgnaozn08HsQ12w==:M3uKdrsaQnU95Idd/Kx20K7U8Is3l8vLqArd3yI8WFItdNfxgkjVsnPBrmhV/zuF"
             tasks:
               - fetch:
-                    pipeline: certifai-toolkit-rc
-                    stage: build
-                    job: build
-                    source: certifai_toolkit.zip
-                    is_file: yes
+                  pipeline: certifai-toolkit
+                  stage: build
+                  job: build
+                  source: certifai_toolkit.zip
+                  is_file: yes
               - script: |
                   set -eux
                   mkdir -p artifacts
