@@ -12,6 +12,9 @@ function activateConda(){
     eval "$(conda shell.bash hook)"
     conda create -n certifai python="${PYTHON_VERSION}" -y
     conda activate certifai
+    conda env list
+    which python
+    which pip
 }
 
 function installToolkit() {
