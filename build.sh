@@ -10,7 +10,7 @@ TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
 function activateConda(){
     set +u
     eval "$(conda shell.bash hook)"
-    conda env create -n certifai python="${PYTHON_VERSION}" -y
+    conda create -n certifai python="${PYTHON_VERSION}" -y
     conda activate certifai
 }
 
