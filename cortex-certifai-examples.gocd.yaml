@@ -41,8 +41,8 @@ pipelines:
     group: certifai
     materials:
       cortex-certifai-examples:
-        git: git@github.com:CognitiveScale/cortex-certifai-examples.gocd.yaml
-        branch: 4602-prediction-service-python38 #master
+        git: git@github.com:CognitiveScale/cortex-certifai-examples.git
+        branch: 4602-prediction-service-python38
       certifai-toolkit:
         pipeline: certifai-toolkit
         stage: build
