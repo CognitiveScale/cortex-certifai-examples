@@ -8,7 +8,6 @@ common:
             artifacts:
               - build:
                   source: artifacts/buildReport.txt
-            artifacts:
               - build:
                   source: artifacts/buildReport.json
             elastic_profile_id: integrationTestAgent
