@@ -1,4 +1,3 @@
-
 scikit_0.23:
   deployment: scikit_0.23_deployment.yml
   default_base_image:
