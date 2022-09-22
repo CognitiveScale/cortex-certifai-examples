@@ -25,7 +25,7 @@ common:
                   set -eux
                   mkdir -p artifacts
                   cp -f certifai_toolkit.zip artifacts/
-                  c12e-ci
+                  #c12e-ci
                   pip install jinja2
                   ./build.sh docker
     # TODO: should save images into a buildReport.json file and feed that to the certifai-snyk-scan pipeline

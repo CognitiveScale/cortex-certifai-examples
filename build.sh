@@ -150,6 +150,7 @@ case ${1-local} in
   activateConda
   installToolkit
   test
+  rm -rf ${TOOLKIT_WORK_DIR}
   ;;
  docker)
   PUSH_IMAGES=false # true
