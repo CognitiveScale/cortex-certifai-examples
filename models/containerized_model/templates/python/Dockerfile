@@ -11,9 +11,10 @@ COPY packages/all/cortex-certifai-model-sdk*.zip /tmp/
 COPY requirements.txt /tmp/
 
 RUN pip install --no-cache-dir \
-     $(find /tmp -name cortex-certifai-common-*.zip)[s3] \
+     $(find /tmp -name cortex-certifai-common-*.zip)[s3,gcp,azure] \
      $(find /tmp -name cortex-certifai-model*.zip)
 
+# TODO(LA): Update comment to mention, you can remove extra dependencies
 # To enable using gcp / azure cloud storage, uncomment the following lines
 #RUN pip install --no-cache-dir \
 #     $(find /tmp -name cortex-certifai-common-*.zip)[gcp] \

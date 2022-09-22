@@ -60,12 +60,27 @@ spec:
               value: "{{CERTIFAI_DATA_URL}}/{{MODEL_USE_CASE_ID}}/models/metadata.yml"
             - name: H2O_LICENSE_PATH
               value: "{{CERTIFAI_DATA_URL}}/files/license.txt"
+
+            # Credentials if using S3 (or Minio)
             - name: BUCKET_ENDPOINT
               value: "http://test-minio.default.svc.cluster.local:9000"
             - name: BUCKET_ACCESS_KEY
               value: "minio"
             - name: BUCKET_SECRET_KEY
               value: "minio123"
+            # Credentials for Azure Blob Storage
+            - name: AZURE_ACCOUNT_NAME
+              value: "account"
+            - name: AZURE_ACCOUNT_KEY
+              value: "accountkey"
+            - name: AZURE_SAS_TOKEN
+              value: "sas-token"
+            - name: AZURE_CONNECTION_STRING
+              value: ""
+            - name: AZURE_CUSTOM_DOMAIN
+              value: ""
+            - name: AZURE_ENDPOINT
+              value: ""
           resources:
             requests:
               memory: "1Gi"
