@@ -26,7 +26,10 @@ common:
                   mkdir -p artifacts
                   cp -f certifai_toolkit.zip artifacts/
                   c12e-ci
+                  echo $(PWD)
+                  ls -la
                   ./build.sh docker
+    # TODO: should save images into a buildReport.json file and feed that to the certifai-snyk-scan pipeline
     - scan:
         clean_workspace: true
         environment_variables:
