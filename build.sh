@@ -7,8 +7,8 @@ SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
 PYTHON_VERSION="3.8"
 ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
 TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
-WORK_DIR="/tmp/toolkit"
-PACKAGES_DIR="${WORK_DIR}/packages"
+TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
+PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
 TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
 BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
 function activateConda(){
@@ -22,14 +22,9 @@ function activateConda(){
 }
 
 function installToolkit() {
-  if [ ! -f "${TOOLKIT_PATH}" ]; then
-    echo "Certifai toolkit (ZIP) not found found! Toolkit is expected to be at ${TOOLKIT_PATH}"
-    exit 1
-  fi
+  extractToolkit
   local cwd="${PWD}"
-  rm -rf ${WORK_DIR}
-  unzip -d ${WORK_DIR} "${TOOLKIT_PATH}"
-  cd /tmp/toolkit
+  cd "${TOOLKIT_WORK_DIR}"
 
   conda install --file requirements.txt -y
   pip install $(find /tmp/toolkit/packages/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
@@ -38,7 +33,17 @@ function installToolkit() {
 }
 
 function getToolkitVersion() {
-  echo $(grep 'Scanner' < "${WORK_DIR}/version.txt"  | cut -d ' ' -f 3)
+  extractToolkit
+  echo $(grep 'Scanner' < "${TOOLKIT_WORK_DIR}/version.txt"  | cut -d ' ' -f 3)
+}
+
+function extractToolkit() {
+  if [ ! -f "${TOOLKIT_PATH}" ]; then
+    echo "Certifai toolkit (ZIP) not found found! Toolkit is expected to be at ${TOOLKIT_PATH}"
+    exit 1
+  fi
+  rm -rf ${TOOLKIT_WORK_DIR}
+  unzip -d ${TOOLKIT_WORK_DIR} "${TOOLKIT_PATH}"
 }
 
 function buildLocal() {
