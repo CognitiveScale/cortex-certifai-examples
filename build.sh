@@ -154,7 +154,7 @@ case ${1-local} in
   rm -rf ${TOOLKIT_WORK_DIR}
   ;;
  docker)
-  PUSH_IMAGES=false # true
+  PUSH_IMAGES=true
   build_model_deployment_base_images
   ;;
  *)
