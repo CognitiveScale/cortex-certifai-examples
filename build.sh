@@ -10,7 +10,7 @@ TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
 WORK_DIR="/tmp/toolkit"
 PACKAGES_DIR="${WORK_DIR}/packages"
 TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
-
+BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
 function activateConda(){
     set +u
     eval "$(conda shell.bash hook)"
@@ -41,16 +41,6 @@ function getToolkitVersion() {
   echo $(grep 'Scanner' < "${WORK_DIR}/version.txt"  | cut -d ' ' -f 3)
 }
 
-function build() {
-  PUSH_IMAGES=false
-  test
-  build_model_deployment_base_images
-  # TODO:
-  #  4) Might need to update this docs page to mention latest examples are Python 3.8, not 3.6 - https://cognitivescale.github.io/cortex-certifai/docs/enterprise/scan-manager/scan-manager-setup#add-base-images
-  #  5) Finish setting up and testing the pipeline
-  #  6) Check with Prajna for setting up snyk scanning
-}
-
 function buildLocal() {
   PUSH_IMAGES=false
   test
@@ -65,13 +55,16 @@ function build_model_deployment_base_images() {
    # TODO: The base image rocker/r-apt:bionic` is outdated, but the image fails to build when using
    # `rocker/r-ver:3.6.1` or `rocker/r-ver:latest` because `r-cran-aws.s3` is not found.
   _build_template "c12e/cortex-certifai-model-r:${VERSION}" r_model rocker/r-apt:bionic
+
+  #echo "{\"scikit\": \"c12e/cortex-certifai-model-scikit:${VERSION}\", \"h2o\": \"c12e/cortex-certifai-model-h2o-mojo:${VERSION}\", \"proxy\": \"c12e/cortex-certifai-model-h2o-mojo:${VERSION}\", \"r\": \"c12e/cortex-certifai-model-r:${VERSION}\" }" > "${BUILD_REPORT}"
+  printf "c12e/cortex-certifai-model-scikit:${VERSION}\nc12e/cortex-certifai-model-h2o-mojo:${VERSION}\nc12e/cortex-certifai-model-h2o-mojo:${VERSION}\nc12e/cortex-certifai-model-r:${VERSION}\n" > "${BUILD_REPORT}"
 }
 
 function _build_template() {
   # $1 image
   # $2 model-type
   # $3 base-image (optional)
-  local out_dir=/tmp/work
+ local out_dir=/tmp/work
   rm -rdf "${out_dir}"
   cd "${TEMPLATES_DIR}"
 
@@ -148,12 +141,16 @@ GIT_SHA=$(git log -1 --pretty=%h)
 VERSION="v4-${CERTIFAI_VERSION}"
 echo "##### BUILDING ${VERSION} ######"
 case ${1-local} in
- CI*)
+ CI)
   activateConda
   installToolkit
-  build
+  test
   ;;
-*)
- buildLocal
- ;;
+ docker)
+  PUSH_IMAGES=false # true
+  build_model_deployment_base_images
+  ;;
+ *)
+  buildLocal
+  ;;
 esac

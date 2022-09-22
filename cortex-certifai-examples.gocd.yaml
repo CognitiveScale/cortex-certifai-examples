@@ -5,6 +5,9 @@ common:
         clean_workspace: true
         jobs:
           Build:
+            artifacts:
+              - build:
+                  source: artifacts/buildReport.txt
             elastic_profile_id: integrationTestAgent
             environment_variables:
               CERTIFAI_BRANCH: develop
@@ -23,6 +26,7 @@ common:
                   mkdir -p artifacts
                   cp -f certifai_toolkit.zip artifacts/
                   c12e-ci
+                  ./build.sh docker
     - scan:
         clean_workspace: true
         environment_variables:
