@@ -2,10 +2,14 @@
 #
 ##
 
+PUSH_IMAGES=false
 SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
 PYTHON_VERSION="3.8"
 ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
 TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
+WORK_DIR="/tmp/toolkit"
+PACKAGES_DIR="${WORK_DIR}/packages"
+TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
 
 function activateConda(){
     set +u
@@ -22,32 +26,84 @@ function installToolkit() {
     echo "Certifai toolkit (ZIP) not found found! Toolkit is expected to be at ${TOOLKIT_PATH}"
     exit 1
   fi
-  rm -rdf /tmp/toolkit/
-  unzip -d /tmp/toolkit/ "${TOOLKIT_PATH}"
+  local cwd="${PWD}"
+  rm -rdf ${WORK_DIR}
+  unzip -d ${WORK_DIR} "${TOOLKIT_PATH}"
   cd /tmp/toolkit
 
   conda install --file requirements.txt -y
   pip install $(find /tmp/toolkit/packages/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
   pip install $(find /tmp/toolkit/packages/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
+  cd "${cwd}"
+}
+
+function getToolkitVersion() {
+  echo $(grep 'Scanner' < "${WORK_DIR}/version.txt"  | cut -d ' ' -f 3)
 }
 
 function build() {
-  testModels
-  testNotebooks
-  testTutorials
-
+  PUSH_IMAGES=false
+  test
+  _build_images
   # TODO:
-  #  1) build the containerized docker images for contents of 'templates/' check which are on the docs site first locally
-  #  2) check to see if looks similar to the previous version images
-  #  3) write pseudo logic for tagging the images
   #  4) Might need to update this docs page to mention latest examples are Python 3.8, not 3.6 - https://cognitivescale.github.io/cortex-certifai/docs/enterprise/scan-manager/scan-manager-setup#add-base-images
   #  5) Finish setting up and testing the pipeline
   #  6) Check with Prajna for setting up snyk scanning
-  cd models/containerized_model
 }
 
 function buildLocal() {
-  echo "TODO: build the containerized model - assume the toolkit located at toolkit dir"
+  PUSH_IMAGES=false
+  test
+  _build_images
+}
+
+function build_images() {
+  _build_template "c12e/cortex-certifai-model-scikit:${VERSION}" python
+  _build_template "c12e/cortex-certifai-model-h2o-mojo:${VERSION}" h2o_mojo
+  _build_template "c12e/cortex-certifai-hosted-model:${VERSION}" proxy
+
+   # TODO: The base image rocker/r-apt:bionic` is outdated, but the image fails to build when using
+   # `rocker/r-ver:3.6.1` or `rocker/r-ver:latest` because `r-cran-aws.s3` is not found.
+  _build_template "c12e/cortex-certifai-model-r:${VERSION}" r_model rocker/r-apt:bionic
+}
+
+function _build_template() {
+  # $1 image
+  # $2 model-type
+  # $3 base-image (optional)
+  local out_dir=/tmp/work
+  rm -rdf "${out_dir}"
+  cd "${TEMPLATES_DIR}"
+
+  local base_image="${3:-}"
+  if [ -z "$base_image" ]; then
+    ./generate.sh --target-docker-image "$1" \
+                --dir "${out_dir}" \
+                --model-type "$2"
+                # explicitly use default base image
+  else
+    ./generate.sh --target-docker-image "$1" \
+                --dir "${out_dir}" \
+                --model-type "$2" \
+                --base-docker-image "${base_image}"
+  fi
+
+  cp -r "${PACKAGES_DIR}" "${out_dir}"
+  cd "${out_dir}"
+  ./container_util.sh build
+
+  if [ "${PUSH_IMAGES}" = true ]; then
+    echo "Pushing images.."
+    docker push "$1"
+  else
+    echo "Skipping push.."
+  fi
+}
+
+function test() {
+  testModels
+  testNotebooks
+  testTutorials
 }
 
 function testModels() {
@@ -77,10 +133,19 @@ function testTutorials() {
 
 
 ### MAIN ####
-# TODO(LA): Need to decide on versioning strategy - going with manual (explicit updates so far)
+# TODO(LA): Need to decide on versioning strategy for model templates, part of the trouble here is that template images
+#  include the Certifai packages, so we should tag them in such a way to show that version.
+#
+# Current tagging strategy: `<version-counter>-<toolkit-version>`
+#
+#   `<version-counter>` is a running count we maintain based on Python version & other dependency versions
+#
+# Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
+#
 #VERSION=$(git describe --long --always --match='v*.*' | sed 's/v//; s/-/./')
+CERTIFAI_VERSION=$(getToolkitVersion)
 GIT_SHA=$(git log -1 --pretty=%h)
-VERSION="v4-${GIT_SHA}"
+VERSION="v4-${CERTIFAI_VERSION}"
 echo "##### BUILDING ${VERSION} ######"
 case ${1-local} in
  CI*)
