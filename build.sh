@@ -1,4 +1,4 @@
-#!/bin/bash -eux
+#!/bin/bash -eux -o pipefail
 #
 ##
 
@@ -27,8 +27,8 @@ function installToolkit() {
   cd "${TOOLKIT_WORK_DIR}"
 
   conda install --file requirements.txt -y
-  pip install $(find ${TOOLKIT_WORK_DIR}/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
-  pip install $(find ${TOOLKIT_WORK_DIR}/packages/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
+  pip install $(find ${PACKAGES_DIR}/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
+  pip install $(find ${PACKAGES_DIR}/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
   cd "${cwd}"
 }
 
