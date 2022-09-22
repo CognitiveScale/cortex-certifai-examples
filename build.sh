@@ -1,4 +1,4 @@
-#!/bin/bash -eux -o pipefail
+#!/bin/bash -eux
 #
 ##
 
