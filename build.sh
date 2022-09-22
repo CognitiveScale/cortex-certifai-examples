@@ -27,7 +27,7 @@ function installToolkit() {
     exit 1
   fi
   local cwd="${PWD}"
-  rm -rdf ${WORK_DIR}
+  rm -rf ${WORK_DIR}
   unzip -d ${WORK_DIR} "${TOOLKIT_PATH}"
   cd /tmp/toolkit
 
@@ -65,7 +65,7 @@ function _build_template() {
   # $2 model-type
   # $3 base-image (optional)
  local out_dir=/tmp/work
-  rm -rdf "${out_dir}"
+  rm -rf "${out_dir}"
   cd "${TEMPLATES_DIR}"
 
   local base_image="${3:-}"
