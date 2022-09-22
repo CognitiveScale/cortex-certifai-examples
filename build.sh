@@ -27,8 +27,8 @@ function installToolkit() {
   cd "${TOOLKIT_WORK_DIR}"
 
   conda install --file requirements.txt -y
-  pip install $(find /tmp/toolkit/packages/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
-  pip install $(find /tmp/toolkit/packages/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
+  pip install $(find ${TOOLKIT_WORK_DIR}/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
+  pip install $(find ${TOOLKIT_WORK_DIR}/packages/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
   cd "${cwd}"
 }
 
@@ -43,7 +43,7 @@ function extractToolkit() {
     exit 1
   fi
   rm -rf ${TOOLKIT_WORK_DIR}
-  unzip -d ${TOOLKIT_WORK_DIR} "${TOOLKIT_PATH}"
+  unzip -qq -d ${TOOLKIT_WORK_DIR} "${TOOLKIT_PATH}"
 }
 
 function buildLocal() {
@@ -69,7 +69,7 @@ function _build_template() {
   # $1 image
   # $2 model-type
   # $3 base-image (optional)
- local out_dir=/tmp/work
+  local out_dir=/tmp/work
   rm -rf "${out_dir}"
   cd "${TEMPLATES_DIR}"
 
