@@ -11,6 +11,7 @@ TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
 PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
 TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
 BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
+BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
 function activateConda(){
     set +u
     eval "$(conda shell.bash hook)"
@@ -34,7 +35,7 @@ function installToolkit() {
 
 function getToolkitVersion() {
   extractToolkit
-  echo $(grep 'Scanner' < "${TOOLKIT_WORK_DIR}/version.txt"  | cut -d ' ' -f 3)
+  echo $(grep 'Scanner' < "${TOOLKIT_WORK_DIR}/version.txt"  | grep Scanner | cut -d ':' -f 2 | tr -d ' ')
 }
 
 function extractToolkit() {
@@ -61,7 +62,7 @@ function build_model_deployment_base_images() {
    # `rocker/r-ver:3.6.1` or `rocker/r-ver:latest` because `r-cran-aws.s3` is not found.
   _build_template "c12e/cortex-certifai-model-r:${VERSION}" r_model rocker/r-apt:bionic
 
-  #echo "{\"scikit\": \"c12e/cortex-certifai-model-scikit:${VERSION}\", \"h2o\": \"c12e/cortex-certifai-model-h2o-mojo:${VERSION}\", \"proxy\": \"c12e/cortex-certifai-model-h2o-mojo:${VERSION}\", \"r\": \"c12e/cortex-certifai-model-r:${VERSION}\" }" > "${BUILD_REPORT}"
+  echo "{\"scikit\": \"c12e/cortex-certifai-model-scikit:${VERSION}\", \"h2o\": \"c12e/cortex-certifai-model-h2o-mojo:${VERSION}\", \"proxy\": \"c12e/cortex-certifai-model-h2o-mojo:${VERSION}\", \"r\": \"c12e/cortex-certifai-model-r:${VERSION}\" }" > "${BUILD_REPORT_JSON}"
   printf "c12e/cortex-certifai-model-scikit:${VERSION}\nc12e/cortex-certifai-model-h2o-mojo:${VERSION}\nc12e/cortex-certifai-model-h2o-mojo:${VERSION}\nc12e/cortex-certifai-model-r:${VERSION}\n" > "${BUILD_REPORT}"
 }
 
