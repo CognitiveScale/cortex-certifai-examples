@@ -44,7 +44,7 @@ function getToolkitVersion() {
 function build() {
   PUSH_IMAGES=false
   test
-  _build_images
+  build_model_deployment_base_images
   # TODO:
   #  4) Might need to update this docs page to mention latest examples are Python 3.8, not 3.6 - https://cognitivescale.github.io/cortex-certifai/docs/enterprise/scan-manager/scan-manager-setup#add-base-images
   #  5) Finish setting up and testing the pipeline
@@ -54,10 +54,10 @@ function build() {
 function buildLocal() {
   PUSH_IMAGES=false
   test
-  _build_images
+  build_model_deployment_base_images
 }
 
-function build_images() {
+function build_model_deployment_base_images() {
   _build_template "c12e/cortex-certifai-model-scikit:${VERSION}" python
   _build_template "c12e/cortex-certifai-model-h2o-mojo:${VERSION}" h2o_mojo
   _build_template "c12e/cortex-certifai-hosted-model:${VERSION}" proxy
