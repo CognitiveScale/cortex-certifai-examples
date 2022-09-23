@@ -10,7 +10,7 @@ common:
                   source: artifacts/buildReport.txt
               - build:
                   source: artifacts/buildReport.json
-            elastic_profile_id: integrationTestAgent
+            elastic_profile_id: gocd-test-agent-dind
             environment_variables:
               CERTIFAI_BRANCH: develop
             tasks:
