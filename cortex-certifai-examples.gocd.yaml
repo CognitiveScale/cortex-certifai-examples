@@ -49,9 +49,9 @@ common:
               set -x
 
               git clone git@github.com:CognitiveScale/gocd-pipeline-scripts.git
-              ./gocd-pipeline-scripts/common/submit-snyk-scan.sh monitor artifacts/buildReport.json ${SNYK_ORG}
+              ./gocd-pipeline-scripts/common/submit-snyk-scan.sh monitor buildReport.json ${SNYK_ORG}
 
-              ./gocd-pipeline-scripts/common/submit-snyk-scan.sh test artifacts/buildReport.json ${SNYK_ORG}
+              ./gocd-pipeline-scripts/common/submit-snyk-scan.sh test buildReport.json ${SNYK_ORG}
 pipelines:
   cortex-certifai-examples-build:
     group: certifai
