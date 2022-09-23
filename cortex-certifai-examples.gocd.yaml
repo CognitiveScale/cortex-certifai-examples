@@ -64,8 +64,8 @@ pipelines:
     secure_variables:
       SNYK_TOKEN: "AES:YPGwuiZCgnaozn08HsQ12w==:M3uKdrsaQnU95Idd/Kx20K7U8Is3l8vLqArd3yI8WFItdNfxgkjVsnPBrmhV/zuF"
     stages: 
-      - *serviceBuild
-      - *snykScan
+      - build: *serviceBuild
+      - scan: *snykScan
 
   # TODO: Do we need a PR pipeline?
 #  cortex-certifai-examples-pr:
