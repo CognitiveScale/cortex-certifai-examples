@@ -24,7 +24,7 @@ if [ "$1" = "" ]; then
 fi
 
 DEFAULT_DIR_NAME="generated-container-model"
-DEFAULT_BASE_IMAGE="python:3.8"
+DEFAULT_BASE_IMAGE="python:3.8-slim"
 DEFAULT_MODEL_TYPE="python"
 DEFAULT_OUTPUT_PATH="."
 DEFAULT_K8S_RESOURCE_NAME="container-model"

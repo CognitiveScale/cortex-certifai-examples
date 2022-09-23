@@ -6,8 +6,12 @@ FROM {{BASE_DOCKER_IMAGE}}
 
 WORKDIR /
 
-RUN pip install --no-cache-dir datatable==0.11.0
-RUN pip install --no-binary=protobuf protobuf==3.13.0
+# NOTE: If you are using a base image that does NOT include 'apt', then update the below RUN command to
+# use the package management tool available in the container to install any latest security updates.
+RUN apt update && apt upgrade -y
+
+RUN pip install --no-cache-dir datatable==0.11.0 && \
+    pip install --no-binary=protobuf protobuf==3.13.0
 
 COPY ext_packages /tmp/ext_packages
 COPY packages/all/cortex-certifai-common*.zip /tmp/
