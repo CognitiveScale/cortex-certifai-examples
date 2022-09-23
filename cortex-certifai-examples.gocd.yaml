@@ -29,20 +29,6 @@ common:
                   cp -f certifai_toolkit.zip artifacts/
                   pip install jinja2
                   ./build.sh docker
-    # TODO: should save images into a buildReport.json file and feed that to the certifai-snyk-scan pipeline
-    - scan:
-        clean_workspace: true
-        environment_variables:
-          CERTIFAI_BRANCH: develop
-          SNYK_ORG: "certifai-sast-sca-develop" # TODO(LA): Not sure about this?
-        secure_variables:
-          SNYK_TOKEN: "AES:YPGwuiZCgnaozn08HsQ12w==:M3uKdrsaQnU95Idd/Kx20K7U8Is3l8vLqArd3yI8WFItdNfxgkjVsnPBrmhV/zuF"
-        tasks:
-          - script: |
-              set -eux
-              touch .snyk && echo "SNYK_TOKEN=${SNYK_TOKEN}" > .snyk
-              echo "SNYK_ORG=${SNYK_ORG}" >> .snyk
-              echo "TODO: Scanning!"
 pipelines:
   cortex-certifai-examples-build:
     group: certifai
