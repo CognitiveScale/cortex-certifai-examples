@@ -4,7 +4,7 @@ WORKDIR /
 
 # NOTE: If you are using a base image that does NOT include 'apt', then update the below RUN command to
 # use the package management tool available in the container to install any latest security updates.
-RUN apt update && apt upgrade && \
+RUN apt update && apt upgrade -y && \
   apt install -y libxml2-dev
 
 COPY ./requirements_bin.txt /tmp/
