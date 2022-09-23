@@ -65,7 +65,7 @@ pipelines:
     environment_variables:
       SNYK_ORG: "certifai-gocd"
     secure_variables:
-      SNYK_TOKEN: "AES:YPGwuiZCgnaozn08HsQ12w==:M3uKdrsaQnU95Idd/Kx20K7U8Is3l8vLqArd3yI8WFItdNfxgkjVsnPBrmhV/zuF"
+      SNYK_TOKEN: "AES:PbCJwUjsSYf4Knu+NwAmhg==:2KuhQtOC4bAz6XhY573V9Ppnbjir10dz8fZBYQLAJkP8kYAkj5zu45dHx/knFCRm"
     stages: 
       - build: *serviceBuild
       - scan: *snykScan
