@@ -13,9 +13,6 @@ common:
             elastic_profile_id: integrationTestAgent
             environment_variables:
               CERTIFAI_BRANCH: develop
-              SNYK_ORG: "certifai-sast-sca-develop" # TODO(LA): Not sure about this?
-            secure_variables:
-              SNYK_TOKEN: "AES:YPGwuiZCgnaozn08HsQ12w==:M3uKdrsaQnU95Idd/Kx20K7U8Is3l8vLqArd3yI8WFItdNfxgkjVsnPBrmhV/zuF"
             tasks:
               - fetch:
                   pipeline: certifai-toolkit
@@ -23,6 +20,7 @@ common:
                   job: build
                   source: certifai_toolkit.zip
                   is_file: yes
+              # TODO: Run c12e-ci to test examples before building templates
               - script: |
                   set -eux
                   mkdir -p artifacts
