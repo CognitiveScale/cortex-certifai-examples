@@ -54,16 +54,21 @@ function buildLocal() {
 }
 
 function build_model_deployment_base_images() {
-  _build_template "c12e/cortex-certifai-model-scikit:${VERSION}" python
-  _build_template "c12e/cortex-certifai-model-h2o-mojo:${VERSION}" h2o_mojo
-  _build_template "c12e/cortex-certifai-hosted-model:${VERSION}" proxy
+  local scikit_image="c12e/cortex-certifai-model-scikit:${VERSION}"
+  local h2o_image="c12e/cortex-certifai-model-h2o-mojo:${VERSION}"
+  local proxy_image="c12e/cortex-certifai-hosted-model:${VERSION}"
+  local r_image="c12e/cortex-certifai-model-r:${VERSION}"
+
+  _build_template "${scikit_image}" python
+  _build_template "${h2o_image}" h2o_mojo
+  _build_template "${proxy_image}" proxy
 
    # TODO: The base image rocker/r-apt:bionic` is outdated, but the image fails to build when using
    # `rocker/r-ver:3.6.1` or `rocker/r-ver:latest` because `r-cran-aws.s3` is not found.
-  _build_template "c12e/cortex-certifai-model-r:${VERSION}" r_model rocker/r-apt:bionic
+  _build_template "${r_image}" r_model rocker/r-apt:bionic
 
-  echo "{\"scikit\": \"c12e/cortex-certifai-model-scikit:${VERSION}\", \"h2o\": \"c12e/cortex-certifai-model-h2o-mojo:${VERSION}\", \"proxy\": \"c12e/cortex-certifai-model-h2o-mojo:${VERSION}\", \"r\": \"c12e/cortex-certifai-model-r:${VERSION}\" }" > "${BUILD_REPORT_JSON}"
-  printf "c12e/cortex-certifai-model-scikit:${VERSION}\nc12e/cortex-certifai-model-h2o-mojo:${VERSION}\nc12e/cortex-certifai-model-h2o-mojo:${VERSION}\nc12e/cortex-certifai-model-r:${VERSION}\n" > "${BUILD_REPORT}"
+  echo "{\"scikit\": \"${scikit_image}\", \"h2o\": \"${h2o_image}\", \"proxy\": \"${proxy_image}\", \"r\": \"${r_image}\" }" > "${BUILD_REPORT_JSON}"
+  printf "${scikit_image}\n${h2o_image}\n${proxy_image}\n${r_image}\n" > "${BUILD_REPORT}"
 }
 
 function _build_template() {
