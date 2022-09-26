@@ -19,11 +19,11 @@ common:
               job: build
               source: certifai_toolkit.zip
               is_file: yes
-          # TODO: Run c12e-ci to test examples before building templates
           - script: |
               set -eux
               mkdir -p artifacts
               cp -f certifai_toolkit.zip artifacts/
+              c12e-ci
               pip install jinja2
               ./build.sh docker
   snykScan: &snykScan
