@@ -68,7 +68,7 @@ spec:
               value: "minio"
             - name: BUCKET_SECRET_KEY
               value: "minio123"
-            # Credentials for Azure Blob Storage
+            # Credentials if using Azure Blob Storage
             - name: AZURE_ACCOUNT_NAME
               value: "account"
             - name: AZURE_ACCOUNT_KEY
