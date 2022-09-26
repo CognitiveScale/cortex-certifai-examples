@@ -199,6 +199,7 @@ To deploy prediction services to a different namespace (for admins only):
 
   **Example**: If you are using Azure, then create secrets using the following commands:
   ```
+  kubectl create secret generic az-blob-account-name --from-literal=accountname=<ACCOUNT_NAME> -n <deployment-namespace>
   kubectl create secret generic az-blob-account-key --from-literal=accountkey=<ACCOUNT_KEY> -n <deployment-namespace>
   kubectl create secret generic az-blob-sas-token --from-literal=token=<SAS_TOKEN> -n <deployment-namespace>
   ```
@@ -297,6 +298,7 @@ Save object storge credentials to Kubernetes secrets.
 **Example**: If you are using Azure, then create secrets using the following commands:
 
   ```
+  kubectl create secret generic az-blob-account-name --from-literal=accountname=<ACCOUNT_NAME> -n <NAMESPACE>
   kubectl create secret generic az-blob-account-key --from-literal=accountkey=<ACCOUNT_KEY> -n <NAMESPACE>
   kubectl create secret generic az-blob-sas-token --from-literal=token=<SAS_TOKEN> -n <NAMESPACE>
   ```
