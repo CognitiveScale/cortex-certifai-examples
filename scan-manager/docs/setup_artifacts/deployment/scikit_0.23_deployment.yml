@@ -70,12 +70,6 @@ spec:
               value: "{{AZURE_ACCOUNT_KEY}}"
             - name: AZURE_SAS_TOKEN
               value: "{{AZURE_SAS_TOKEN}}"
-            - name: AZURE_CONNECTION_STRING
-              value: "{{AZURE_CONNECTION_STRING}}"
-            - name: AZURE_CUSTOM_DOMAIN
-              value: "{{AZURE_CUSTOM_DOMAIN}}"
-            - name: AZURE_ENDPOINT
-              value: "{{AZURE_ENDPOINT}}"
           resources:
             requests:
               memory: "1Gi"
