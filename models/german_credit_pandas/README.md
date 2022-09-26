@@ -11,19 +11,18 @@ the [german_credit/](../german_credit/README.md) example, the models trained in 
 The `PandasModelWrapper` wraps trained models, and allows for setting keyword arguments supported by the
 [pandas.DataFrame()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) constructor. 
 ```python
-from certifai.model.sdk import SimpleModelWrapper
+from certifai.model.sdk import PandasModelWrapper
 import pickle
 
-columns = [ ... ]  # define columns
 with open('models/german_credit_dtree.pkl', 'rb') as f:
-    saved = pickle.load(f)
-    model = saved.get('model')
-    encoder = saved.get('encoder', None)
+   saved = pickle.load(f)
+   model = saved.get('model')
+   encoder = saved.get('encoder', None)
+   columns = saved.get('columns')
 
-# columns are supported as a keyword argument
-# whereas all other arguments for `pandas.DataFrame()` can be set in the `df_kwargs` parameter
-app = PandasModelWrapper(columns=columns, model=model, encoder=encoder,
-                         df_kwargs={'dtype': 'float'})
+# Arguments for creating the DataFrame (`pandas.DataFrame()`) can be set in the `pandas_kwargs` parameter.
+app = PandasModelWrapper(model=model, encoder=encoder,
+                         pandas_kwargs={'columns': columns, 'dtype': 'float'})
 app.run()
 ```
 

@@ -22,7 +22,7 @@ with open('models/german_credit_mlp.pkl', 'rb') as f:
 # https://cognitivescale.github.io/cortex-certifai/docs/reference/api
 
 app = PandasModelWrapper(supports_soft_scores=True, model=model, encoder=encoder.transform, score_labels=[1, 2],
-                         endpoint_url='/german_credit_mlp/predict', columns=columns)
+                         endpoint_url='/german_credit_mlp/predict', pandas_kwargs={'columns': columns})
 
 # to start production ready gunicorn server use `production=True`
 app.run(production=True)

@@ -13,5 +13,5 @@ with open('models/german_credit_dtree.pkl', 'rb') as f:
     encoder = saved.get('encoder', None)
     columns = saved.get('columns')
 
-app = PandasModelWrapper(columns=columns, model=model, encoder=encoder.transform)
+app = PandasModelWrapper(model=model, encoder=encoder.transform, pandas_kwargs={'columns': columns})
 app.run()

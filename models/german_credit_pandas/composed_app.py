@@ -12,7 +12,7 @@ with open('models/german_credit_dtree.pkl', 'rb') as f:
     dtree_app = PandasModelWrapper(
         model=saved.get('model'),
         encoder=saved['encoder'].transform,
-        columns=saved['columns']
+        pandas_kwargs={'columns': saved['columns']}
     )
 
 with open('models/german_credit_logit.pkl', 'rb') as f:
@@ -20,7 +20,7 @@ with open('models/german_credit_logit.pkl', 'rb') as f:
     logit_app = PandasModelWrapper(
         model=saved.get('model'),
         encoder=saved['encoder'].transform,
-        columns=saved['columns']
+        pandas_kwargs={'columns': saved['columns']}
     )
 
 with open('models/german_credit_mlp.pkl', 'rb') as f:
@@ -28,7 +28,7 @@ with open('models/german_credit_mlp.pkl', 'rb') as f:
     mlp_app = PandasModelWrapper(
         model=saved.get('model'),
         encoder=saved['encoder'].transform,
-        columns=saved['columns']
+        pandas_kwargs={'columns': saved['columns']}
     )
 
 with open('models/german_credit_svm.pkl', 'rb') as f:
@@ -36,7 +36,7 @@ with open('models/german_credit_svm.pkl', 'rb') as f:
     svm_app = PandasModelWrapper(
         model=saved.get('model'),
         encoder=saved['encoder'].transform,
-        columns=saved['columns']
+        pandas_kwargs={'columns': saved['columns']}
     )
 
 composed_app = ComposedModelWrapper()
