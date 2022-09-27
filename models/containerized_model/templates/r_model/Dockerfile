@@ -2,14 +2,16 @@ FROM {{BASE_DOCKER_IMAGE}}
 
 WORKDIR /
 
-RUN apt-get update && \
-  apt-get install -y libxml2-dev
+# NOTE: If you are using a base image that does NOT include 'apt', then update the below RUN command to
+# use the package management tool available in the container to install any latest security updates.
+RUN apt update && apt upgrade -y && \
+  apt install -y libxml2-dev
 
 COPY ./requirements_bin.txt /tmp/
 COPY ./requirements_src.txt /tmp/
 
 #install package available as binaries
-RUN cat /tmp/requirements_bin.txt | xargs apt-get install -y -qq
+RUN cat /tmp/requirements_bin.txt | xargs apt install -y -qq
 
 #install non-binary package from source
 RUN Rscript /tmp/requirements_src.txt

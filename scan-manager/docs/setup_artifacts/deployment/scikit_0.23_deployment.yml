@@ -56,12 +56,20 @@ spec:
               value: "{{METADATA_PATH}}"
             - name: MODEL_PATH
               value: "{{MODEL_PATH}}"
+            # Credentials if using S3 (or Minio)
             - name: BUCKET_ENDPOINT
               value: "{{BUCKET_ENDPOINT}}"
             - name: BUCKET_ACCESS_KEY
               value: "{{BUCKET_ACCESS_KEY}}"
             - name: BUCKET_SECRET_KEY
               value: "{{BUCKET_SECRET_KEY}}"
+            # Credentials if using Azure Blob Storage
+            - name: AZURE_ACCOUNT_NAME
+              value: "{{AZURE_ACCOUNT_NAME}}"
+            - name: AZURE_ACCOUNT_KEY
+              value: "{{AZURE_ACCOUNT_KEY}}"
+            - name: AZURE_SAS_TOKEN
+              value: "{{AZURE_SAS_TOKEN}}"
           resources:
             requests:
               memory: "1Gi"

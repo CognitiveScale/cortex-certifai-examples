@@ -10,6 +10,7 @@ import shutil
 from jinja2 import FileSystemLoader, Environment
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
+VALID_TYPES = ['python', 'h2o_mojo', 'python_xgboost_dmatrix', 'r_model', 'proxy']
 
 
 def main():
@@ -171,15 +172,14 @@ def main():
                         help='Name to be used as name in k8s resources (service, deployment, etc.).')
     parser.add_argument('--k8s-namespace',
                         help='Name to be used as namespace in k8s resources (service, deployment, etc.).')
-    parser.add_argument('--model-type', help='Type of model you want to generate the code for. e.g h2o_mojo, python')
+    parser.add_argument('--model-type', choices=VALID_TYPES, help='Type of model you want to generate the code for. e.g h2o_mojo, python')
     args = parser.parse_args()
 
     # Base directory
     BASE_DIR = args.dir
     model_type = args.model_type
-    valid_types = ['python', 'h2o_mojo', 'python_xgboost_dmatrix', 'r_model', 'proxy']
-    if model_type not in valid_types:
-        print(f"'--model-type' must be one of {valid_types}")
+    if model_type not in VALID_TYPES:
+        print(f"'--model-type' must be one of {VALID_TYPES}")
         exit(1)
 
     if args.model_type == 'h2o_mojo':

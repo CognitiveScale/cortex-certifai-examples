@@ -1,0 +1,85 @@
+format_version: 10
+common:
+  serviceBuild: &serviceBuild
+    clean_workspace: true
+    jobs:
+      Build:
+        artifacts:
+          - build:
+              source: artifacts/buildReport.txt
+          - build:
+              source: artifacts/buildReport.json
+        elastic_profile_id: integrationTestAgent
+        environment_variables:
+          CERTIFAI_BRANCH: develop
+        tasks:
+          - fetch:
+              pipeline: certifai-toolkit
+              stage: build
+              job: build
+              source: certifai_toolkit.zip
+              is_file: yes
+          - script: |
+              set -eux
+              mkdir -p artifacts
+              cp -f certifai_toolkit.zip artifacts/
+              c12e-ci
+              pip install jinja2
+              ./build.sh docker
+  snykScan: &snykScan
+    clean_workspace: false
+    jobs:
+      Scan:
+        elastic_profile_id: gocd-test-agent-dind
+        tabs:
+          vulnReports: results.html
+        artifacts:
+          - build:
+              source: results.html
+          - build:
+              source: results.json
+        tasks:
+          - fetch:
+              pipeline: cortex-certifai-examples-build
+              stage: build
+              job: Build
+              source: buildReport.json
+              is_file: yes
+          - script: |
+              set -x
+
+              git clone git@github.com:CognitiveScale/gocd-pipeline-scripts.git
+              ./gocd-pipeline-scripts/common/submit-snyk-scan.sh monitor buildReport.json ${SNYK_ORG}
+
+              ./gocd-pipeline-scripts/common/submit-snyk-scan.sh test buildReport.json ${SNYK_ORG}
+pipelines:
+  cortex-certifai-examples-build:
+    group: certifai
+    materials:
+      cortex-certifai-examples:
+        git: git@github.com:CognitiveScale/cortex-certifai-examples.git
+        branch: master
+      certifai-toolkit:
+        pipeline: certifai-toolkit
+        stage: build
+    environment_variables:
+      SNYK_ORG: "certifai-gocd"
+    secure_variables:
+      SNYK_TOKEN: "AES:PbCJwUjsSYf4Knu+NwAmhg==:2KuhQtOC4bAz6XhY573V9Ppnbjir10dz8fZBYQLAJkP8kYAkj5zu45dHx/knFCRm"
+    stages: 
+      - build: *serviceBuild
+      - scan: *snykScan
+
+  # TODO: Do we need a PR pipeline?
+#  cortex-certifai-examples-pr:
+#    group: pull-requests
+#    label_template: ${COUNT}
+#    materials:
+#      cortex-certifai-examples:
+#        plugin_configuration:
+#          id: github.pr
+#          version: 1
+#        options:
+#          url: git@github.com:CognitiveScale/cortex-certifai-examples.git
+#          defaultBranch: master
+#      stages: *serviceBuild

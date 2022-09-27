@@ -10,7 +10,7 @@ target=${1:-local}
 
 THIS_DIR="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
 GEN_DIR="${THIS_DIR}/generated-container-model"
-PYTHON_VERSION=${PYTHON_VERSION:-3.6}  # or 3.7 or 3.8
+PYTHON_VERSION=${PYTHON_VERSION:-3.8}  # or 3.7 or 3.6
 NAMESPACE=certifai-models
 
 function base_setup() {
