@@ -105,7 +105,7 @@ At the end of the tests, the service is shutdown using the `shutdown` endpoint.
 ## Scan models using CLI
 
 A scan definition is provided in `german_credit_scanner_definition.yaml`. It defines a scan that evaluates robustness,
-fairness, explainability, performance and explanations for each of the models.
+fairness, explainability, performance, and explanations for each of the models.
 
 1. To scan the models, first run the composite service:
 
@@ -119,7 +119,7 @@ python composed_app.py
 certifai scan -f german_credit_scanner_definition.yaml
 ```
 
-This will create scan reports in the `./reports` folder.
+This creates scan reports in the `./reports` folder.
 
 3. To view the reports in the Certifai console:
 
@@ -138,7 +138,7 @@ You can also scan models from python using the Certifai API. The
 python explain.py
 ```
 
-This will create a scan report in the `./reports` folder containing explanations for the decision tree model.
+This creates a scan report in the `./reports` folder containing explanations for the decision tree model.
 
 2. To view the reports in the Certifai console:
 
@@ -149,13 +149,13 @@ certifai console ./reports
 ## Wrap a soft-scoring model as a service
 
 1. Soft Scoring MLP classifier model is trained as a part
-   of [Wrap a single model as a service](#wrap-a-single-model-as-a-service)
+   of [Wrap a single model as a service](#wrap-a-single-model-as-a-service).
 
 2. To wrap the model and run it as a service:
     ```
     python app_mlp_soft_scoring.py
     ```
-   The model is surfaced on endpoint `http://127.0.0.1:8551/german_credit_mlp/predict`
+   The model is surfaced on endpoint `http://127.0.0.1:8551/german_credit_mlp/predict`.
 
 3. To test the model service, in another terminal activate your Certifai toolkit environment and run the test script:
 
