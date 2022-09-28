@@ -58,7 +58,7 @@ pipelines:
     materials:
       cortex-certifai-examples:
         git: git@github.com:CognitiveScale/cortex-certifai-examples.git
-        branch: master
+        branch: pre-release
       certifai-toolkit:
         pipeline: certifai-toolkit
         stage: build
