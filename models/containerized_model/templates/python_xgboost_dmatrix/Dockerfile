@@ -6,18 +6,17 @@ FROM {{BASE_DOCKER_IMAGE}}
 
 WORKDIR /
 
+# NOTE: If you are using a base image that does NOT include 'apt', then update the below RUN command to
+# use the package management tool available in the container to install any latest security updates.
+RUN apt update && apt upgrade -y
+
 COPY packages/all/cortex-certifai-common*.zip /tmp/
 COPY packages/all/cortex-certifai-model-sdk*.zip /tmp/
 COPY requirements.txt /tmp/
 
 RUN pip install --no-cache-dir \
-     $(find /tmp -name cortex-certifai-common-*.zip)[s3] \
+     $(find /tmp -name cortex-certifai-common-*.zip)[s3,gcp,azure] \
      $(find /tmp -name cortex-certifai-model*.zip)
-
-# To enable using gcp / azure cloud storage, uncomment the following lines
-#RUN pip install --no-cache-dir \
-#     $(find /tmp -name cortex-certifai-common-*.zip)[gcp] \
-#     $(find /tmp -name cortex-certifai-common-*.zip)[azure]
 
 RUN pip install -r /tmp/requirements.txt
 

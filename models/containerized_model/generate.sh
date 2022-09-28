@@ -8,14 +8,14 @@
 SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
 
 function usage() {
-    echo "usage: ./generate.sh [options] [args]"
-    echo "Required:"
-    echo "\tTarget docker image to be built                      [-i | --target-docker-image]"
-    echo "Optional:"
-    echo "\tBase docker image to be used to build the image      [-b | --base-docker-image]"
-    echo "\tDirectory to be created                              [-d | --dir]"
-    echo "\tModel type for template e.g h2o_mojo                 [-m | --model-type]"
-    echo "\tPrint help                                           [-h | --help]"
+    printf "usage: ./generate.sh [options] [args]\n"
+    printf "Required:\n"
+    printf "\tTarget docker image to be built                      [-i | --target-docker-image]\n"
+    printf "Optional:\n"
+    printf "\tBase docker image to be used to build the image      [-b | --base-docker-image]\n"
+    printf "\tDirectory to be created                              [-d | --dir]\n"
+    printf "\tModel type for template e.g h2o_mojo                 [-m | --model-type]\n"
+    printf "\tPrint help                                           [-h | --help]\n"
 }
 
 if [ "$1" = "" ]; then
@@ -24,7 +24,7 @@ if [ "$1" = "" ]; then
 fi
 
 DEFAULT_DIR_NAME="generated-container-model"
-DEFAULT_BASE_IMAGE="python:3.6"
+DEFAULT_BASE_IMAGE="python:3.8-slim"
 DEFAULT_MODEL_TYPE="python"
 DEFAULT_OUTPUT_PATH="."
 DEFAULT_K8S_RESOURCE_NAME="container-model"
