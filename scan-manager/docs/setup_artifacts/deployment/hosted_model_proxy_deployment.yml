@@ -44,6 +44,8 @@ spec:
       name: {{RESOURCE_NAME}}
       namespace: '{{NAMESPACE}}'
     spec:
+      serviceAccountName: {{SERVICE_ACCOUNT_NAME}}
+      automountServiceAccountToken: false
       containers:
         - image: {{IMAGE_NAME}}
           imagePullPolicy: IfNotPresent
