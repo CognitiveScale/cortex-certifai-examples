@@ -1,17 +1,43 @@
-# German Credit Example
+# German Credit Example with Pandas
 
-This example uses the German Credit dataset originally sourced from [Kaggle](https://www.kaggle.com/uciml/german-credit)
-. This is a binary classification example.
+This example uses the German Credit dataset originally sourced from [Kaggle](https://www.kaggle.com/uciml/german-credit).
+This is a binary classification example.
 
 The example shows how to use the Certifai Model SDK to wrap trained models into services, so they can be scanned using
-the [Certifai toolkit](https://cognitivescale.github.io/cortex-certifai/docs/about).
+the [Certifai toolkit](https://cognitivescale.github.io/cortex-certifai/docs/about). Unlike
+the [german_credit/](../german_credit/README.md) example, the models trained in this example will accept as input a
+[pandas DataFrame](https://pandas.pydata.org/) by using the `PandasModelWrapper` implementation.
 
-Specifically, it shows how to use the Certifai toolkit to:
+The `PandasModelWrapper` wraps trained models, and allows for setting keyword arguments supported by the
+[pandas.DataFrame()](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html) constructor. 
+```python
+from certifai.model.sdk import PandasModelWrapper
+import pickle
 
-* Wrap a single model as a service.
-* Implement a composite service that wraps multiple models.
-* Scan the models using the Certifai CLI.
-* Scan a model using the Certifai Python API.
+with open('models/german_credit_dtree.pkl', 'rb') as f:
+   saved = pickle.load(f)
+   model = saved.get('model')
+   encoder = saved.get('encoder', None)
+   columns = saved.get('columns')
+
+# Arguments for creating the DataFrame (`pandas.DataFrame()`) can be set in the `pandas_kwargs` parameter.
+app = PandasModelWrapper(model=model, encoder=encoder,
+                         pandas_kwargs={'columns': columns, 'dtype': 'float'})
+app.run()
+```
+
+Refer to the [Certifai Model SDK API Reference](https://cognitivescale.github.io/cortex-certifai/docs/reference/api)
+for details.
+
+### Prerequisites
+
+1. Certifai Toolkit Version 1.3.15 or later.
+2. Install [sklearn-pandas](https://github.com/scikit-learn-contrib/sklearn-pandas).
+   The models are trained in [train_pandas.py](train_pandas.py), and use `sklearn-pandas` to bridge between
+   scikit-learn and pandas DataFrame.
+    ```commandline
+    pip install sklearn-pandas
+    ```
 
 ## Wrap a single model as a service
 
@@ -105,7 +131,7 @@ At the end of the tests, the service is shutdown using the `shutdown` endpoint.
 ## Scan models using CLI
 
 A scan definition is provided in `german_credit_scanner_definition.yaml`. It defines a scan that evaluates robustness,
-fairness, explainability, performance, and explanations for each of the models.
+fairness, explainability, performance and explanations for each of the models.
 
 1. To scan the models, first run the composite service:
 
@@ -119,28 +145,9 @@ python composed_app.py
 certifai scan -f german_credit_scanner_definition.yaml
 ```
 
-This creates scan reports in the `./reports` folder.
+This will create scan reports in the `./reports` folder.
 
 3. To view the reports in the Certifai console:
-
-```
-certifai console ./reports
-```
-
-## Scan models using API
-
-You can also scan models from python using the Certifai API. The
-`explain.py` script illustrates doing this in order to explain a set of predictions.
-
-1. To explain the predictions:
-
-```
-python explain.py
-```
-
-This creates a scan report in the `./reports` folder containing explanations for the decision tree model.
-
-2. To view the reports in the Certifai console:
 
 ```
 certifai console ./reports
@@ -149,13 +156,13 @@ certifai console ./reports
 ## Wrap a soft-scoring model as a service
 
 1. Soft Scoring MLP classifier model is trained as a part
-   of [Wrap a single model as a service](#wrap-a-single-model-as-a-service).
+   of [Wrap a single model as a service](#wrap-a-single-model-as-a-service)
 
 2. To wrap the model and run it as a service:
     ```
     python app_mlp_soft_scoring.py
     ```
-   The model is surfaced on endpoint `http://127.0.0.1:8551/german_credit_mlp/predict`.
+   The model is surfaced on endpoint `http://127.0.0.1:8551/german_credit_mlp/predict`
 
 3. To test the model service, in another terminal activate your Certifai toolkit environment and run the test script:
 
