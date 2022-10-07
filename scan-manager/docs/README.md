@@ -1,8 +1,16 @@
 # Scan Manager Setup
 
-Refer to the
-[Cortex Certifai documentation](https://cognitivescale.github.io/cortex-certifai/docs/enterprise/scan-manager/scan-manager-setup)
+Scan Manager provides Certifai users with an easy to use web-interface for configuring use cases and scans. Refer to the
+[Cortex Certifai documentation](https://cognitivescale.github.io/cortex-certifai/docs/enterprise/scan-manager/use-scan-manager)
 for more information on the Certifai Scan Manager.
+
+This guide is for system administrators who are configuring Scan Manager to work with Certifai Enterprise on a Kubernetes cluster.
+
+This document walks you through:
+
+1. Obtaining the setup artifacts (templates etc).
+2. Creating and pushing different model-type base images to your private registry.
+3. Adding the base images to templates.
 
 ## Index
 
@@ -32,46 +40,42 @@ for more information on the Certifai Scan Manager.
 
 ### [Templates and Files](#artifacts)
 
-<!-- This section describes the list of editable Scan Manager artifacts. -->
+This section describes the list of available editable Scan Manager templates and .yaml files that you use to set up Certifai Scan Manager.
 
-The artifacts define the set of model types available in Scan Manager. Each model type will have an associated YAML
-template file used to deploy the model in the Kubernetes, as well as a list of possible base images.
+The templates define the set of model types available in Scan Manager. Each model type will have an associated .yaml
+template file used to deploy the model in the Kubernetes, as well as a list of possible base images. The default
+artifacts include deployment templates and .yaml config file(s); and are provided inside the `setup_artifacts/` folder.
 
-The default artifacts include deployment templates and YAML config file(s); and are provided inside
-the `setup_artifacts/` directory.
+The `deployment` folder contains:
+- Deployment templates: `.yaml` templates that provide the configuration templates for deploying each of the specified model types on Kubernetes:
+    - `scikit_0.23`: Uses a `python3.8` base image with `scikit-learn v0.23` pre-installed.
+    - `h2o_mojo`: Uses a `python3.8` base image with `daimojo-2.4.8-cp36` whl pre-installed.
+    - `r_model`: Uses `rocker/r-ver:latest` base image with `r-cran-randomforest` pre-installed.
+    - `hosted_model`: Uses a `python3.8` base image for wrapping an already hosted model service.
+- `config.yml`: A .yaml file that lists discoverable model types (from above) along with corresponding base images. A
+  given model type can have more than one base image; this can be useful for managing conflicting dependencies.
 
-- `deployment`: A directory containing deployment templates. Deployment templates package dependencies for a given Model
-  Type in the base image.
-  - `<my_model>_deployment.yml`: A templated YAML file for deploying a given model type (`my_model`) where `<my_model>`
-    could be any of `scikit`, `r`, `h2o`, `xgboost`, etc.
-  - `config.yml`: A YAML file that lists discoverable model types (from above) along with corresponding base images. A
-    given model type can have more than one base image; this can be useful for managing conflicting dependencies.
-- `files` : A directory with additional files (e.g. license.txt) required to invoke for instance h2o driver-less AI
-  model.
+The `files` folder contains additional files required to invoke your model. For example, you should include a
+`license.txt` file if you are working with a h2o driver-less AI model.
 
-The default templates include the following model types:
-
-- `scikit_0.23`: Uses a `python3.8` base image with `scikit-learn v0.23` pre-installed.
-- `h2o_mojo`: Uses a `python3.8` base image with `daimojo-2.4.8-cp36` whl pre-installed.
-- `r_model`: Uses `rocker/r-ver:latest` base image with `r-cran-randomforest` pre-installed.
-- `hosted_model`: Uses a `python3.8` base image for wrapping an already hosted model service.
+The `k8s_definitions` folder contains:
+- `scan-manager-configmap.yaml`: This file is used to configure Kubernetes parameters like [scan concurrency](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/cli-usage/remote-scan-management#concurrency-value), [cpu, and memory resource requests](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/cli-usage/remote-scan-management#required-cpu-and-memory).
 
 ## [Setup](#setup)
 
 The below steps list the high level steps for setting up the Scan Manager artifacts. Refer to the below sections for
-more details, as well as the
-[Cortex Certifai documentation](https://cognitivescale.github.io/cortex-certifai/docs/enterprise/scan-manager/scan-manager-setup)
-.
+more details, as well as the [Cortex Certifai documentation](https://cognitivescale.github.io/cortex-certifai/docs/enterprise/scan-manager/scan-manager-setup).
+If you only intend on using the default artifacts, then refer to [these instructions](#using-default-artifacts) instead.
 
-- [Create and push base images](#creating-base-images) to the container registry configured for use with your cluster.
+1. [Create and push base images](#creating-base-images) to the container registry configured for use with your cluster.
   These base images will be used for working with different model types (e.g. scikit, h2o, r, proxy).
-- [Add the base image](#adding-base-image) created from the previous step to a model type in the `config.yaml` file. A
+1. [Add the base image](#adding-base-image) created from the previous step to a model type in the `config.yaml` file. A
   default `config.yaml` is provided inside the `setup_artifacts/deployment` directory for initial setup.
-- [Add a deployment template](#adding-templates) file to the `setup_artifacts/deployments/` directory for a given model
+1. [Add a deployment template](#adding-templates) file to the `setup_artifacts/deployments/` directory for a given model
   type.
-- (Optional) Make sure to update the `license.txt` file for h2o-mojo in the `setup_artifacts/files` directory, if you
+1. (Optional) Make sure to update the `license.txt` file for h2o-mojo in the `setup_artifacts/files` directory, if you
   are working with `h2o-mojo` models.
-- Upload the Certifai Scan Manager setup artifacts to the object storage dedicated to the Certifai Scan Manager. Scripts
+1. Upload the Certifai Scan Manager setup artifacts to the object storage dedicated to the Certifai Scan Manager. Scripts
   are provided in the `setup_artifacts/` directory for uploading these artifacts.
 
   * If you are using an S3 compatible object storage, then run the following command from the `setup_artifacts/`
@@ -104,7 +108,34 @@ more details, as well as the
     a [shared access signature (SAS)](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview)
     that grants access to Azure storage container, and it wrapped in quotes in the example to avoid any word-splitting
     or character expansion.
-- Use the Certifai Scan Manager application to create use-cases and run scans.
+1. Use the Certifai Scan Manager application to create use-cases and run scans.
+
+### [Using Default Artifacts](#using-default-artifacts)
+
+If you intend to use the default artifacts available under `setup_artifacts/` for setting up the Scan Manager without
+creating any new bases images, then you should:
+1. Ensure the Docker images included in the `setup_artifacts/deployment/config.yml` exist in the container registry
+  configured for use with Certifai Enterprise.
+   - Pull the Docker images listed in the `config.yml` from Dockerhub.
+
+     Example:
+     ```commandline
+     docker pull c12e/cortex-certifai-model-scikit:v4-1.3.15-91-g57d0d29d
+     ```
+   - Tag the image, so it can be pushed to your container registry.
+
+     Example:
+     ```commandline
+     docker tag c12e/cortex-certifai-model-scikit:v4-1.3.15-91-g57d0d29d  gcr.io/certifai/cortex-certifai-model-scikit:v4-1.3.15-91-g57d0d29d
+     ```
+  - Push the image to your container registry.
+
+     Example:
+     ```commandline
+     docker push gcr.io/certifai/cortex-certifai-model-scikit:v4-1.3.15-91-g57d0d29d
+     ```
+2. Follow steps (4) to (6) in the [setup](#setup) instructions to be finish the setup.
+
 
 ### [Creating base images](#creating-base-images)
 
@@ -112,8 +143,8 @@ Base images are containers with pre-installed dependencies required to run model
 images for the above templates:
 
 - Follow the instructions to
-  [generate a template](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/containerized_model#step-1---template-generation-1)
-  . This will create a template directory structure for a specific model type.
+  [generate a template](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/containerized_model#step-1---template-generation-1).
+  This will create a template directory structure for a specific model type.
 - Copy the Certifai Certifai toolkit packages (required) and any additional packages to the template directory created
   in the previous step, as
   described [here](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/containerized_model#step-2---copy-artifacts)
