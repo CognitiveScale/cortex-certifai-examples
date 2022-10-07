@@ -17,12 +17,13 @@ This document walks you through:
 - [Pre-requisites](#pre-requisites)
   - [Templates and Files](#artifacts)
 - [Setup](#setup)
+  - [Using default artifacts](#using-default-artifacts)
   - [Creating base-images](#creating-base-images)
   - [Adding base images](#adding-base-images)
   - [Updating base images](#updating-base-images)
   - [Adding templates](#adding-templates)
   - [Deploying prediction service to a different namespace](#multiple-namespace-support)
-  - [Kube Setup](#kube-setup)
+  - [Kubernetes Setup](#kubernetes-setup)
 
 ## [Pre-requisites](#pre-requisites)
 
@@ -108,6 +109,7 @@ If you only intend on using the default artifacts, then refer to [these instruct
     a [shared access signature (SAS)](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview)
     that grants access to Azure storage container, and it wrapped in quotes in the example to avoid any word-splitting
     or character expansion.
+1. Follow the [Kubernetes Setup](#kubernetes-setup) instructions to complete the Scan Manager setup.
 1. Use the Certifai Scan Manager application to create use-cases and run scans.
 
 ### [Using Default Artifacts](#using-default-artifacts)
@@ -115,7 +117,7 @@ If you only intend on using the default artifacts, then refer to [these instruct
 If you intend to use the default artifacts available under `setup_artifacts/` for setting up the Scan Manager without
 creating any new bases images, then you should:
 1. Ensure the Docker images included in the `setup_artifacts/deployment/config.yml` exist in the container registry
-  configured for use with Certifai Enterprise.
+  configured for use with Certifai Enterprise. If you need to copy the images to your container registry:
    - Pull the Docker images listed in the `config.yml` from Dockerhub.
 
      Example:
@@ -134,7 +136,7 @@ creating any new bases images, then you should:
      ```commandline
      docker push gcr.io/certifai/cortex-certifai-model-scikit:v4-1.3.15-91-g57d0d29d
      ```
-2. Follow steps (4) to (6) in the [setup](#setup) instructions to be finish the setup.
+2. Follow steps (4) to (7) in the [setup](#setup) instructions to be finish the setup.
 
 
 ### [Creating base images](#creating-base-images)
@@ -279,7 +281,7 @@ Edit `namespace` fields in the above snippet as needed.
 
 Now, creating a new usecase with Scan Manager will create prediction services in `<deployment-namespace>` namespace.
 
-### [Kube Setup](#kube-setup)
+### [Kubernetes Setup](#kubernetes-setup)
 
 To configure Scan Manager:
 
