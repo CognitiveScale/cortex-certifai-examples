@@ -2,6 +2,7 @@
 
 ## Index
 - [Pre-requisites](#pre-requisites)
+- [Overview](#overview)
 - [H2O Mojo Template](#h2o-mojo-template)
 - [Python Template](#python-template)
 - [Proxy Template](#proxy-template)
@@ -18,6 +19,30 @@
     - To generate the template: python & Jinja2 (`pip install -U Jinja2`)
     - To build/run the image: Docker
 
+## [Overview](#overview)
+
+To generate the code templates for the existing model base images in [this repo](https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/scan-manager/docs/setup_artifacts/deployment):
+
+  | Model-type | Generate command to run |
+  | --- | --- |
+  | H2O Mojo | `./generate.sh -i certifai-model-container:latest -m h2o_mojo` |
+  | Python | `./generate.sh -i certifai-model-container:latest -m python` |
+  | Proxy |  `./generate.sh -i certifai-proxy-container:latest -m proxy` |
+  | R | `./generate.sh -i  certifai-model-container:latest -m r_model -b rocker/r-apt:bionic` |
+
+  Each command will create a folder named `generated-container-model` in your current directory with the generated code
+  for containerization of your model. The template generated from the above commands is designed to work with
+  standard [scikit-learn, XGBClassifier or XGBRegressor models](python-template), [H2O MOJO](#h2o-mojo-template),
+  and [R based models](#r-model-template).
+
+  For an xgboost model using DMatrix, replace `-m python` with  `-m python_xgboost_dmatrix`.
+
+  For additional `generate` options run:
+  ```
+  ./generate.sh --help
+  ```
+
+  Refer to the below sections for further instructions on containerizing your model.
 
 ## [H2O Mojo Template](#h2o-mojo-template)
 ### Step 1 - Template generation

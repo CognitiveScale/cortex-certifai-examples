@@ -155,8 +155,21 @@ images for the above templates:
   for your model type.
 - [Push the image](https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/models/containerized_model/DEPLOYMENT.md#step-1---push-image-to-registry-private)
   to the private registry configured for use with your cluster.
+  - Make sure you have write-access to the registry and that you are authenticated to it.
+    - Tag the Docker image.
+      ```
+      docker tag <docker-image> <your-private-registry-url>:<docker-image-with-tag>
+      ```
+    - To push the image to your private Docker registry run:
+      ```
+      docker push <your-private-registry-url>:<docker-image-with-tag>
+      ```
+      Your private registry must be accessible to the deployed instance of Certifai Scan Manager.
 
 **NOTE**: The private registry must be accessible to the deployed instance of Certifai Scan Manager.
+
+**NOTE**: To deploy the prediction service outside of scan manager set cloud storage credentials, `MODEL_PATH`, and (if
+    needed) `H2O_LICENSE_PATH` in the `generated-container-model/environment.yml` file.
 
 ### [Adding base images](#adding-base-images)
 
@@ -202,16 +215,41 @@ To update base image of a given model type:
 
 ### [Adding templates](#adding-templates)
 
-To add a new deployment template corresponding to a new model type:
+You can create and upload additional templates to your dedicated object storage any time.
 
-- Create new template by copying a similar default template inside deployment directory and name it accordingly.
-- Add or update any environment variables that the model service deployment may require.
-- Environment variables are injected when service is deployed. Refer to the below guide on scan manager secrets.
-- Update the `<model_type>.deployment` value in `config.yml` to the deployment filename created above.
-- Make sure to [add corresponding base images](#adding-base-images) to private registry.
-- Refer
-  to [template-creation](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/containerized_model#python-template)
-  docs for generating custom templates for different model types.
+**NOTE**: Containerized models must be compatible with the configured prediction service image in two ways:
+- The model artifact must work with the installed library versions for the selected model type and image.
+
+  For example, the default scikit prediction service image includes a specific version of scikit-learn, pandas, and numpy. However, each installation may have its own model type and images. Your MLOps team can provide this information.
+
+- The way the model has been saved to file must be compatible with the way the prediction service loads it.
+
+  For example, the default python prediction service images provided with Certifai expect the model to have been saved as a dictionary using code similar to:
+    ```
+    import pickle
+
+    model_obj = {
+       'model': dtree,
+       # If the model does its own encoding, you can omit the encoder below
+       'encoder': encoder
+    }
+    with open('dtree_model.pkl', 'wb') as file:
+       pickle.dump(model_obj, file)
+  ```
+
+To create a new template to correspond with a new model type refer to the [template creation instructions](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/models/containerized_model).
+
+To use an existing template for a new model_type:
+
+1. Copy a similar template from the [setup_artifacts directory](https://github.com/CognitiveScale/cortex-certifai-examples/tree/master/scan-manager/docs/setup_artifacts/)
+2. Rename it to reflect the model type.
+3. Add or update environment variables that the model service deployment requires. Environment variables are injected when a service is deployed.
+4. Update `<model_type>.deployment` value in `config.yml` file (described [here](/enterprise/scan-manager/scan-manager-setup.md#add-base images)) to the filename you created above. ([config.yml example](https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/scan-manager/docs/setup_artifacts/deployment/config.yml))
+5. Save the file to your local version of the templates and files. Keep the deployment file and template file in the same directory.
+6. Use the shell script `bash upload_artifact.sh <END_POINT> <ACCESS_KEY> <SECRET_KEY> <BUCKET_NAME>` to upload the new template to your Scan Manager registry (`<AWS_BUCKET>`).
+7. Add the corresponding base images to the registry. (Follow instructions below.)
+
+Refer to the [guide on Model Secrets](https://cognitivescale.github.io/cortex-certifai/docs/enterprise/model-secrets).
 
 ### [Deploying prediction service to a different namespace](#multiple-namespace-support)
 
