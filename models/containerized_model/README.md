@@ -31,7 +31,7 @@ To generate the code templates for the existing model base images in [this repo]
   | R | `./generate.sh -i  certifai-model-container:latest -m r_model -b rocker/r-apt:bionic` |
 
   Each command will create a folder named `generated-container-model` in your current directory with the generated code
-  for containerization of your model. The template generated from the above commands is designed to work with
+  for the containerization of your model. The template generated from the above commands is designed to work with
   standard [scikit-learn, XGBClassifier or XGBRegressor models](python-template), [H2O MOJO](#h2o-mojo-template),
   and [R based models](#r-model-template).
 
