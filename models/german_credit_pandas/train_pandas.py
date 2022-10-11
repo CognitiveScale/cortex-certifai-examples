@@ -1,5 +1,5 @@
 """
-Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+Copyright (c) 2022. Cognitive Scale Inc. All rights reserved.
 Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
 """
 import os
@@ -10,8 +10,9 @@ import warnings
 
 import numpy as np
 import pandas as pd
-from certifai.common.utils.encoding import CatEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+from sklearn_pandas import DataFrameMapper
 
 # supress all warnings
 warnings.filterwarnings('ignore')
@@ -22,7 +23,8 @@ def main():
     np.random.seed(0)
 
     # Load dataset
-    data = pd.read_csv('german_credit_eval.csv')
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    data = pd.read_csv(os.path.join(current_dir, '..', 'german_credit', 'german_credit_eval.csv'))
 
     # Separate outcome
     y = data['outcome']
@@ -48,9 +50,14 @@ def main():
         'telephone',
         'foreign'
     ]
-    encoder = CatEncoder(cat_columns, x, normalize=True)
-    encoded_x_train = encoder(x_train.values)
-    encoded_x_test = encoder(x_test.values)
+    num_columns = [c for c in x.columns if c not in cat_columns]
+    cat_column_transform = [([c], OneHotEncoder()) for c in cat_columns]
+    num_column_transform = [([c], StandardScaler()) for c in num_columns]
+
+    # One-hot encode and normalize columns
+    encoder = DataFrameMapper(cat_column_transform + num_column_transform, df_out=True)
+    encoded_x_train = encoder.fit_transform(x_train)
+    encoded_x_test = encoder.transform(x_test)
 
     # Train a decision tree model
     from sklearn.tree import DecisionTreeClassifier
@@ -80,15 +87,14 @@ def main():
     def pickle_model(model, encoder, model_name, test_accuracy, description, filename):
         model_obj = {'model': model, 'encoder': encoder, 'name': model_name,
                      'description': description, 'test_acc': test_accuracy,
-                     'created': int(time.time())}
+                     'created': int(time.time()), 'columns': x.columns.tolist() }
         with open(filename, 'wb') as file:
             pickle.dump(model_obj, file)
         print(f"Saved: {model_name}")
 
     # Save models as pickle files
     os.makedirs('models', exist_ok=True)
-    pickle_model(dtree, encoder, 'Decision Tree', dtree_acc, 'Basic Decision Tree model',
-                 'models/german_credit_dtree.pkl')
+    pickle_model(dtree, encoder, 'Decision Tree', dtree_acc, 'Basic Decision Tree model', 'models/german_credit_dtree.pkl')
     pickle_model(logit, encoder, 'LOGIT', logit_acc, 'Basic LOGIT model', 'models/german_credit_logit.pkl')
     pickle_model(mlp, encoder, 'MLP', mlp_acc, 'Basic MLP model', 'models/german_credit_mlp.pkl')
     pickle_model(SVM, encoder, 'SVM', svm_acc, 'Basic SVM model', 'models/german_credit_svm.pkl')

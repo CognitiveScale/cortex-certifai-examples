@@ -1,38 +1,42 @@
 """
-Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+Copyright (c) 2022. Cognitive Scale Inc. All rights reserved.
 Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
 """
 
 import pickle
 
-from certifai.model.sdk import ComposedModelWrapper, SimpleModelWrapper
+from certifai.model.sdk import ComposedModelWrapper, PandasModelWrapper
 
 with open('models/german_credit_dtree.pkl', 'rb') as f:
     saved = pickle.load(f)
-    dtree_app = SimpleModelWrapper(
+    dtree_app = PandasModelWrapper(
         model=saved.get('model'),
-        encoder=saved.get('encoder', None)
+        encoder=saved['encoder'].transform,
+        pandas_kwargs={'columns': saved['columns']}
     )
 
 with open('models/german_credit_logit.pkl', 'rb') as f:
     saved = pickle.load(f)
-    logit_app = SimpleModelWrapper(
+    logit_app = PandasModelWrapper(
         model=saved.get('model'),
-        encoder=saved.get('encoder', None)
+        encoder=saved['encoder'].transform,
+        pandas_kwargs={'columns': saved['columns']}
     )
 
 with open('models/german_credit_mlp.pkl', 'rb') as f:
     saved = pickle.load(f)
-    mlp_app = SimpleModelWrapper(
+    mlp_app = PandasModelWrapper(
         model=saved.get('model'),
-        encoder=saved.get('encoder', None)
+        encoder=saved['encoder'].transform,
+        pandas_kwargs={'columns': saved['columns']}
     )
 
 with open('models/german_credit_svm.pkl', 'rb') as f:
     saved = pickle.load(f)
-    svm_app = SimpleModelWrapper(
+    svm_app = PandasModelWrapper(
         model=saved.get('model'),
-        encoder=saved.get('encoder', None)
+        encoder=saved['encoder'].transform,
+        pandas_kwargs={'columns': saved['columns']}
     )
 
 composed_app = ComposedModelWrapper()

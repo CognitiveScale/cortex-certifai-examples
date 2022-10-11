@@ -21,7 +21,6 @@ RUN pip install --no-cache-dir \
 RUN pip install -r /tmp/requirements.txt
 
 COPY src /src
-COPY model /model
 
 EXPOSE 8551
 

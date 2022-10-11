@@ -8,15 +8,15 @@
 SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
 
 function usage() {
-    echo "usage: ./config_deploy.sh resource_name namespace [options]"
-    echo "Required:"
-    echo "\tUnique resource name for prediction service       resource_name"
-    echo "\tUnique k8s namespace to deploy into               namespace"
-    echo "Optional:"
-    echo "\tPath to deployment template                       [-t | --deployment-template]"
-    echo "\tPath to output deployment file                    [-o | --output-file]"
-    echo "\tPath to deployment configuration file             [-c | --config-file]"
-    echo "\tPrint help                                        [-h | --help]"
+    printf "usage: ./config_deploy.sh resource_name namespace [options]\n"
+    printf "Required:\n"
+    printf "\tUnique resource name for prediction service       resource_name\n"
+    printf "\tUnique k8s namespace to deploy into               namespace\n"
+    printf "Optional:\n"
+    printf "\tPath to deployment template                       [-t | --deployment-template]\n"
+    printf "\tPath to output deployment file                    [-o | --output-file]\n"
+    printf "\tPath to deployment configuration file             [-c | --config-file]\n"
+    printf "\tPrint help                                        [-h | --help]\n"
 }
 
 if [ "$1" = "" ]; then
