@@ -11,7 +11,9 @@ function usage() {
     printf "usage: ./generate.sh [options] [args]\n"
     printf "Required:\n"
     printf "\tTarget docker image to be built                      [-i | --target-docker-image]\n"
+    printf "\tCertifai Toolkit path (unzipped directory)           [-t | --toolkit-path]\n"
     printf "Optional:\n"
+    printf "\trequirements.txt file path                           [-f | --requirements-file]\n"
     printf "\tBase docker image to be used to build the image      [-b | --base-docker-image]\n"
     printf "\tDirectory to be created                              [-d | --dir]\n"
     printf "\tModel type for template e.g h2o_mojo                 [-m | --model-type]\n"
@@ -29,6 +31,7 @@ DEFAULT_MODEL_TYPE="python"
 DEFAULT_OUTPUT_PATH="."
 DEFAULT_K8S_RESOURCE_NAME="container-model"
 DEFAULT_K8S_NAMESPACE="containermodel"
+DEFAULT_REQUIREMENTS_FILE_PATH=""
 
 DIR_NAME=""
 BASE_DOCKER_IMAGE=""
@@ -37,6 +40,8 @@ OUTPUT_PATH=""
 TARGET_DOCKER_IMAGE=""
 K8S_RESOURCE_NAME=""
 K8S_NAMESPACE=""
+REQUIREMENTS_FILE_PATH=""
+TOOLKIT_PATH=""
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -45,6 +50,12 @@ while [ "$1" != "" ]; do
                                                               ;;
         -i | --target-docker-image )                          shift
                                                               TARGET_DOCKER_IMAGE="$1"
+                                                              ;;
+        -t | --toolkit-path )                                 shift
+                                                              TOOLKIT_PATH="$1"
+                                                              ;;
+        -f | --requirements-file )                            shift
+                                                              REQUIREMENTS_FILE_PATH="$1"
                                                               ;;
         -b | --base-docker-image )                            shift
                                                               BASE_DOCKER_IMAGE="$1"
@@ -69,6 +80,11 @@ done
 
 # Required params
 if [ "$TARGET_DOCKER_IMAGE" = "" ]; then
+  usage
+  exit
+fi
+
+if [ "$TOOLKIT_PATH" = "" ]; then
   usage
   exit
 fi
@@ -98,9 +114,15 @@ if [ "$K8S_NAMESPACE" = "" ]; then
   K8S_NAMESPACE=$DEFAULT_K8S_NAMESPACE
 fi
 
+if [ "$REQUIREMENTS_FILE_PATH" = "" ]; then
+  REQUIREMENTS_FILE_PATH=$DEFAULT_REQUIREMENTS_FILE_PATH
+fi
+
 echo "Generating template using following configuration:"
 echo "DIR = ${DIR_NAME}"
 echo "BASE DOCKER IMAGE = ${BASE_DOCKER_IMAGE}"
 echo "TARGET_DOCKER_IMAGE = ${TARGET_DOCKER_IMAGE}"
 echo "MODEL TYPE = ${MODEL_TYPE}"
-python $SCRIPT_PATH/template.py --dir=$DIR_NAME --target-docker-image=$TARGET_DOCKER_IMAGE --base-docker-image=$BASE_DOCKER_IMAGE --model-type=$MODEL_TYPE --k8s-resource-name=$K8S_RESOURCE_NAME --k8s-namespace=$K8S_NAMESPACE
+echo "CERTIFAI_TOOLKIT_PATH = ${TOOLKIT_PATH}"
+echo "REQUIREMENTS_FILE_PATH = ${REQUIREMENTS_FILE_PATH}"
+python $SCRIPT_PATH/template.py --dir=$DIR_NAME --target-docker-image=$TARGET_DOCKER_IMAGE --base-docker-image=$BASE_DOCKER_IMAGE --model-type=$MODEL_TYPE --k8s-resource-name=$K8S_RESOURCE_NAME --k8s-namespace=$K8S_NAMESPACE --toolkit-path=$TOOLKIT_PATH --requirements-file=$REQUIREMENTS_FILE_PATH
