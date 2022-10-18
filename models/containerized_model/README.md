@@ -32,17 +32,18 @@ To generate the code templates for the existing model base images in [this repo]
 
   Other commandline options:
   ```
-  % ./generate.sh --help                                                                                                                                                    0s
+% ./generate.sh --help                                                                                                                                                                                                                     31s
 usage: ./generate.sh [options] [args]
 Required:
-	Target docker image to be built                      [-i | --target-docker-image]
-	Certifai Toolkit path (unzipped directory)           [-t | --toolkit-path]
+	Target docker image to be built                          [-i | --target-docker-image]
+	Certifai Toolkit path (unzipped directory)               [-t | --toolkit-path]
 Optional:
-	requirements.txt file path                           [-f | --requirements-file]
-	Base docker image to be used to build the image      [-b | --base-docker-image]
-	Directory to be created                              [-d | --dir]
-	Model type for template e.g h2o_mojo                 [-m | --model-type]
-	Print help                                           [-h | --help]
+	Requirements (requirements.txt) file path                [-f | --requirements-file]
+	Prediction Service (prediction_service.py) file path     [-p | --prediction-service-file]
+	Base docker image to be used to build the image          [-b | --base-docker-image]
+	Directory to be created                                  [-d | --dir]
+	Model type for template e.g h2o_mojo                     [-m | --model-type]
+	Print help                                               [-h | --help]
   ```
 
   Each command will create a folder named `generated-container-model` in your current directory with the generated code
