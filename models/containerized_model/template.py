@@ -170,7 +170,6 @@ def main():
         pyyaml_found = False
         with open(destination_path, 'r') as f:
             for req in requirements.parse(f):
-                print(req.name)
                 if (req.name.strip() == 'pyyaml'):
                     pyyaml_found = True
         if not pyyaml_found:
