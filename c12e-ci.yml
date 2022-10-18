@@ -1,4 +1,4 @@
 builder:
   # TOOD(LA): Using Certifai builder image - slightly overkill, just need something with conda
-  image: c12e/certifai:builder-20221018
+  image: c12e/certifai:builder-20220224
   command: "./build.sh CI"
