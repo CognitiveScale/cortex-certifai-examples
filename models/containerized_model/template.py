@@ -8,6 +8,7 @@ import stat
 import shutil
 
 from jinja2 import FileSystemLoader, Environment
+import requirements
 
 CURRENT_PATH = os.path.abspath(os.path.dirname(__file__))
 VALID_TYPES = ['python', 'h2o_mojo', 'python_xgboost_dmatrix', 'r_model', 'proxy']
@@ -163,6 +164,18 @@ def main():
     def generate_proxy(model_type):
         generate_proxy_base(model_type)
 
+    def copy_requirements_file():
+        destination_path = os.path.join(BASE_DIR, 'requirements.txt')
+        shutil.copyfile(args.requirements_file, destination_path)
+        pyyaml_found = False
+        with open(destination_path, 'r') as f:
+            for req in requirements.parse(f):
+                if (req.name.strip() == 'pyyaml'):
+                    pyyaml_found = True
+        if not pyyaml_found:
+            with open(destination_path, 'a') as f:
+                f.write('\npyyaml==5.4.1')
+
     # Argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help='Directory name to be created for the containerized model.')
@@ -173,6 +186,8 @@ def main():
     parser.add_argument('--k8s-namespace',
                         help='Name to be used as namespace in k8s resources (service, deployment, etc.).')
     parser.add_argument('--model-type', choices=VALID_TYPES, help='Type of model you want to generate the code for. e.g h2o_mojo, python')
+    parser.add_argument('--toolkit-path', help='Certifai toolkit path (unzipped directory)')
+    parser.add_argument('--requirements-file', help='requirements.txt needed for model requirements')
     args = parser.parse_args()
 
     # Base directory
@@ -202,6 +217,13 @@ def main():
     readme_files = ['README.md', 'DEPLOYMENT.md']
     for readme in readme_files:
         shutil.copyfile(os.path.join(CURRENT_PATH, readme), os.path.join(BASE_DIR, readme))
+
+    # Copy certifai toolkit packages into generated directory
+    shutil.copytree(os.path.join(args.toolkit_path, 'packages'), os.path.join(BASE_DIR, 'packages'))
+
+    # Copy requirements file
+    if args.requirements_file != "":
+        copy_requirements_file()
 
 
 if __name__ == '__main__':

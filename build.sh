@@ -83,16 +83,17 @@ function _build_template() {
   if [ -z "$base_image" ]; then
     ./generate.sh --target-docker-image "$1" \
                 --dir "${out_dir}" \
-                --model-type "$2"
+                --model-type "$2" \
+                --toolkit-path "$TOOLKIT_WORK_DIR"
                 # explicitly use default base image
   else
     ./generate.sh --target-docker-image "$1" \
                 --dir "${out_dir}" \
                 --model-type "$2" \
-                --base-docker-image "${base_image}"
+                --base-docker-image "${base_image}" \
+                --toolkit-path "$TOOLKIT_WORK_DIR"
   fi
 
-  cp -r "${PACKAGES_DIR}" "${out_dir}"
   cd "${out_dir}"
   ./container_util.sh build
 
