@@ -176,6 +176,10 @@ def main():
             with open(destination_path, 'a') as f:
                 f.write('\npyyaml==5.4.1')
 
+    def copy_prediction_service_file():
+        destination_path = os.path.join(BASE_DIR, 'src', 'prediction_service.py')
+        shutil.copyfile(args.prediction_service_file, destination_path)
+
     # Argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help='Directory name to be created for the containerized model.')
@@ -188,6 +192,7 @@ def main():
     parser.add_argument('--model-type', choices=VALID_TYPES, help='Type of model you want to generate the code for. e.g h2o_mojo, python')
     parser.add_argument('--toolkit-path', help='Certifai toolkit path (unzipped directory)')
     parser.add_argument('--requirements-file', help='requirements.txt needed for model requirements')
+    parser.add_argument('--prediction-service-file', help='Prediction service (prediction_service.py) file path')
     args = parser.parse_args()
 
     # Base directory
@@ -224,6 +229,10 @@ def main():
     # Copy requirements file
     if args.requirements_file != "":
         copy_requirements_file()
+
+    # Copy prediction service file
+    if args.prediction_service_file != "":
+        copy_prediction_service_file()
 
 
 if __name__ == '__main__':
