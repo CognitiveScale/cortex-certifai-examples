@@ -262,13 +262,15 @@ To deploy prediction services to a different namespace (for admins only):
 - Create Kubernetes secrets with the credentials for the remote object storage (S3/GCS/Azure) in the different
   namespace.
 
-  **Example**: If you are using S3, then create secrets using following commands:
+  Create secrets for accessing S3 remote object storage. **If you are not using S3 for remote object storage, then
+  create the secrets with filler (junk) values**:
   ```
   kubectl create secret generic s3-bucket-access-key --from-literal=accesskey=<BUCKET_ACCESS_KEY> -n <deployment-namespace>
   kubectl create secret generic s3-bucket-secret-key --from-literal=secretkey=<BUCKET_SECRET_KEY> -n <deployment-namespace>
   ```
 
-  **Example**: If you are using Azure, then create secrets using the following commands:
+  Create secrets for accessing Azure remote storage. **If you are not using Azure for remote object storage, then
+  create the secrets with filler (junk) values**:
   ```
   kubectl create secret generic az-blob-account-name --from-literal=accountname=<ACCOUNT_NAME> -n <deployment-namespace>
   kubectl create secret generic az-blob-account-key --from-literal=accountkey=<ACCOUNT_KEY> -n <deployment-namespace>
@@ -290,6 +292,12 @@ rules:
   - apiGroups: [ "" ]
     resources: [ "services" ]
     verbs: [ "list", "get", "patch", "create" ]
+  - apiGroups: [ "" ]
+    resources: [ "configmaps" ]
+    verbs: [ "create", "list", "get", "patch" ]
+  - apiGroups: [ "" ]
+    resources: [ "pods", "pods/log" ]
+    verbs: [ "get", "list" ]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -304,8 +312,12 @@ subjects:
   - kind: ServiceAccount
     name: certifai-scan-manager
     namespace: <current-namespace>
-
 ```
+
+- Create a `ServiceAccount` named `certifai-scan-manager` in the deployment namespace.
+  ```
+  kubectl create serviceaccount certifai-scan-manager -n <deployment-namespace>
+  ```
 
 Edit `namespace` fields in the above snippet as needed.
 
