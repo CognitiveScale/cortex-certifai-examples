@@ -38,6 +38,7 @@ Required:
 	Target docker image to be built                          [-i | --target-docker-image]
 	Certifai Toolkit path (unzipped directory)               [-t | --toolkit-path]
 Optional:
+	Model (.pkl) file path                                   [-l | --model]
 	Requirements (requirements.txt) file path                [-f | --requirements-file]
 	Prediction Service (prediction_service.py) file path     [-p | --prediction-service-file]
 	Base docker image to be used to build the image          [-b | --base-docker-image]
