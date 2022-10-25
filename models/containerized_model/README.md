@@ -16,7 +16,7 @@
 - H2O MOJO runtime and license file (for running H2O MOJO models).
 - A base docker image which has all the dependencies at the specific versions that were used when the model was trained.
 - Locally installed:
-    - To generate the template: python, PyYaml, Jinja2, and requirements (`pip install -U Jinja2 PyYAML requirements`)
+    - To generate the template: python, PyYaml, Jinja2, and requirements (`pip install -U Jinja2 PyYAML requirements-parser`)
     - To build/run the image: Docker
 
 ## [Overview](#overview)
