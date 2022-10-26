@@ -16,7 +16,7 @@
 - H2O MOJO runtime and license file (for running H2O MOJO models).
 - A base docker image which has all the dependencies at the specific versions that were used when the model was trained.
 - Locally installed:
-    - To generate the template: python, PyYaml, Jinja2, and requirements (`pip install -U Jinja2 PyYAML requirements`)
+    - To generate the template: python, PyYaml, Jinja2, and requirements (`pip install -U Jinja2 PyYAML requirements-parser`)
     - To build/run the image: Docker
 
 ## [Overview](#overview)
@@ -38,6 +38,7 @@ Required:
 	Target docker image to be built                          [-i | --target-docker-image]
 	Certifai Toolkit path (unzipped directory)               [-t | --toolkit-path]
 Optional:
+	Model (.pkl) file path                                   [-l | --model]
 	Requirements (requirements.txt) file path                [-f | --requirements-file]
 	Prediction Service (prediction_service.py) file path     [-p | --prediction-service-file]
 	Base docker image to be used to build the image          [-b | --base-docker-image]
