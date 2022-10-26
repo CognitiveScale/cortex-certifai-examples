@@ -180,6 +180,11 @@ def main():
         destination_path = os.path.join(BASE_DIR, 'src', 'prediction_service.py')
         shutil.copyfile(args.prediction_service_file, destination_path)
 
+    def copy_model_file():
+        model_file_name = os.path.basename(args.model)
+        destination_path = os.path.join(BASE_DIR, 'model', model_file_name)
+        shutil.copyfile(args.model, destination_path)
+
     # Argparse
     parser = argparse.ArgumentParser()
     parser.add_argument('--dir', help='Directory name to be created for the containerized model.')
@@ -193,6 +198,7 @@ def main():
     parser.add_argument('--toolkit-path', help='Certifai toolkit path (unzipped directory)')
     parser.add_argument('--requirements-file', help='requirements.txt needed for model requirements')
     parser.add_argument('--prediction-service-file', help='Prediction service (prediction_service.py) file path')
+    parser.add_argument('--model', help='Model (.pkl) filepath')
     args = parser.parse_args()
 
     # Base directory
@@ -234,6 +240,9 @@ def main():
     if args.prediction_service_file != "":
         copy_prediction_service_file()
 
+    # Copy model pickle file
+    if args.model != "":
+        copy_model_file()
 
 if __name__ == '__main__':
     main()

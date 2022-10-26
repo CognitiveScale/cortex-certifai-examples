@@ -18,6 +18,7 @@ function usage() {
     printf "\tBase docker image to be used to build the image          [-b | --base-docker-image]\n"
     printf "\tDirectory to be created                                  [-d | --dir]\n"
     printf "\tModel type for template e.g h2o_mojo                     [-m | --model-type]\n"
+    printf "\tModel (.pkl) file path                                   [-l | --model]\n"
     printf "\tPrint help                                               [-h | --help]\n"
 }
 
@@ -34,6 +35,7 @@ DEFAULT_K8S_RESOURCE_NAME="container-model"
 DEFAULT_K8S_NAMESPACE="containermodel"
 DEFAULT_REQUIREMENTS_FILE_PATH=""
 DEFAULT_PREDITCION_SERVICE_FILEPATH=""
+DEFAULT_MODEL_FILEPATH=""
 
 DIR_NAME=""
 BASE_DOCKER_IMAGE=""
@@ -45,6 +47,7 @@ K8S_NAMESPACE=""
 REQUIREMENTS_FILE_PATH=""
 TOOLKIT_PATH=""
 PREDICTION_SERVICE_FILEPATH=""
+MODEL_FILEPATH=""
 
 while [ "$1" != "" ]; do
     case $1 in
@@ -74,6 +77,9 @@ while [ "$1" != "" ]; do
                                                               ;;
         -n | --namespace )                                    shift
                                                               K8S_NAMESPACE="$1"
+                                                              ;;
+        -l | --model )                                        shift
+                                                              MODEL_FILEPATH="$1"
                                                               ;;
         -h | --help )                                         usage
                                                               exit
@@ -128,6 +134,10 @@ if [ "$PREDICTION_SERVICE_FILEPATH" = "" ]; then
   PREDICTION_SERVICE_FILEPATH=$DEFAULT_PREDITCION_SERVICE_FILEPATH
 fi
 
+if [ "$MODEL_FILEPATH" = "" ]; then
+  MODEL_FILEPATH=$DEFAULT_MODEL_FILEPATH
+fi
+
 echo "Generating template using following configuration:"
 echo "DIR = ${DIR_NAME}"
 echo "BASE DOCKER IMAGE = ${BASE_DOCKER_IMAGE}"
@@ -136,4 +146,4 @@ echo "MODEL TYPE = ${MODEL_TYPE}"
 echo "CERTIFAI_TOOLKIT_PATH = ${TOOLKIT_PATH}"
 echo "REQUIREMENTS_FILE_PATH = ${REQUIREMENTS_FILE_PATH}"
 echo "PREDICTION_SERVICE_FILEPATH" = ${PREDICTION_SERVICE_FILEPATH}
-python $SCRIPT_PATH/template.py --dir=$DIR_NAME --target-docker-image=$TARGET_DOCKER_IMAGE --base-docker-image=$BASE_DOCKER_IMAGE --model-type=$MODEL_TYPE --k8s-resource-name=$K8S_RESOURCE_NAME --k8s-namespace=$K8S_NAMESPACE --toolkit-path=$TOOLKIT_PATH --requirements-file=$REQUIREMENTS_FILE_PATH --prediction-service-file=$PREDICTION_SERVICE_FILEPATH
+python $SCRIPT_PATH/template.py --dir=$DIR_NAME --target-docker-image=$TARGET_DOCKER_IMAGE --base-docker-image=$BASE_DOCKER_IMAGE --model-type=$MODEL_TYPE --k8s-resource-name=$K8S_RESOURCE_NAME --k8s-namespace=$K8S_NAMESPACE --toolkit-path=$TOOLKIT_PATH --requirements-file=$REQUIREMENTS_FILE_PATH --prediction-service-file=$PREDICTION_SERVICE_FILEPATH --model=$MODEL_FILEPATH
