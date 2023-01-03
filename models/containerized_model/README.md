@@ -131,7 +131,7 @@ Copy the `daimojo` MOJO Python runtime `linux` dependency (`.whl` file) to `ext_
 cp <path-to-linux-daimojo-file>.whl generated-container-model/ext_packages/
 ```
 
-The file will be named something like `daimojo-2.4.8-cp36-cp36m-linux_x86_64.whl`
+The file will be named something like `daimojo-2.4.8-cp37-cp37m-linux_x86_64.whl`
 
 If you do not already have this package, you can download it from the H2O Driverless AI UI, see [instructions](http://docs.h2o.ai/driverless-ai/latest-stable/docs/userguide/scoring-pipeline-cpp.html#downloading-the-scoring-pipeline-runtimes).
 
