@@ -1,6 +1,7 @@
 #!/bin/bash -eux
 #
 ##
+set -eux
 
 PUSH_IMAGES=false
 SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
@@ -10,8 +11,10 @@ TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
 TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
 PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
 TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
+NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
 BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
 BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+
 function activateConda(){
     set +u
     eval "$(conda shell.bash hook)"
@@ -53,11 +56,25 @@ function buildLocal() {
   build_model_deployment_base_images
 }
 
+
+# We have to enforce a versioning strategy in the example model templates. Part of the trouble here is that template
+# images install the Certifai packages, so we should tag them in such a way to show that version.
+#
+# Current tagging strategy: `<version-counter>-<toolkit-version>`
+#
+#   `<version-counter>` is a running count we maintain based on Python version & other dependency versions
+#
+# Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
 function build_model_deployment_base_images() {
-  local scikit_image="c12e/cortex-certifai-model-scikit:${VERSION}"
-  local h2o_image="c12e/cortex-certifai-model-h2o-mojo:${VERSION}"
-  local proxy_image="c12e/cortex-certifai-hosted-model:${VERSION}"
-  local r_image="c12e/cortex-certifai-model-r:${VERSION}"
+  local certifai_version=$(getToolkitVersion)
+  local git_sha=$(git log -1 --pretty=%h)
+  local version="v4-${certifai_version}"
+  echo "##### BUILDING ${version} ######"
+
+  local scikit_image="c12e/cortex-certifai-model-scikit:${version}"
+  local h2o_image="c12e/cortex-certifai-model-h2o-mojo:${version}"
+  local proxy_image="c12e/cortex-certifai-hosted-model:${version}"
+  local r_image="c12e/cortex-certifai-model-r:${version}"
 
   _build_template "${scikit_image}" python
   _build_template "${h2o_image}" h2o_mojo
@@ -121,11 +138,11 @@ function testModels() {
 }
 
 function testNotebooks() {
-  echo "TODO: automate running subset of notebooks"
-  # Use Either
-  # - nbmake (https://github.com/treebeardtech/nbmake)
-  # - nbval (https://github.com/computationalmodelling/nbval)
-  # - testbook (https://testbook.readthedocs.io/en/latest/getting-started/index.html)
+  cd "${NOTEBOOK_DIR}"
+  _installAutomatedDeps
+  runIndependentNotebooks
+  runMultipartNotebooks
+  runNotebooksWithEnvSetup
 }
 
 function testTutorials() {
@@ -136,34 +153,95 @@ function testTutorials() {
   # - testbook (https://testbook.readthedocs.io/en/latest/getting-started/index.html)
 }
 
+function _installAutomatedDeps() {
+  conda install jupyter nbconvert -y
+  pip install category_encoders
+}
 
-### MAIN ####
-# TODO(LA): Need to decide on versioning strategy for model templates, part of the trouble here is that template images
-#  include the Certifai packages, so we should tag them in such a way to show that version.
-#
-# Current tagging strategy: `<version-counter>-<toolkit-version>`
-#
-#   `<version-counter>` is a running count we maintain based on Python version & other dependency versions
-#
-# Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
-#
-#VERSION=$(git describe --long --always --match='v*.*' | sed 's/v//; s/-/./')
-CERTIFAI_VERSION=$(getToolkitVersion)
-GIT_SHA=$(git log -1 --pretty=%h)
-VERSION="v4-${CERTIFAI_VERSION}"
-echo "##### BUILDING ${VERSION} ######"
-case ${1-local} in
- CI)
-  activateConda
-  installToolkit
-  test
-  rm -rf ${TOOLKIT_WORK_DIR}
-  ;;
- docker)
-  PUSH_IMAGES=true
-  build_model_deployment_base_images
-  ;;
- *)
-  buildLocal
-  ;;
-esac
+function _runNotebookInPlace() {
+  # FYI - stdout/stderr from the notebook is NOT redirected by nbcovert (if needed check the log file at "~/.certifai")
+  jupyter nbconvert --to notebook --inplace --execute $1
+}
+
+# Examples involving multiple notebooks explicit order
+MULTIPART_NOTEBOOKS=(patient_readmission data_statistics)
+
+# Examples requiring a new conda env or new dependencies
+NOTEBOOKS_REQUIRING_ENV_SETUP=(azureml_model_headers_demo sagemaker target_encoded xgboost-model)
+
+# Example notebook folders to skip (usually empty). Useful in avoiding
+# recomputes when a notebook bombs whilst running the script.
+EXCLUDE_SINGULAR_NOTEBOOK=()
+
+function runMultipartNotebooks() {
+  # data_statistics
+  _runNotebookInPlace "${NOTEBOOK_DIR}/data_statistics/prep_adult_data_drift.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/data_statistics/adult_drift_data_statistics.ipynb"
+
+  # patient_readmission
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-train.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-explain-scan.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-explain-results.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-trust-scan.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-trust-results.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-sampling-scan.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-sampling-results.ipynb"
+}
+
+function runIndependentNotebooks() {
+  local multipart_grep
+  multipart_grep="${MULTIPART_NOTEBOOKS[*]/#/-e }"
+
+  local env_grep
+  env_grep="${NOTEBOOKS_REQUIRING_ENV_SETUP[*]/#/-e }"
+
+  local exclude_grep
+  exclude_grep="${EXCLUDE_SINGULAR_NOTEBOOK[*]/#/-e }"
+
+  # All examples with independent notebooks
+  local notebooks
+  # shellcheck disable=SC2086
+  notebooks=$(ls "${NOTEBOOK_DIR}" | grep -v -e README -e datasets -e definitions -e utils ${multipart_grep} ${env_grep} ${exclude_grep})
+
+  # shellcheck disable=SC2068
+  for n in ${notebooks[@]}; do
+    _runNotebookInPlace "${n}/*.ipynb"
+  done
+}
+
+## TODO(LA):
+# * 'interpreting_fairness_robustness_scores/interpreting_certifai_fairness_robustness_scores.ipynb' failed, will need to investigate & fix
+# * notebooks requring environment setup
+function runNotebooksWithEnvSetup() {
+  echo "TODO!"
+  # azureml_model_headers_demo
+  # sagemaker
+  # target_encoded
+  # xgboost-model
+}
+
+
+function main() {
+  case ${1-local} in
+   CI)
+    activateConda
+    installToolkit
+    test
+    rm -rf "${TOOLKIT_WORK_DIR}"
+    ;;
+   docker)
+    PUSH_IMAGES=true
+    build_model_deployment_base_images
+    ;;
+   notebook)
+    activateConda
+    installToolkit
+    testNotebooks
+    ;;
+   *)
+    echo "local"
+    buildLocal
+    ;;
+  esac
+}
+main "$1"
