@@ -10,3 +10,4 @@ models/reports/
 *license.txt
 *.rds
 reports/
+notebooks/data_statistics/data/*
