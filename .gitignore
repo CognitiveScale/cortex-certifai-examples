@@ -11,3 +11,4 @@ models/reports/
 *.rds
 reports/
 notebooks/data_statistics/data/*
+notebooks/segmented_model_demo/augmented_data
