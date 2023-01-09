@@ -4,8 +4,10 @@
 set -eux
 
 PUSH_IMAGES=false
-SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+SKIP_CONDA="${SKIP_CONDA:-false}"
+SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
 PYTHON_VERSION="3.8"
+SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
 ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
 TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
 TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
@@ -17,6 +19,8 @@ BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
 BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
 
 function activateConda(){
+  if [ "${SKIP_CONDA}" = false ]; then
+    echo "Creating Certifai conda environment"
     set +u
     eval "$(conda shell.bash hook)"
     conda create -n certifai python="${PYTHON_VERSION}" -y
@@ -24,17 +28,25 @@ function activateConda(){
     conda env list
     which python
     which pip
+  else
+    echo "Skipping creation of new conda environments, using current Python path.."
+  fi
 }
 
 function installToolkit() {
-  extractToolkit
-  local cwd="${PWD}"
-  cd "${TOOLKIT_WORK_DIR}"
+  if [ "${SKIP_TOOLKIT}" = false ]; then
+    echo "Installing Certifai Toolkit (${TOOLKIT_PATH})"
+    extractToolkit
+    local cwd="${PWD}"
+    cd "${TOOLKIT_WORK_DIR}"
 
-  conda install --file requirements.txt -y
-  pip install $(find ${PACKAGES_DIR}/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
-  pip install $(find ${PACKAGES_DIR}/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
-  cd "${cwd}"
+    conda install --file requirements.txt -y
+    pip install $(find ${PACKAGES_DIR}/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
+    pip install $(find ${PACKAGES_DIR}/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
+    cd "${cwd}"
+  else
+    echo "Skipping installation of certifai toolkit.."
+  fi
 }
 
 function getToolkitVersion() {
