@@ -12,6 +12,7 @@ TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
 PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
 TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
 NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
+TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
 BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
 BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
 
@@ -62,7 +63,7 @@ function buildLocal() {
 #
 # Current tagging strategy: `<version-counter>-<toolkit-version>`
 #
-#   `<version-counter>` is a running count we maintain based on Python version & other dependency versions
+#   `<version-counter>` is a running count we maintain based on the base image, Python version, & other dependencies
 #
 # Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
 function build_model_deployment_base_images() {
@@ -146,11 +147,16 @@ function testNotebooks() {
 }
 
 function testTutorials() {
-  echo "TODO: automate running subset of tutorials"
-  # Use Either
-  # - nbmake (https://github.com/treebeardtech/nbmake)
-  # - nbval (https://github.com/computationalmodelling/nbval)
-  # - testbook (https://testbook.readthedocs.io/en/latest/getting-started/index.html)
+  cd "${TUTORIALS_DIR}"
+  _installAutomatedDeps
+  # bringing_in_your_own_model
+  _runNotebookInPlace "${TUTORIALS_DIR}/bringing_in_your_own_model/part_one/BringingInYourOwnModel.ipynb"
+
+  # TODO(LA): This example requires extra set up in the GoCD agent (to communicate with the Certifai dev cluster), might
+  # need some help. However, this example exposes some undocumented/fragile APIs (i.e "easy to shoot-yourself in the
+  # foot"), so I would vote to not update this and, if possible, maybe even remove it.
+  # remote_scan_tutorial
+  #_runNotebookInPlace "${TUTORIALS_DIR}/remote_scan_tutorial/RemoteScanTutorial.ipynb"
 }
 
 function _installAutomatedDeps() {
@@ -238,9 +244,13 @@ function main() {
     installToolkit
     testNotebooks
     ;;
-   *)
-    echo "local"
-    buildLocal
+   tutorials)
+    activateConda
+    installToolkit
+    testTutorials
+    ;;
+  *)
+    printf "Unknown Option: $1\nPossible options: CI, docker, notebook, tutorials.\nBuilding Model deployment templates (locally)\n"
     ;;
   esac
 }

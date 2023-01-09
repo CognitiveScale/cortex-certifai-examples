@@ -1,12 +1,3 @@
-dataset_schema:
-  outcome_column: outcome
-datasets:
-- dataset_id: evaluation
-  delimiter: ','
-  file_type: csv
-  has_header: true
-  quote_character: '"'
-  url: somefile.csv
 evaluation:
   evaluation_dataset_id: evaluation
   evaluation_types:
@@ -16,20 +7,29 @@ evaluation:
   fairness_grouping_features:
   - name: age
   - name: status
+  prediction_values:
+  - name: Loan granted
+    value: 1
+    favorable: true
+  - name: Loan denied
+    value: 2
+    favorable: false
+  prediction_favorability: explicit
   name: test_user_case
   prediction_description: Determine whether a loan should be granted
-  prediction_favorability: explicit
-  prediction_values:
-  - favorable: true
-    name: Loan granted
-    value: 1
-  - favorable: false
-    name: Loan denied
-    value: 2
 model_use_case:
-  model_use_case_id: test_user_case
   name: test_user_case
+  model_use_case_id: test_user_case
   task_type: binary-classification
+dataset_schema:
+  outcome_column: outcome
+datasets:
+- dataset_id: evaluation
+  url: somefile.csv
+  has_header: true
+  file_type: csv
+  delimiter: ','
+  quote_character: '"'
 models:
 - model_id: logistic_regression
   name: logistic_regression
