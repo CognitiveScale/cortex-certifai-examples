@@ -228,7 +228,6 @@ function runIndependentNotebooks() {
 }
 
 ## TODO(LA):
-# * 'interpreting_fairness_robustness_scores/interpreting_certifai_fairness_robustness_scores.ipynb' failed, will need to investigate & fix
 # * notebooks requring environment setup
 function runNotebooksWithEnvSetup() {
   echo "TODO!"
