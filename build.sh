@@ -41,11 +41,12 @@ function installToolkit() {
     cd "${TOOLKIT_WORK_DIR}"
 
     conda install --file requirements.txt -y
-    pip install $(find ${PACKAGES_DIR}/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
-    pip install $(find ${PACKAGES_DIR}/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
+    pip install "${PACKAGES_DIR}"/all/*
+    pip install "$(find "${PACKAGES_DIR}/all" -name "cortex-certifai-common-*.zip")[s3,gcp,azure]"
+    pip install "$(find "${PACKAGES_DIR}/python${PYTHON_VERSION}" -name "cortex-certifai-engine-*.zip")[shap]"
     cd "${cwd}"
   else
-    echo "Skipping installation of certifai toolkit.."
+    echo "Skipping installation of Certifai toolkit.."
   fi
 }
 
@@ -227,14 +228,17 @@ function runIndependentNotebooks() {
   done
 }
 
-## TODO(LA):
-# * notebooks requring environment setup
 function runNotebooksWithEnvSetup() {
-  echo "TODO!"
+  cd "${NOTEBOOK_DIR}"
+
+  # TODO(LA):
   # azureml_model_headers_demo
   # sagemaker
   # target_encoded
+
   # xgboost-model
+  pip install xgboost
+  _runNotebookInPlace "${NOTEBOOK_DIR}/xgboost-model/xgboostDmatrixExample.ipynb"
 }
 
 
