@@ -52,7 +52,7 @@ function installToolkit() {
 
 function getToolkitVersion() {
   extractToolkit
-  echo $(grep 'Scanner' < "${TOOLKIT_WORK_DIR}/version.txt"  | grep Scanner | cut -d ':' -f 2 | tr -d ' ')
+  grep 'Scanner' < "${TOOLKIT_WORK_DIR}/version.txt"  | grep Scanner | cut -d ':' -f 2 | tr -d ' '
 }
 
 function extractToolkit() {
@@ -60,8 +60,8 @@ function extractToolkit() {
     echo "Certifai toolkit (ZIP) not found found! Toolkit is expected to be at ${TOOLKIT_PATH}"
     exit 1
   fi
-  rm -rf ${TOOLKIT_WORK_DIR}
-  unzip -qq -d ${TOOLKIT_WORK_DIR} "${TOOLKIT_PATH}"
+  rm -rf "${TOOLKIT_WORK_DIR}"
+  unzip -qq -d "${TOOLKIT_WORK_DIR}" "${TOOLKIT_PATH}"
 }
 
 function buildLocal() {
@@ -80,9 +80,11 @@ function buildLocal() {
 #
 # Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
 function build_model_deployment_base_images() {
-  local certifai_version=$(getToolkitVersion)
-  local git_sha=$(git log -1 --pretty=%h)
-  local version="v4-${certifai_version}"
+  local certifai_version
+  certifai_version=$(getToolkitVersion)
+
+  local version
+  version="v4-${certifai_version}"
   echo "##### BUILDING ${version} ######"
 
   local scikit_image="c12e/cortex-certifai-model-scikit:${version}"
@@ -99,7 +101,7 @@ function build_model_deployment_base_images() {
   _build_template "${r_image}" r_model rocker/r-apt:bionic
 
   echo "{\"scikit\": \"${scikit_image}\", \"h2o\": \"${h2o_image}\", \"proxy\": \"${proxy_image}\", \"r\": \"${r_image}\" }" > "${BUILD_REPORT_JSON}"
-  printf "${scikit_image}\n${h2o_image}\n${proxy_image}\n${r_image}\n" > "${BUILD_REPORT}"
+  printf "%s\n%s\n%s\n%s\n" "${scikit_image}" "${h2o_image}" "${proxy_image}" "${r_image}" > "${BUILD_REPORT}"
 }
 
 function _build_template() {
