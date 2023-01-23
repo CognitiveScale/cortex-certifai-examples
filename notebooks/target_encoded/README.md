@@ -12,13 +12,18 @@
  - deploy model as service using Azure Cloud Instance
  - trigger a remote Certifai scan using the above deployed model
 
+## Environment Setup
+
+Follow the below steps to create a sufficient Python environment
+
+- Create a conda environment with additional prerequisites (keras, tensorflow, category-encoders & matplotlib). The `certifai_azure_model_env.yml` conda environment file is provided for this - run: `conda env create -f certifai_multiclass_example/certifai_azure_model_env.yml`
+- Follow the [instructions](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/setup/download-toolkit#obtain-certifai-toolkit) to download and install the Certifai toolkit in the current environment
+
 
 ## Dataset Generation (optional)
 
 Target and one-hot encoded versions of the german-credit dataset as a multiclass classfication problem are provided with the example but in-case someone wants to re-generate the data, follow the steps outlined below:
 
-- Follow the [instructions](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/setup/download-toolkit#obtain-certifai-toolkit) to download and install the Certifai toolkit
-- Install additional prerequisites (keras, tensorflow, category-encoders & matplotlib) using `pip install keras tensorflow category_encoders matplotlib`
 - Generate `german-credit multi-class` dataset using the [dataset generation notebook](./dataset_generation/german_credit_multiclass_dataset_generation.ipynb)
 - Encode (target & one-hot) the generated dataset (from above) using the [dataset encoding notebook](./dataset_generation/german_credit_multiclass_dataset_encoding.ipynb)
 
