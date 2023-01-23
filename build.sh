@@ -231,14 +231,28 @@ function runIndependentNotebooks() {
 }
 
 function runNotebooksWithEnvSetup() {
-  cd "${NOTEBOOK_DIR}"
+  _xgboostModel
+  _targetEncodedAzuremlNotebook
+  _azuremlModelHeadersDemo
+  _sagemakerNotebook
+}
 
-  # TODO(LA):
-  # azureml_model_headers_demo
-  # sagemaker
-  # target_encoded
+function _azuremlModelHeadersDemo() {
+  # TODO: azureml_model_headers_demo
+}
 
+function _targetEncodedAzuremlNotebook() {
+  # TODO: target_encoded
+  conda remove -n certifai-azure-model-env --all -y
+}
+
+function _sagemakerNotebook() {
+  # TODO: sagemaker example
+}
+
+function _xgboostModel() {
   # xgboost-model
+  cd "${NOTEBOOK_DIR}"
   pip install xgboost
   _runNotebookInPlace "${NOTEBOOK_DIR}/xgboost-model/xgboostDmatrixExample.ipynb"
 }
