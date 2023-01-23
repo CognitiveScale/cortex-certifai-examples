@@ -9,8 +9,8 @@ The Following example setup demonstrates how to create Certifai model evaluation
     data_generation notebook in the root directory) and persists the model to disk.
 
 - `certifai_multiclass_evaluation_part2.ipynb`: Part 2 of 4 part example which sets up the Certifai multi-class
-- evaluation scan on the logistic classifier model (trained in part 1 of the example) with evaluation dataset encoded
-- into one-hot and target encoded features.
+  evaluation scan on the logistic classifier model (trained in part 1 of the example) with evaluation dataset encoded
+  into one-hot and target encoded features.
 
 - `deploying_model_part3.ipynb`: Part 3 of 4 part example which deploys the previously saved model artifacts to an
   AzureML workspace and exposes HTTP endpoint suitable for Certifai scanning.
