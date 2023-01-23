@@ -34,6 +34,7 @@ function activateConda(){
 }
 
 function installToolkit() {
+  # Installs certifai toolkit in current active environment
   if [ "${SKIP_TOOLKIT}" = false ]; then
     echo "Installing Certifai Toolkit (${TOOLKIT_PATH})"
     extractToolkit
@@ -242,8 +243,19 @@ function _azuremlModelHeadersDemo() {
 }
 
 function _targetEncodedAzuremlNotebook() {
-  # TODO: target_encoded
+  # target_encoded
   conda remove -n certifai-azure-model-env --all -y
+  conda env create -f "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/certifai_azure_model_env.yml"
+  conda activate certifai-azure-model-env
+  installToolkit
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/dataset_generation/german_credit_multiclass_dataset_generation.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/dataset_generation/german_credit_multiclass_dataset_encoding.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/model_train_part1.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/certifai_multiclass_evaluation_part2.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/deploying_model_part3.ipynb"
+  # NOTE: Following notebook uses Certifai Pro and is not automated - see https://github.com/CognitiveScale/certifai/issues/4697
+  #_runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/remote_scan_part4.ipynb"
+  conda deactivate
 }
 
 function _sagemakerNotebook() {
