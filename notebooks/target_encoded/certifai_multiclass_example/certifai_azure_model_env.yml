@@ -1,0 +1,16 @@
+name: certifai-azure-model-env
+dependencies:
+  - python=3.8.13
+  - pip
+  - scikit-learn=1.0.2
+  - numpy=1.21.6
+  - pandas
+  - ipython
+  - jupyter
+  - matplotlib
+  - joblib=1.1.1
+  - pip:
+    - keras
+    - tensorflow
+    - category_encoders
+    - azureml-sdk==1.47.0
