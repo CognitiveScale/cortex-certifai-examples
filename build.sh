@@ -239,7 +239,17 @@ function runNotebooksWithEnvSetup() {
 }
 
 function _azuremlModelHeadersDemo() {
-  # TODO: azureml_model_headers_demo
+  # azureml_model_headers_demo
+  cd "${NOTEBOOK_DIR}"
+  conda remove -n certifai-azure-model-env --all -y
+  conda env create -f "${NOTEBOOK_DIR}/azureml_model_headers_demo/certifai_azure_model_env.yml"
+  conda activate certifai-azure-model-env
+  # export variable so the toolkit from pipeline artifacts are picked up during installation
+  TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit" _runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers_demo/part_one_installing_dependencies.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers_demo/german_credit_azure_ml_demo.ipynb"
+  # NOTE: Following notebook uses Certifai Pro and is not automated - see https://github.com/CognitiveScale/certifai/issues/4697
+  #_runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers/demo/german_credit_azure_ml_certifai_pro_demo.ipynb"
+  conda deactivate
 }
 
 function _targetEncodedAzuremlNotebook() {
