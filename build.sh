@@ -269,7 +269,14 @@ function _targetEncodedAzuremlNotebook() {
 }
 
 function _sagemakerNotebook() {
-  # TODO: sagemaker example
+  cd "${NOTEBOOK_DIR}"
+  conda remove -n certifai-sagemaker-model-env --all -y
+  conda env create -f "${NOTEBOOK_DIR}/sagemaker/certifai_sagemaker_model_env.yml"
+  conda activate certifai-sagemaker-model-env
+  # export variables so the toolkit from pipeline artifacts is used during installation
+  TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit" _runNotebookInPlace "${NOTEBOOK_DIR}/sagemaker/part_one_installing_dependencies.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/sagemaker/CertifaiSageMakerExample.ipynb"
+  conda deactivate
 }
 
 function _xgboostModel() {
