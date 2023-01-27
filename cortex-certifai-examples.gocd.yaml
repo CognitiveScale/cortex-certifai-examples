@@ -58,7 +58,7 @@ pipelines:
     materials:
       cortex-certifai-examples:
         git: git@github.com:CognitiveScale/cortex-certifai-examples.git
-        branch: pre-release
+        branch: 4678-rerun-sagemaker-notebook
       certifai-toolkit:
         pipeline: certifai-toolkit
         stage: build
