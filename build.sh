@@ -296,8 +296,6 @@ function main() {
     rm -rf "${TOOLKIT_WORK_DIR}"
     ;;
    docker)
-    printf "skpping build.."
-    exit 0
     PUSH_IMAGES=true
     build_model_deployment_base_images
     ;;
