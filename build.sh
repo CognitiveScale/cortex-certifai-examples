@@ -239,6 +239,7 @@ function runNotebooksWithEnvSetup() {
 
 function _azuremlModelHeadersDemo() {
   # TODO: azureml_model_headers_demo
+  true
 }
 
 function _targetEncodedAzuremlNotebook() {
@@ -248,6 +249,7 @@ function _targetEncodedAzuremlNotebook() {
 
 function _sagemakerNotebook() {
   # TODO: sagemaker example
+  true
 }
 
 function _xgboostModel() {
