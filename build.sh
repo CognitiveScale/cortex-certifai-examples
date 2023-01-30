@@ -268,6 +268,7 @@ function main() {
     ;;
    docker)
     PUSH_IMAGES=true
+    extractToolkit
     build_model_deployment_base_images
     ;;
    notebook)
