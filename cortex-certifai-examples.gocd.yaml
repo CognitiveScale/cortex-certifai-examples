@@ -25,13 +25,13 @@ common:
               cp -f certifai_toolkit.zip artifacts/
               pip install jinja2 requirements-parser
               ./build.sh docker
-  serviceTest: &serviceTest
+  testExamples: &testExamples
     clean_workspace: true
     jobs:
       Notebooks:
         artifacts:
           - build:
-              source: notebooks/
+              source: notebooks
         elastic_profile_id: integrationTestAgent
         environment_variables:
           CERTIFAI_BRANCH: develop
@@ -105,4 +105,4 @@ pipelines:
         pipeline: certifai-toolkit
         stage: build
     stages:
-      - *serviceTest
+      - examples: *testExamples
