@@ -145,7 +145,7 @@ function test() {
 }
 
 function testModels() {
-  echo "TODO: automate subset of model examples"
+  echo "TODO: automate subset of model examples - "
   # for each
   # - train the models
   # - start the app in one process,
