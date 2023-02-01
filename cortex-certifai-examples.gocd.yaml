@@ -47,6 +47,8 @@ common:
               mkdir -p artifacts
               cp -f certifai_toolkit.zip artifacts/
               c12e-ci
+              pip install jinja2 requirements-parser
+              ./build.sh local-docker
   snykScan: &snykScan
     clean_workspace: false
     jobs:
