@@ -9,3 +9,8 @@ models/reports/
 *.mojo
 *license.txt
 *.rds
+reports/
+notebooks/data_statistics/data/*
+notebooks/segmented_model_demo/augmented_data
+notebooks/practical_issues/encoded_german_credit.csv
+notebooks/practical_issues/preprocessed.csv

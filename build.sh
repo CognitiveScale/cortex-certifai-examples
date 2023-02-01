@@ -1,18 +1,26 @@
 #!/bin/bash -eux
 #
 ##
+set -eux
 
 PUSH_IMAGES=false
-SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+SKIP_CONDA="${SKIP_CONDA:-false}"
+SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
 PYTHON_VERSION="3.8"
+SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
 ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
 TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
 TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
 PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
 TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
+NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
+TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
 BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
 BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+
 function activateConda(){
+  if [ "${SKIP_CONDA}" = false ]; then
+    echo "Creating Certifai conda environment"
     set +u
     eval "$(conda shell.bash hook)"
     conda create -n certifai python="${PYTHON_VERSION}" -y
@@ -20,22 +28,31 @@ function activateConda(){
     conda env list
     which python
     which pip
+  else
+    echo "Skipping creation of new conda environments, using current Python path.."
+  fi
 }
 
 function installToolkit() {
-  extractToolkit
-  local cwd="${PWD}"
-  cd "${TOOLKIT_WORK_DIR}"
+  if [ "${SKIP_TOOLKIT}" = false ]; then
+    echo "Installing Certifai Toolkit (${TOOLKIT_PATH})"
+    extractToolkit
+    local cwd="${PWD}"
+    cd "${TOOLKIT_WORK_DIR}"
 
-  conda install --file requirements.txt -y
-  pip install $(find ${PACKAGES_DIR}/all -name cortex-certifai-common-*.zip)[s3,gcp,azure]
-  pip install $(find ${PACKAGES_DIR}/python${PYTHON_VERSION} -name cortex-certifai-engine-*.zip)[shap]
-  cd "${cwd}"
+    conda install --file requirements.txt -y
+    pip install "${PACKAGES_DIR}"/all/*
+    pip install "$(find "${PACKAGES_DIR}/all" -name "cortex-certifai-common-*.zip")[s3,gcp,azure]"
+    pip install "$(find "${PACKAGES_DIR}/python${PYTHON_VERSION}" -name "cortex-certifai-engine-*.zip")[shap]"
+    cd "${cwd}"
+  else
+    echo "Skipping installation of Certifai toolkit.."
+  fi
 }
 
 function getToolkitVersion() {
   extractToolkit
-  echo $(grep 'Scanner' < "${TOOLKIT_WORK_DIR}/version.txt"  | grep Scanner | cut -d ':' -f 2 | tr -d ' ')
+  grep 'Scanner' < "${TOOLKIT_WORK_DIR}/version.txt"  | grep Scanner | cut -d ':' -f 2 | tr -d ' '
 }
 
 function extractToolkit() {
@@ -43,8 +60,8 @@ function extractToolkit() {
     echo "Certifai toolkit (ZIP) not found found! Toolkit is expected to be at ${TOOLKIT_PATH}"
     exit 1
   fi
-  rm -rf ${TOOLKIT_WORK_DIR}
-  unzip -qq -d ${TOOLKIT_WORK_DIR} "${TOOLKIT_PATH}"
+  rm -rf "${TOOLKIT_WORK_DIR}"
+  unzip -qq -d "${TOOLKIT_WORK_DIR}" "${TOOLKIT_PATH}"
 }
 
 function buildLocal() {
@@ -53,11 +70,27 @@ function buildLocal() {
   build_model_deployment_base_images
 }
 
+
+# We have to enforce a versioning strategy in the example model templates. Part of the trouble here is that template
+# images install the Certifai packages, so we should tag them in such a way to show that version.
+#
+# Current tagging strategy: `<version-counter>-<toolkit-version>`
+#
+#   `<version-counter>` is a running count we maintain based on the base image, Python version, & other dependencies
+#
+# Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
 function build_model_deployment_base_images() {
-  local scikit_image="c12e/cortex-certifai-model-scikit:${VERSION}"
-  local h2o_image="c12e/cortex-certifai-model-h2o-mojo:${VERSION}"
-  local proxy_image="c12e/cortex-certifai-hosted-model:${VERSION}"
-  local r_image="c12e/cortex-certifai-model-r:${VERSION}"
+  local certifai_version
+  certifai_version=$(getToolkitVersion)
+
+  local version
+  version="v4-${certifai_version}"
+  echo "##### BUILDING ${version} ######"
+
+  local scikit_image="c12e/cortex-certifai-model-scikit:${version}"
+  local h2o_image="c12e/cortex-certifai-model-h2o-mojo:${version}"
+  local proxy_image="c12e/cortex-certifai-hosted-model:${version}"
+  local r_image="c12e/cortex-certifai-model-r:${version}"
 
   _build_template "${scikit_image}" python
   _build_template "${h2o_image}" h2o_mojo
@@ -68,7 +101,7 @@ function build_model_deployment_base_images() {
   _build_template "${r_image}" r_model rocker/r-apt:bionic
 
   echo "{\"scikit\": \"${scikit_image}\", \"h2o\": \"${h2o_image}\", \"proxy\": \"${proxy_image}\", \"r\": \"${r_image}\" }" > "${BUILD_REPORT_JSON}"
-  printf "${scikit_image}\n${h2o_image}\n${proxy_image}\n${r_image}\n" > "${BUILD_REPORT}"
+  printf "%s\n%s\n%s\n%s\n" "${scikit_image}" "${h2o_image}" "${proxy_image}" "${r_image}" > "${BUILD_REPORT}"
 }
 
 function _build_template() {
@@ -112,7 +145,7 @@ function test() {
 }
 
 function testModels() {
-  echo "TODO: automate subset of model examples"
+  echo "TODO: automate subset of model examples - "
   # for each
   # - train the models
   # - start the app in one process,
@@ -121,49 +154,138 @@ function testModels() {
 }
 
 function testNotebooks() {
-  echo "TODO: automate running subset of notebooks"
-  # Use Either
-  # - nbmake (https://github.com/treebeardtech/nbmake)
-  # - nbval (https://github.com/computationalmodelling/nbval)
-  # - testbook (https://testbook.readthedocs.io/en/latest/getting-started/index.html)
+  cd "${NOTEBOOK_DIR}"
+  _installAutomatedDeps
+  runIndependentNotebooks
+  runMultipartNotebooks
+  runNotebooksWithEnvSetup
 }
 
 function testTutorials() {
-  echo "TODO: automate running subset of tutorials"
-  # Use Either
-  # - nbmake (https://github.com/treebeardtech/nbmake)
-  # - nbval (https://github.com/computationalmodelling/nbval)
-  # - testbook (https://testbook.readthedocs.io/en/latest/getting-started/index.html)
+  cd "${TUTORIALS_DIR}"
+  _installAutomatedDeps
+  # bringing_in_your_own_model
+  _runNotebookInPlace "${TUTORIALS_DIR}/bringing_in_your_own_model/part_one/BringingInYourOwnModel.ipynb"
+
+  # TODO(LA): This example requires extra set up in the GoCD agent (to communicate with the Certifai dev cluster), might
+  # need some help. However, this example exposes some undocumented/fragile APIs (i.e "easy to shoot-yourself in the
+  # foot"), so I would vote to not update this and, if possible, maybe even remove it.
+  # remote_scan_tutorial
+  #_runNotebookInPlace "${TUTORIALS_DIR}/remote_scan_tutorial/RemoteScanTutorial.ipynb"
+}
+
+function _installAutomatedDeps() {
+  conda install jupyter nbconvert -y
+  pip install category_encoders
+}
+
+function _runNotebookInPlace() {
+  # FYI - stdout/stderr from the notebook is NOT redirected by nbcovert (if needed check the log file at "~/.certifai")
+  jupyter nbconvert --to notebook --inplace --execute $1
+}
+
+# Examples involving multiple notebooks explicit order
+MULTIPART_NOTEBOOKS=(patient_readmission data_statistics)
+
+# Examples requiring a new conda env or new dependencies
+NOTEBOOKS_REQUIRING_ENV_SETUP=(azureml_model_headers_demo sagemaker target_encoded xgboost-model)
+
+# Example notebook folders to skip (usually empty). Useful in avoiding
+# recomputes when a notebook bombs whilst running the script.
+EXCLUDE_SINGULAR_NOTEBOOK=()
+
+function runMultipartNotebooks() {
+  # data_statistics
+  _runNotebookInPlace "${NOTEBOOK_DIR}/data_statistics/prep_adult_data_drift.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/data_statistics/adult_drift_data_statistics.ipynb"
+
+  # patient_readmission
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-train.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-explain-scan.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-explain-results.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-trust-scan.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-trust-results.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-sampling-scan.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/patient_readmission/patient-readmission-sampling-results.ipynb"
+}
+
+function runIndependentNotebooks() {
+  local multipart_grep
+  multipart_grep="${MULTIPART_NOTEBOOKS[*]/#/-e }"
+
+  local env_grep
+  env_grep="${NOTEBOOKS_REQUIRING_ENV_SETUP[*]/#/-e }"
+
+  local exclude_grep
+  exclude_grep="${EXCLUDE_SINGULAR_NOTEBOOK[*]/#/-e }"
+
+  # All examples with independent notebooks
+  local notebooks
+  # shellcheck disable=SC2086
+  notebooks=$(ls "${NOTEBOOK_DIR}" | grep -v -e README -e datasets -e definitions -e utils ${multipart_grep} ${env_grep} ${exclude_grep})
+
+  # shellcheck disable=SC2068
+  for n in ${notebooks[@]}; do
+    _runNotebookInPlace "${n}/*.ipynb"
+  done
+}
+
+function runNotebooksWithEnvSetup() {
+  _xgboostModel
+  _targetEncodedAzuremlNotebook
+  _azuremlModelHeadersDemo
+  _sagemakerNotebook
+}
+
+function _azuremlModelHeadersDemo() {
+  # TODO: azureml_model_headers_demo
+  true
+}
+
+function _targetEncodedAzuremlNotebook() {
+  # TODO: target_encoded
+  conda remove -n certifai-azure-model-env --all -y
+}
+
+function _sagemakerNotebook() {
+  # TODO: sagemaker example
+  true
+}
+
+function _xgboostModel() {
+  # xgboost-model
+  cd "${NOTEBOOK_DIR}"
+  pip install xgboost
+  _runNotebookInPlace "${NOTEBOOK_DIR}/xgboost-model/xgboostDmatrixExample.ipynb"
 }
 
 
-### MAIN ####
-# TODO(LA): Need to decide on versioning strategy for model templates, part of the trouble here is that template images
-#  include the Certifai packages, so we should tag them in such a way to show that version.
-#
-# Current tagging strategy: `<version-counter>-<toolkit-version>`
-#
-#   `<version-counter>` is a running count we maintain based on Python version & other dependency versions
-#
-# Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
-#
-#VERSION=$(git describe --long --always --match='v*.*' | sed 's/v//; s/-/./')
-CERTIFAI_VERSION=$(getToolkitVersion)
-GIT_SHA=$(git log -1 --pretty=%h)
-VERSION="v4-${CERTIFAI_VERSION}"
-echo "##### BUILDING ${VERSION} ######"
-case ${1-local} in
- CI)
-  activateConda
-  installToolkit
-  test
-  rm -rf ${TOOLKIT_WORK_DIR}
-  ;;
- docker)
-  PUSH_IMAGES=true
-  build_model_deployment_base_images
-  ;;
- *)
-  buildLocal
-  ;;
-esac
+function main() {
+  case ${1-local} in
+   CI)
+    activateConda
+    installToolkit
+    test
+    rm -rf "${TOOLKIT_WORK_DIR}"
+    ;;
+   docker)
+    PUSH_IMAGES=true
+    extractToolkit
+    build_model_deployment_base_images
+    ;;
+   notebook)
+    activateConda
+    installToolkit
+    testNotebooks
+    ;;
+   tutorials)
+    activateConda
+    installToolkit
+    testTutorials
+    ;;
+  *)
+    printf "Unknown Option: $1\nPossible options: CI, docker, notebook, tutorials.\nBuilding Model deployment templates (locally)\n"
+    ;;
+  esac
+}
+main "$1"
