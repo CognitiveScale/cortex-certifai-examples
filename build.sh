@@ -1,22 +1,61 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 #
 ##
-set -eux
+set -eu
 
-PUSH_IMAGES=false
-SKIP_CONDA="${SKIP_CONDA:-false}"
-SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
-PYTHON_VERSION="3.8"
-SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
-ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
-TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
-TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
-PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
-TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
-NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
-TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
-BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
-BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+function setGlobals() {
+  set -x
+  PUSH_IMAGES=false
+  SKIP_CONDA="${SKIP_CONDA:-false}"
+  SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
+  PYTHON_VERSION="3.8"
+  SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+  ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
+  TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
+  TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
+  PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
+  TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
+  NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
+  TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
+  BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
+  BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+}
+
+function printHelp() {
+  # The help message is defined outside of `setGlobals` to avoid echo-ing its value when running the script with -x flag
+  local prog_name
+  prog_name="$(basename "$0")"
+
+  local usage
+  usage="$prog_name [options...]
+
+Build and test Certifai examples.
+
+Options:
+  CI
+      Run all notebook, tutorial, and model examples
+
+  docker
+      Build and push base docker images for example Prediction Service templates (used by Scan Manager).
+
+  local-docker
+      Build base docker images for example Prediction Service templates (used by Scan Manager). Does not push to dockerhub.
+
+  notebooks
+      Run all notebook examples
+
+  tutorials
+      Run all tutorial examples
+
+  help
+      Print this message
+
+Environment Variables:
+  SKIP_CONDA - if 'true', then use the currently activate conda environment (skip creating a new environment)
+  SKIP_TOOLKIT - if 'true', then skip installing the Certifai toolkit in the activate conda environment
+"
+  echo "${usage}"
+}
 
 function activateConda(){
   if [ "${SKIP_CONDA}" = false ]; then
@@ -259,33 +298,40 @@ function _xgboostModel() {
   _runNotebookInPlace "${NOTEBOOK_DIR}/xgboost-model/xgboostDmatrixExample.ipynb"
 }
 
-
 function main() {
   case ${1-local} in
    CI)
+    setGlobals
     activateConda
     installToolkit
     test
     rm -rf "${TOOLKIT_WORK_DIR}"
     ;;
    docker)
+    setGlobals
     PUSH_IMAGES=true
     extractToolkit
     build_model_deployment_base_images
     ;;
    notebook)
+    setGlobals
     activateConda
     installToolkit
     testNotebooks
     ;;
    tutorials)
+    setGlobals
     activateConda
     installToolkit
     testTutorials
     ;;
-  *)
-    printf "Unknown Option: $1\nPossible options: CI, docker, notebook, tutorials.\nBuilding Model deployment templates (locally)\n"
+   help)
+    printHelp
+    ;;
+   *)
+    printf "Unknown Option: %s\n" "$1"
+    printHelp
     ;;
   esac
 }
-main "$1"
+main "${1:-help}"
