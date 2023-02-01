@@ -146,7 +146,7 @@ function test() {
 }
 
 function testModels() {
-  echo "TODO: automate subset of model examples"
+  echo "TODO: automate subset of model examples - "
   # for each
   # - train the models
   # - start the app in one process,
@@ -270,6 +270,7 @@ function _targetEncodedAzuremlNotebook() {
 
 function _sagemakerNotebook() {
   # TODO: sagemaker example
+  true
 }
 
 function _xgboostModel() {
@@ -290,6 +291,7 @@ function main() {
     ;;
    docker)
     PUSH_IMAGES=true
+    extractToolkit
     build_model_deployment_base_images
     ;;
    notebook)
