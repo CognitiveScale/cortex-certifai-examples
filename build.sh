@@ -313,6 +313,12 @@ function main() {
     extractToolkit
     build_model_deployment_base_images
     ;;
+   local-docker)
+    setGlobals
+    PUSH_IMAGES=false
+    extractToolkit
+    build_model_deployment_base_images
+    ;;
    notebook)
     setGlobals
     activateConda
