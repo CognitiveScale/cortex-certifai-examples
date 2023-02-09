@@ -44,14 +44,17 @@ common:
               is_file: yes
           - script: |
               set -eu
+              mkdir -p artifacts
               touch .azure_env
               echo 'AML_USE_SP_AUTH=1
                     AML_TENANT_ID=${CERTIFAI_AZURE_DEV_TENANT_ID}
                     AML_PRINCIPAL_ID=${CERTIFAI_AZURE_DEV_CLIENT_ID}
-                    AML_PRINCIPAL_PASS=${CERTIFAI_AZURE_DEV_SECRET_KEY}' > .azure_env
+                    AML_PRINCIPAL_PASS=${CERTIFAI_AZURE_DEV_SECRET_KEY}
+                    CERTIFAI_AZURE_DEV_WORKSPACE_NAME=${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}
+                    CERTIFAI_AZURE_DEV_RESOURCE_GROUP=${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}
+                    CERTIFAI_AZURE_DEV_SUBSCRIPTION=${CERTIFAI_AZURE_DEV_SUBSCRIPTION}' > artifacts/.azure_env
 
               set -x
-              mkdir -p artifacts
               cp -f certifai_toolkit.zip artifacts/
               c12e-ci
               pip install jinja2 requirements-parser

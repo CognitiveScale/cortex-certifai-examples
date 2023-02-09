@@ -20,7 +20,7 @@ function setGlobals() {
   BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
   BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
 
-  AZURE_ENV_FILE=${SCRIPT_PATH}/.azure_env
+  AZURE_ENV_FILE="${ARTIFACTS_DIR}/.azure_env"
 }
 
 function printHelp() {
@@ -290,11 +290,11 @@ function _targetEncodedAzuremlNotebook() {
   # * Set `AML_USE_SP_AUTH` environment variable in this script
   # * Set `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, `AML_PRINCIPAL_PASS` as secure variables in GoCD, export in this script
 
+  # source azure credentials & environment variables
+  source ${AZURE_ENV_FILE}
+
   # write config.json
   echo {\"subscription_id\": \"$CERTIFAI_AZURE_DEV_SUBSCRIPTION\", \"resource_group\": \"$CERTIFAI_AZURE_DEV_RESOURCE_GROUP\", \"workspace_name\": \"$CERTIFAI_AZURE_DEV_WORKSPACE_NAME\"} >  "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/config.json"
-
-  # source azure credentials
-  source ${AZURE_ENV_FILE}
 
   # target_encoded
   conda remove -n certifai-azure-model-env --all -y
