@@ -45,10 +45,10 @@ common:
           - script: |
               set -eu
               touch .azure_env
-              echo "AML_USE_SP_AUTH=1
-AML_TENANT_ID=${CERTIFAI_AZURE_DEV_TENANT_ID}
-AML_PRINCIPAL_ID=${CERTIFAI_AZURE_DEV_CLIENT_ID}
-AML_PRINCIPAL_PASS=${CERTIFAI_AZURE_DEV_SECRET_KEY}" > .azure_env
+              echo 'AML_USE_SP_AUTH=1
+                    AML_TENANT_ID=${CERTIFAI_AZURE_DEV_TENANT_ID}
+                    AML_PRINCIPAL_ID=${CERTIFAI_AZURE_DEV_CLIENT_ID}
+                    AML_PRINCIPAL_PASS=${CERTIFAI_AZURE_DEV_SECRET_KEY}' > .azure_env
 
               set -x
               mkdir -p artifacts
