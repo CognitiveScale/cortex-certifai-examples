@@ -1,7 +1,7 @@
 name: project_environment
 dependencies:
-  - python=3.8.13
-  - pip=22.2.2
+  - python=3.8
+  - pip
   - scikit-learn=1.0.2
   - numpy=1.21.5
   - joblib=1.1.1
