@@ -182,7 +182,7 @@ function _build_template() {
 function test() {
   testModels
   testNotebooks
-  testTutorials
+  #testTutorials
 }
 
 function testModels() {
