@@ -107,8 +107,10 @@ pipelines:
     group: certifai
     environment_variables:
       # TODO(LA): These environment variables should maybe be defined in (gocd-pipelines repo - `certifaiGocd` branch)?
-      CERTIFAI_AZURE_DEV_WORKSPACE_NAME: "azure-pro-headers"
-      CERTIFAI_AZURE_DEV_RESOURCE_GROUP: "certifai-aditya-dev"
+      #CERTIFAI_AZURE_DEV_WORKSPACE_NAME: "azure-pro-headers"
+      #CERTIFAI_AZURE_DEV_RESOURCE_GROUP: "certifai-aditya-dev"
+      CERTIFAI_AZURE_DEV_RESOURCE_GROUP: "certifai-dev-gocd"
+      CERTIFAI_AZURE_DEV_WORKSPACE_NAME: "certifai-dev-gocd-azureml"
       CERTIFAI_AZURE_DEV_SUBSCRIPTION: "2b400167-aa33-44da-bc18-7bc4415fccfd"
       CERTIFAI_AZURE_DEV_TENANT_ID: "7637ac23-3d98-4d4b-abfa-825d4fec72e4"
       CERTIFAI_AZURE_DEV_CLIENT_ID: "51ded155-3a9c-4ad7-9cc2-53d4edeaa8fd"
