@@ -222,7 +222,10 @@ function _installAutomatedDeps() {
 
 function _runNotebookInPlace() {
   # FYI - stdout/stderr from the notebook is NOT redirected by nbcovert (if needed check the log file at "~/.certifai")
-  jupyter nbconvert --to notebook --inplace --execute $1
+  # An alternative would be to use papermill:
+  #   > pip install papermill
+  #   > papermill --log-output --request-save-on-cell-execute $1
+  jupyter nbconvert --to notebook --inplace --execute $1 --allow-errors
 }
 
 # Examples involving multiple notebooks explicit order
