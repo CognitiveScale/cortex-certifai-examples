@@ -182,7 +182,7 @@ function _build_template() {
 function test() {
   testModels
   testNotebooks
-  #testTutorials
+  testTutorials
 }
 
 function testModels() {
@@ -197,8 +197,8 @@ function testModels() {
 function testNotebooks() {
   cd "${NOTEBOOK_DIR}"
   _installAutomatedDeps
-  #runIndependentNotebooks
-  #runMultipartNotebooks
+  runIndependentNotebooks
+  runMultipartNotebooks
   runNotebooksWithEnvSetup
 }
 
@@ -276,10 +276,10 @@ function runIndependentNotebooks() {
 }
 
 function runNotebooksWithEnvSetup() {
-  #_xgboostModel
+  _xgboostModel
   _targetEncodedAzuremlNotebook
-  #_azuremlModelHeadersDemo
-  #_sagemakerNotebook
+  _azuremlModelHeadersDemo
+  _sagemakerNotebook
 }
 
 function _azuremlModelHeadersDemo() {
@@ -288,16 +288,10 @@ function _azuremlModelHeadersDemo() {
 }
 
 function _targetEncodedAzuremlNotebook() {
-  # TODO(LA): Need to setup authentication
-  # * Set Azure workspace config (JSON) as an environment variable (or use separate variables for each value)
-  # * Add logic to pipeline to write `notebooks/target_encoded/certifai_multiclass_example/config.json`
-  # * Set `AML_USE_SP_AUTH` environment variable in this script
-  # * Set `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, `AML_PRINCIPAL_PASS` as secure variables in GoCD, export in this script
-
-  # source azure credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path)
-  # shellcheck source=/dev/null
+  # Source azure credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # the notebooks expects `AML_USE_SP_AUTH`, `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, and `AML_PRINCIPAL_PASS` to be set.
+  # shellcheck source=/dev/null.
   source "${AZURE_ENV_FILE}"
-
   echo "resource_group: ${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}"
   echo "subscription_id: ${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
   echo "workspace_name: ${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}"
