@@ -56,7 +56,7 @@ common:
 
               echo "CERTIFAI_DEV_AWS_ACCESS_KEY=${CERTIFAI_DEV_AWS_ACCESS_KEY}
                     CERTIFAI_PROD_AWS_SECRET_KEY=${CERTIFAI_PROD_AWS_SECRET_KEY}
-                    CERTIFAI_PROD_AWS_SECRET_KEY=${CERTIFAI_DEV_AWS_ROLE_ARN}" > artifacts/.aws_env
+                    CERTIFAI_DEV_AWS_ROLE_ARN=${CERTIFAI_DEV_AWS_ROLE_ARN}" > artifacts/.aws_env
 
               set -x
               echo "${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
