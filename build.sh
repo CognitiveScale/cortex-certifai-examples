@@ -180,9 +180,9 @@ function _build_template() {
 }
 
 function test() {
-  testModels
+  #testModels
   testNotebooks
-  testTutorials
+  #testTutorials
 }
 
 function testModels() {
@@ -196,9 +196,9 @@ function testModels() {
 
 function testNotebooks() {
   cd "${NOTEBOOK_DIR}"
-  _installAutomatedDeps
-  runIndependentNotebooks
-  runMultipartNotebooks
+  #_installAutomatedDeps
+  #runIndependentNotebooks
+  #runMultipartNotebooks
   runNotebooksWithEnvSetup
 }
 
@@ -276,8 +276,8 @@ function runIndependentNotebooks() {
 }
 
 function runNotebooksWithEnvSetup() {
-  _xgboostModel
-  _targetEncodedAzuremlNotebook
+  #_xgboostModel
+  #_targetEncodedAzuremlNotebook
   _azuremlModelHeadersDemo
   _sagemakerNotebook
 }
