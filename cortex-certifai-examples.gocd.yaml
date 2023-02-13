@@ -23,9 +23,43 @@ common:
               set -eux
               mkdir -p artifacts
               cp -f certifai_toolkit.zip artifacts/
-              c12e-ci
               pip install jinja2 requirements-parser
               ./build.sh docker
+  testExamples: &testExamples
+    clean_workspace: true
+    jobs:
+      Notebooks:
+        artifacts:
+          - build:
+              source: notebooks
+        elastic_profile_id: integrationTestAgent
+        environment_variables:
+          CERTIFAI_BRANCH: develop
+        tasks:
+          - fetch:
+              pipeline: certifai-toolkit
+              stage: build
+              job: build
+              source: certifai_toolkit.zip
+              is_file: yes
+          - script: |
+              set -eu
+              mkdir -p artifacts
+              touch .azure_env
+              echo "export AML_USE_SP_AUTH=1
+                    export AML_TENANT_ID=${CERTIFAI_AZURE_DEV_TENANT_ID}
+                    export AML_PRINCIPAL_ID=${CERTIFAI_AZURE_DEV_CLIENT_ID}
+                    export AML_PRINCIPAL_PASS=${CERTIFAI_AZURE_DEV_SECRET_KEY}
+                    export CERTIFAI_AZURE_DEV_WORKSPACE_NAME=${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}
+                    export CERTIFAI_AZURE_DEV_RESOURCE_GROUP=${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}
+                    export CERTIFAI_AZURE_DEV_SUBSCRIPTION=${CERTIFAI_AZURE_DEV_SUBSCRIPTION}" > artifacts/.azure_env
+
+              set -x
+              echo "${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+              cp -f certifai_toolkit.zip artifacts/
+              c12e-ci
+              pip install jinja2 requirements-parser
+              ./build.sh local-docker
   snykScan: &snykScan
     clean_workspace: false
     jobs:
@@ -69,17 +103,27 @@ pipelines:
     stages: 
       - build: *serviceBuild
       - scan: *snykScan
-
-  # TODO: Do we need a PR pipeline?
-#  cortex-certifai-examples-pr:
-#    group: pull-requests
-#    label_template: ${COUNT}
-#    materials:
-#      cortex-certifai-examples:
-#        plugin_configuration:
-#          id: github.pr
-#          version: 1
-#        options:
-#          url: git@github.com:CognitiveScale/cortex-certifai-examples.git
-#          defaultBranch: master
-#      stages: *serviceBuild
+  cortex-certifai-examples-pr:
+    group: certifai
+    environment_variables:
+      CERTIFAI_AZURE_DEV_RESOURCE_GROUP: "certifai-dev-gocd"
+      CERTIFAI_AZURE_DEV_WORKSPACE_NAME: "certifai-dev-gocd-azureml"
+      CERTIFAI_AZURE_DEV_SUBSCRIPTION: "2b400167-aa33-44da-bc18-7bc4415fccfd"
+      CERTIFAI_AZURE_DEV_TENANT_ID: "7637ac23-3d98-4d4b-abfa-825d4fec72e4"
+      CERTIFAI_AZURE_DEV_CLIENT_ID: "51ded155-3a9c-4ad7-9cc2-53d4edeaa8fd"
+    secure_variables:
+      CERTIFAI_AZURE_DEV_SECRET_KEY: "AES:f2FepXuwMp5+lavjQRbUmg==:QIJMUPnHkcGNZqKOHZfnGIychqumGuxrviBfGzMrsckMDzpTaCbrOv/VouWMb+s8"
+    label_template: ${COUNT}
+    materials:
+      cortex-certifai-examples:
+        plugin_configuration:
+          id: github.pr
+          version: 1
+        options:
+          url: git@github.com:CognitiveScale/cortex-certifai-examples.git
+          defaultBranch: pre-release
+      certifai-toolkit:
+        pipeline: certifai-toolkit
+        stage: build
+    stages:
+      - examples: *testExamples

@@ -1,22 +1,63 @@
-#!/bin/bash -eux
+#!/bin/bash -eu
 #
 ##
-set -eux
+set -eu
 
-PUSH_IMAGES=false
-SKIP_CONDA="${SKIP_CONDA:-false}"
-SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
-PYTHON_VERSION="3.8"
-SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
-ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
-TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
-TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
-PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
-TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
-NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
-TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
-BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
-BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+function setGlobals() {
+  set -x
+  PUSH_IMAGES=false
+  SKIP_CONDA="${SKIP_CONDA:-false}"
+  SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
+  PYTHON_VERSION="3.8"
+  SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
+  ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
+  TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
+  TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
+  PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
+  TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
+  NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
+  TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
+  BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
+  BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+
+  AZURE_ENV_FILE="${ARTIFACTS_DIR}/.azure_env"
+}
+
+function printHelp() {
+  # The help message is defined outside of `setGlobals` to avoid echo-ing its value when running the script with -x flag
+  local prog_name
+  prog_name="$(basename "$0")"
+
+  local usage
+  usage="$prog_name [options...]
+
+Build and test Certifai examples.
+
+Options:
+  CI
+      Run all notebook, tutorial, and model examples
+
+  docker
+      Build and push base docker images for example Prediction Service templates (used by Scan Manager).
+
+  local-docker
+      Build base docker images for example Prediction Service templates (used by Scan Manager). Does not push to dockerhub.
+
+  notebooks
+      Run all notebook examples
+
+  tutorials
+      Run all tutorial examples
+
+  help
+      Print this message
+
+Environment Variables:
+  SKIP_CONDA - if 'true', then use the currently activate conda environment (skip creating a new environment)
+  SKIP_TOOLKIT - if 'true', then skip installing the Certifai toolkit in the activate conda environment
+"
+  echo "${usage}"
+}
 
 function activateConda(){
   if [ "${SKIP_CONDA}" = false ]; then
@@ -34,7 +75,6 @@ function activateConda(){
 }
 
 function installToolkit() {
-  # Installs certifai toolkit in current active environment
   if [ "${SKIP_TOOLKIT}" = false ]; then
     echo "Installing Certifai Toolkit (${TOOLKIT_PATH})"
     extractToolkit
@@ -146,7 +186,7 @@ function test() {
 }
 
 function testModels() {
-  echo "TODO: automate subset of model examples"
+  echo "TODO: automate subset of model examples - "
   # for each
   # - train the models
   # - start the app in one process,
@@ -182,7 +222,11 @@ function _installAutomatedDeps() {
 
 function _runNotebookInPlace() {
   # FYI - stdout/stderr from the notebook is NOT redirected by nbcovert (if needed check the log file at "~/.certifai")
-  jupyter nbconvert --to notebook --inplace --execute $1
+  # An alternative would be to use papermill, however this requires (input notebook, CWD, output notebook), and doesn't
+  # work well with wildcards.
+  #   > pip install papermill
+  #   > papermill --cwd $2 --log-output --request-save-on-cell-execute $1 $3
+  jupyter nbconvert --to notebook --inplace --execute "$1"
 }
 
 # Examples involving multiple notebooks explicit order
@@ -239,6 +283,17 @@ function runNotebooksWithEnvSetup() {
 }
 
 function _azuremlModelHeadersDemo() {
+  # Source azure credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # the notebooks expects `AML_USE_SP_AUTH`, `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, and `AML_PRINCIPAL_PASS` to be set.
+  # shellcheck source=/dev/null.
+  source "${AZURE_ENV_FILE}"
+  echo "resource_group: ${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}"
+  echo "subscription_id: ${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+  echo "workspace_name: ${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}"
+
+  # write config.json
+  echo "{\"subscription_id\": \"${CERTIFAI_AZURE_DEV_SUBSCRIPTION}\", \"resource_group\": \"${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}\", \"workspace_name\": \"${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}\"}" >  "${NOTEBOOK_DIR}/azureml_model_headers_demo/config.json"
+
   # azureml_model_headers_demo
   cd "${NOTEBOOK_DIR}"
   conda remove -n certifai-azure-model-env --all -y
@@ -253,6 +308,17 @@ function _azuremlModelHeadersDemo() {
 }
 
 function _targetEncodedAzuremlNotebook() {
+  # Source azure credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # the notebooks expects `AML_USE_SP_AUTH`, `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, and `AML_PRINCIPAL_PASS` to be set.
+  # shellcheck source=/dev/null.
+  source "${AZURE_ENV_FILE}"
+  echo "resource_group: ${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}"
+  echo "subscription_id: ${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+  echo "workspace_name: ${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}"
+
+  # write config.json
+  echo "{\"subscription_id\": \"${CERTIFAI_AZURE_DEV_SUBSCRIPTION}\", \"resource_group\": \"${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}\", \"workspace_name\": \"${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}\"}" >  "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/config.json"
+
   # target_encoded
   conda remove -n certifai-azure-model-env --all -y
   conda env create -f "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/certifai_azure_model_env.yml"
@@ -286,32 +352,46 @@ function _xgboostModel() {
   _runNotebookInPlace "${NOTEBOOK_DIR}/xgboost-model/xgboostDmatrixExample.ipynb"
 }
 
-
 function main() {
   case ${1-local} in
    CI)
+    setGlobals
     activateConda
     installToolkit
     test
     rm -rf "${TOOLKIT_WORK_DIR}"
     ;;
    docker)
+    setGlobals
     PUSH_IMAGES=true
+    extractToolkit
+    build_model_deployment_base_images
+    ;;
+   local-docker)
+    setGlobals
+    PUSH_IMAGES=false
+    extractToolkit
     build_model_deployment_base_images
     ;;
    notebook)
+    setGlobals
     activateConda
     installToolkit
     testNotebooks
     ;;
    tutorials)
+    setGlobals
     activateConda
     installToolkit
     testTutorials
     ;;
-  *)
-    printf "Unknown Option: $1\nPossible options: CI, docker, notebook, tutorials.\nBuilding Model deployment templates (locally)\n"
+   help)
+    printHelp
+    ;;
+   *)
+    printf "Unknown Option: %s\n" "$1"
+    printHelp
     ;;
   esac
 }
-main "$1"
+main "${1:-help}"
