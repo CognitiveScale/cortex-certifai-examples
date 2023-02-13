@@ -283,6 +283,17 @@ function runNotebooksWithEnvSetup() {
 }
 
 function _azuremlModelHeadersDemo() {
+  # Source azure credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # the notebooks expects `AML_USE_SP_AUTH`, `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, and `AML_PRINCIPAL_PASS` to be set.
+  # shellcheck source=/dev/null.
+  source "${AZURE_ENV_FILE}"
+  echo "resource_group: ${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}"
+  echo "subscription_id: ${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+  echo "workspace_name: ${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}"
+
+  # write config.json
+  echo "{\"subscription_id\": \"${CERTIFAI_AZURE_DEV_SUBSCRIPTION}\", \"resource_group\": \"${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}\", \"workspace_name\": \"${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}\"}" >  "${NOTEBOOK_DIR}/azureml_model_headers_demo/config.json"
+
   # azureml_model_headers_demo
   cd "${NOTEBOOK_DIR}"
   conda remove -n certifai-azure-model-env --all -y
