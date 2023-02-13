@@ -29,10 +29,9 @@ common:
     clean_workspace: true
     jobs:
       Notebooks:
-        # Uncomment to save notebook folder on each run
-        #artifacts:
-        #  - build:
-        #      source: notebooks
+        artifacts:
+          - build:
+              source: notebooks
         elastic_profile_id: integrationTestAgent
         environment_variables:
           CERTIFAI_BRANCH: develop
