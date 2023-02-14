@@ -11,3 +11,4 @@ dependencies:
   - boto3>=1.0.0,<2.0.0
   - pip:
     - sagemaker==2.127.0
+
