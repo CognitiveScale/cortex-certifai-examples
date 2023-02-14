@@ -339,10 +339,11 @@ function _sagemakerNotebook() {
   # shellcheck source=/dev/null.
   source "${AWS_ENV_FILE}"
   pip install awscli
-  aws configure set region us-east-1 --profile default
-  aws configure set aws_access_key_id "${CERTIFAI_DEV_AWS_ACCESS_KEY}" --profile default
-  aws configure set aws_secret_access_key "${CERTIFAI_DEV_AWS_SECRET_KEY}" --profile default
-  aws configure set role_arn "${CERTIFAI_DEV_AWS_ROLE_ARN}" --profile default
+  aws configure set region us-east-1 --profile dev
+  aws configure set aws_access_key_id "${CERTIFAI_DEV_AWS_ACCESS_KEY}" --profile dev
+  aws configure set aws_secret_access_key "${CERTIFAI_DEV_AWS_SECRET_KEY}" --profile dev
+  aws configure set role_arn "${CERTIFAI_DEV_AWS_ROLE_ARN}" --profile dev
+  aws configure set source_profile dev --profile dev
 
   cd "${NOTEBOOK_DIR}"
   conda remove -n certifai-sagemaker-model-env --all -y
