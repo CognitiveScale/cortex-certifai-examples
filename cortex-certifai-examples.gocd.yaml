@@ -115,11 +115,11 @@ pipelines:
       CERTIFAI_AZURE_DEV_SUBSCRIPTION: "2b400167-aa33-44da-bc18-7bc4415fccfd"
       CERTIFAI_AZURE_DEV_TENANT_ID: "7637ac23-3d98-4d4b-abfa-825d4fec72e4"
       CERTIFAI_AZURE_DEV_CLIENT_ID: "51ded155-3a9c-4ad7-9cc2-53d4edeaa8fd"
-      CERTIFAI_DEV_AWS_ACCESS_KEY: "AKIA2LLV3WLQKILDOQUY"
+      CERTIFAI_DEV_AWS_ACCESS_KEY: "AKIA2LLV3WLQATBENWHQ"
       CERTIFAI_DEV_AWS_ROLE_ARN: "arn:aws:iam::711601140448:role/AWSGlueServiceSageMakerNotebookRole-cortex-certifai-examples"
     secure_variables:
       CERTIFAI_AZURE_DEV_SECRET_KEY: "AES:f2FepXuwMp5+lavjQRbUmg==:QIJMUPnHkcGNZqKOHZfnGIychqumGuxrviBfGzMrsckMDzpTaCbrOv/VouWMb+s8"
-      CERTIFAI_DEV_AWS_SECRET_KEY: "AES:jk87TlKP7JOfrdCYl4F2EQ==:5RBWZvIUAk9CuQTpMsxw49yWaO+w3l4HAfKTRa56cX4R9ryJ6hWAiSiGgO/zwLEe"
+      CERTIFAI_DEV_AWS_SECRET_KEY: "AES:xVSD9Lr/T4YtP7pUd9kilQ==:590Y/Bz4G8DrCYaVOVu2lY0IkPcDEMFjGHPILP3UBNTBWlxwoFp/VuHK5zxVi527"
     label_template: ${COUNT}
     materials:
       cortex-certifai-examples:
