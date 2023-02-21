@@ -283,8 +283,28 @@ function runNotebooksWithEnvSetup() {
 }
 
 function _azuremlModelHeadersDemo() {
-  # TODO: azureml_model_headers_demo
-  true
+  # Source azure credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # the notebooks expects `AML_USE_SP_AUTH`, `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, and `AML_PRINCIPAL_PASS` to be set.
+  # shellcheck source=/dev/null.
+  source "${AZURE_ENV_FILE}"
+  echo "resource_group: ${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}"
+  echo "subscription_id: ${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+  echo "workspace_name: ${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}"
+
+  # write config.json
+  echo "{\"subscription_id\": \"${CERTIFAI_AZURE_DEV_SUBSCRIPTION}\", \"resource_group\": \"${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}\", \"workspace_name\": \"${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}\"}" >  "${NOTEBOOK_DIR}/azureml_model_headers_demo/config.json"
+
+  # azureml_model_headers_demo
+  cd "${NOTEBOOK_DIR}"
+  conda remove -n certifai-azure-model-env --all -y
+  conda env create -f "${NOTEBOOK_DIR}/azureml_model_headers_demo/certifai_azure_model_env.yml"
+  conda activate certifai-azure-model-env
+  # export variable so the toolkit from pipeline artifacts are picked up during installation
+  TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit" _runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers_demo/part_one_installing_dependencies.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers_demo/german_credit_azure_ml_demo.ipynb"
+  # NOTE: Following notebook uses Certifai Pro and is not automated - see https://github.com/CognitiveScale/certifai/issues/4697
+  #_runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers/demo/german_credit_azure_ml_certifai_pro_demo.ipynb"
+  conda deactivate
 }
 
 function _targetEncodedAzuremlNotebook() {
