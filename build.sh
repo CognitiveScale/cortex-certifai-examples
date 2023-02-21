@@ -19,7 +19,7 @@ function setGlobals() {
   TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
   BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
   BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
-
+  AWS_ENV_FILE="${ARTIFACTS_DIR}/.aws_env"
   AZURE_ENV_FILE="${ARTIFACTS_DIR}/.azure_env"
 }
 
@@ -335,8 +335,24 @@ function _targetEncodedAzuremlNotebook() {
 }
 
 function _sagemakerNotebook() {
-  # TODO: sagemaker example
-  true
+  # Source aws credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # shellcheck source=/dev/null.
+  source "${AWS_ENV_FILE}"
+  pip install awscli
+  aws configure set region us-east-1 --profile default
+  aws configure set aws_access_key_id "${CERTIFAI_DEV_AWS_ACCESS_KEY}" --profile default
+  aws configure set aws_secret_access_key "${CERTIFAI_DEV_AWS_SECRET_KEY}" --profile default
+  aws configure set role_arn "${CERTIFAI_DEV_AWS_ROLE_ARN}" --profile default
+  aws configure set source_profile default --profile default
+
+  cd "${NOTEBOOK_DIR}"
+  conda remove -n certifai-sagemaker-model-env --all -y
+  conda env create -f "${NOTEBOOK_DIR}/sagemaker/certifai_sagemaker_model_env.yml"
+  conda activate certifai-sagemaker-model-env
+  # export variables so the toolkit from pipeline artifacts is used during installation
+  TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit" _runNotebookInPlace "${NOTEBOOK_DIR}/sagemaker/part_one_installing_dependencies.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/sagemaker/CertifaiSageMakerExample.ipynb"
+  conda deactivate
 }
 
 function _xgboostModel() {
