@@ -19,6 +19,8 @@ function setGlobals() {
   TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
   BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
   BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+  AWS_ENV_FILE="${ARTIFACTS_DIR}/.aws_env"
+  AZURE_ENV_FILE="${ARTIFACTS_DIR}/.azure_env"
 }
 
 function printHelp() {
@@ -220,7 +222,11 @@ function _installAutomatedDeps() {
 
 function _runNotebookInPlace() {
   # FYI - stdout/stderr from the notebook is NOT redirected by nbcovert (if needed check the log file at "~/.certifai")
-  jupyter nbconvert --to notebook --inplace --execute $1
+  # An alternative would be to use papermill, however this requires (input notebook, CWD, output notebook), and doesn't
+  # work well with wildcards.
+  #   > pip install papermill
+  #   > papermill --cwd $2 --log-output --request-save-on-cell-execute $1 $3
+  jupyter nbconvert --to notebook --inplace --execute "$1"
 }
 
 # Examples involving multiple notebooks explicit order
@@ -277,18 +283,76 @@ function runNotebooksWithEnvSetup() {
 }
 
 function _azuremlModelHeadersDemo() {
-  # TODO: azureml_model_headers_demo
-  true
+  # Source azure credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # the notebooks expects `AML_USE_SP_AUTH`, `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, and `AML_PRINCIPAL_PASS` to be set.
+  # shellcheck source=/dev/null.
+  source "${AZURE_ENV_FILE}"
+  echo "resource_group: ${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}"
+  echo "subscription_id: ${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+  echo "workspace_name: ${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}"
+
+  # write config.json
+  echo "{\"subscription_id\": \"${CERTIFAI_AZURE_DEV_SUBSCRIPTION}\", \"resource_group\": \"${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}\", \"workspace_name\": \"${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}\"}" >  "${NOTEBOOK_DIR}/azureml_model_headers_demo/config.json"
+
+  # azureml_model_headers_demo
+  cd "${NOTEBOOK_DIR}"
+  conda remove -n certifai-azure-model-env --all -y
+  conda env create -f "${NOTEBOOK_DIR}/azureml_model_headers_demo/certifai_azure_model_env.yml"
+  conda activate certifai-azure-model-env
+  # export variable so the toolkit from pipeline artifacts are picked up during installation
+  TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit" _runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers_demo/part_one_installing_dependencies.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers_demo/german_credit_azure_ml_demo.ipynb"
+  # NOTE: Following notebook uses Certifai Pro and is not automated - see https://github.com/CognitiveScale/certifai/issues/4697
+  #_runNotebookInPlace "${NOTEBOOK_DIR}/azureml_model_headers/demo/german_credit_azure_ml_certifai_pro_demo.ipynb"
+  conda deactivate
 }
 
 function _targetEncodedAzuremlNotebook() {
-  # TODO: target_encoded
+  # Source azure credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # the notebooks expects `AML_USE_SP_AUTH`, `AML_TENANT_ID`, `AML_PRINCIPAL_ID`, and `AML_PRINCIPAL_PASS` to be set.
+  # shellcheck source=/dev/null.
+  source "${AZURE_ENV_FILE}"
+  echo "resource_group: ${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}"
+  echo "subscription_id: ${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+  echo "workspace_name: ${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}"
+
+  # write config.json
+  echo "{\"subscription_id\": \"${CERTIFAI_AZURE_DEV_SUBSCRIPTION}\", \"resource_group\": \"${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}\", \"workspace_name\": \"${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}\"}" >  "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/config.json"
+
+  # target_encoded
   conda remove -n certifai-azure-model-env --all -y
+  conda env create -f "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/certifai_azure_model_env.yml"
+  conda activate certifai-azure-model-env
+  installToolkit
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/dataset_generation/german_credit_multiclass_dataset_generation.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/dataset_generation/german_credit_multiclass_dataset_encoding.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/model_train_part1.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/certifai_multiclass_evaluation_part2.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/deploying_model_part3.ipynb"
+  # NOTE: Following notebook uses Certifai Pro and is not automated - see https://github.com/CognitiveScale/certifai/issues/4697
+  #_runNotebookInPlace "${NOTEBOOK_DIR}/target_encoded/certifai_multiclass_example/remote_scan_part4.ipynb"
+  conda deactivate
 }
 
 function _sagemakerNotebook() {
-  # TODO: sagemaker example
-  true
+  # Source aws credentials as env variables (the `shellcheck source` below ignores warnings from the dynamic path),
+  # shellcheck source=/dev/null.
+  source "${AWS_ENV_FILE}"
+  pip install awscli
+  aws configure set region us-east-1 --profile default
+  aws configure set aws_access_key_id "${CERTIFAI_DEV_AWS_ACCESS_KEY}" --profile default
+  aws configure set aws_secret_access_key "${CERTIFAI_DEV_AWS_SECRET_KEY}" --profile default
+  aws configure set role_arn "${CERTIFAI_DEV_AWS_ROLE_ARN}" --profile default
+  aws configure set source_profile default --profile default
+
+  cd "${NOTEBOOK_DIR}"
+  conda remove -n certifai-sagemaker-model-env --all -y
+  conda env create -f "${NOTEBOOK_DIR}/sagemaker/certifai_sagemaker_model_env.yml"
+  conda activate certifai-sagemaker-model-env
+  # export variables so the toolkit from pipeline artifacts is used during installation
+  TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit" _runNotebookInPlace "${NOTEBOOK_DIR}/sagemaker/part_one_installing_dependencies.ipynb"
+  _runNotebookInPlace "${NOTEBOOK_DIR}/sagemaker/CertifaiSageMakerExample.ipynb"
+  conda deactivate
 }
 
 function _xgboostModel() {

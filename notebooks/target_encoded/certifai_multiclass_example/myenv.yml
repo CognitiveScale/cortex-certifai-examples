@@ -1,9 +1,10 @@
 name: project_environment
 dependencies:
-  - python=3.6.2
-  - scikit-learn>=0.23.1
-  - numpy>=1.16.2
-  - joblib
+  - python=3.8
+  - pip
+  - scikit-learn=1.0.2
+  - numpy=1.21.5
+  - joblib=1.1.1
   - pip:
     - azureml-defaults
     - inference-schema[numpy-support]
