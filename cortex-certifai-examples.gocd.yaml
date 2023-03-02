@@ -1,5 +1,16 @@
 format_version: 10
 common:
+  environment_variables: &environment_variables
+    CERTIFAI_AZURE_DEV_RESOURCE_GROUP: "certifai-dev-gocd"
+    CERTIFAI_AZURE_DEV_WORKSPACE_NAME: "certifai-dev-gocd-azureml"
+    CERTIFAI_AZURE_DEV_SUBSCRIPTION: "2b400167-aa33-44da-bc18-7bc4415fccfd"
+    CERTIFAI_AZURE_DEV_TENANT_ID: "7637ac23-3d98-4d4b-abfa-825d4fec72e4"
+    CERTIFAI_AZURE_DEV_CLIENT_ID: "51ded155-3a9c-4ad7-9cc2-53d4edeaa8fd"
+    CERTIFAI_DEV_AWS_ACCESS_KEY: "AKIA2LLV3WLQATBENWHQ"
+    CERTIFAI_DEV_AWS_ROLE_ARN: "arn:aws:iam::711601140448:role/AWSGlueServiceSageMakerNotebookRole-cortex-certifai-examples"
+  secure_variables: &secure_variables
+    CERTIFAI_AZURE_DEV_SECRET_KEY: "AES:f2FepXuwMp5+lavjQRbUmg==:QIJMUPnHkcGNZqKOHZfnGIychqumGuxrviBfGzMrsckMDzpTaCbrOv/VouWMb+s8"
+    CERTIFAI_DEV_AWS_SECRET_KEY: "AES:xVSD9Lr/T4YtP7pUd9kilQ==:590Y/Bz4G8DrCYaVOVu2lY0IkPcDEMFjGHPILP3UBNTBWlxwoFp/VuHK5zxVi527"
   serviceBuild: &serviceBuild
     clean_workspace: true
     jobs:
@@ -10,8 +21,6 @@ common:
           - build:
               source: artifacts/buildReport.json
         elastic_profile_id: integrationTestAgent
-        environment_variables:
-          CERTIFAI_BRANCH: develop
         tasks:
           - fetch:
               pipeline: certifai-toolkit
@@ -25,7 +34,7 @@ common:
               cp -f certifai_toolkit.zip artifacts/
               pip install jinja2 requirements-parser
               ./build.sh docker
-  testExamples: &testExamples
+  testExamplesWithDev: &testExamplesWithDev
     clean_workspace: true
     jobs:
       Notebooks:
@@ -44,20 +53,7 @@ common:
               is_file: yes
           - script: |
               set -eu
-              mkdir -p artifacts
-              touch .azure_env
-              echo "export AML_USE_SP_AUTH=1
-                    export AML_TENANT_ID=${CERTIFAI_AZURE_DEV_TENANT_ID}
-                    export AML_PRINCIPAL_ID=${CERTIFAI_AZURE_DEV_CLIENT_ID}
-                    export AML_PRINCIPAL_PASS=${CERTIFAI_AZURE_DEV_SECRET_KEY}
-                    export CERTIFAI_AZURE_DEV_WORKSPACE_NAME=${CERTIFAI_AZURE_DEV_WORKSPACE_NAME}
-                    export CERTIFAI_AZURE_DEV_RESOURCE_GROUP=${CERTIFAI_AZURE_DEV_RESOURCE_GROUP}
-                    export CERTIFAI_AZURE_DEV_SUBSCRIPTION=${CERTIFAI_AZURE_DEV_SUBSCRIPTION}" > artifacts/.azure_env
-
-              echo "CERTIFAI_DEV_AWS_ACCESS_KEY=${CERTIFAI_DEV_AWS_ACCESS_KEY}
-                    CERTIFAI_DEV_AWS_SECRET_KEY=${CERTIFAI_DEV_AWS_SECRET_KEY}
-                    CERTIFAI_DEV_AWS_ROLE_ARN=${CERTIFAI_DEV_AWS_ROLE_ARN}" > artifacts/.aws_env
-
+              ./initialize_env.sh
               set -x
               echo "${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
               cp -f certifai_toolkit.zip artifacts/
@@ -90,6 +86,7 @@ common:
               ./gocd-pipeline-scripts/common/submit-snyk-scan.sh monitor buildReport.json ${SNYK_ORG}
 
               ./gocd-pipeline-scripts/common/submit-snyk-scan.sh test buildReport.json ${SNYK_ORG}
+
 pipelines:
   cortex-certifai-examples-build:
     group: certifai
@@ -107,19 +104,14 @@ pipelines:
     stages: 
       - build: *serviceBuild
       - scan: *snykScan
+      - examples:
+        <<: *testExamplesWithDev
+        approval: manual
+
   cortex-certifai-examples-pr:
     group: certifai
-    environment_variables:
-      CERTIFAI_AZURE_DEV_RESOURCE_GROUP: "certifai-dev-gocd"
-      CERTIFAI_AZURE_DEV_WORKSPACE_NAME: "certifai-dev-gocd-azureml"
-      CERTIFAI_AZURE_DEV_SUBSCRIPTION: "2b400167-aa33-44da-bc18-7bc4415fccfd"
-      CERTIFAI_AZURE_DEV_TENANT_ID: "7637ac23-3d98-4d4b-abfa-825d4fec72e4"
-      CERTIFAI_AZURE_DEV_CLIENT_ID: "51ded155-3a9c-4ad7-9cc2-53d4edeaa8fd"
-      CERTIFAI_DEV_AWS_ACCESS_KEY: "AKIA2LLV3WLQATBENWHQ"
-      CERTIFAI_DEV_AWS_ROLE_ARN: "arn:aws:iam::711601140448:role/AWSGlueServiceSageMakerNotebookRole-cortex-certifai-examples"
-    secure_variables:
-      CERTIFAI_AZURE_DEV_SECRET_KEY: "AES:f2FepXuwMp5+lavjQRbUmg==:QIJMUPnHkcGNZqKOHZfnGIychqumGuxrviBfGzMrsckMDzpTaCbrOv/VouWMb+s8"
-      CERTIFAI_DEV_AWS_SECRET_KEY: "AES:xVSD9Lr/T4YtP7pUd9kilQ==:590Y/Bz4G8DrCYaVOVu2lY0IkPcDEMFjGHPILP3UBNTBWlxwoFp/VuHK5zxVi527"
+    environment_variables: *environment_variables
+    secure_variables: *secure_variables
     label_template: ${COUNT}
     materials:
       cortex-certifai-examples:
@@ -133,4 +125,42 @@ pipelines:
         pipeline: certifai-toolkit
         stage: build
     stages:
-      - examples: *testExamples
+      - examples: *testExamplesWithDev
+
+  cortex-certifai-examples-rc:
+    group: certifai
+    environment_variables: *environment_variables
+    secure_variables: *secure_variables
+    label_template: ${COUNT}
+    materials:
+      cortex-certifai-examples:
+        git: git@github.com:CognitiveScale/cortex-certifai-examples.git
+        branch: master
+      certifai-toolkit:
+        pipeline: certifai-toolkit-rc
+        stage: build
+    stages:
+      - examples:
+        clean_workspace: true
+        jobs:
+          Notebooks:
+            artifacts:
+              - build:
+                source: notebooks
+            elastic_profile_id: integrationTestAgent
+            tasks:
+              - fetch:
+                  pipeline: certifai-toolkit-rc
+                  stage: build
+                  job: build
+                  source: certifai_toolkit.zip
+                  is_file: yes
+              - script: |
+                  set -eu
+                  ./initialize_env.sh
+                  set -x
+                  echo "${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+                  cp -f certifai_toolkit.zip artifacts/
+                  c12e-ci
+                  pip install jinja2 requirements-parser
+                  ./build.sh local-docker
