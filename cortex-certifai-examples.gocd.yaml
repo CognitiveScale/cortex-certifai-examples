@@ -169,7 +169,7 @@ pipelines:
             Notebooks:
               artifacts:
                 - build:
-                  source: notebooks
+                    source: notebooks
               elastic_profile_id: integrationTestAgent
               tasks:
                 - fetch:
