@@ -60,6 +60,30 @@ common:
               c12e-ci
               pip install jinja2 requirements-parser
               ./build.sh local-docker
+  testExamplesWithRC: &testExamplesWithRC
+    clean_workspace: true
+    jobs:
+      Notebooks:
+        artifacts:
+          - build:
+            source: notebooks
+        elastic_profile_id: integrationTestAgent
+        tasks:
+          - fetch:
+              pipeline: certifai-toolkit-rc
+              stage: build
+              job: build
+              source: certifai_toolkit.zip
+              is_file: yes
+          - script: |
+              set -eu
+              ./initialize_env.sh
+              set -x
+              echo "${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
+              cp -f certifai_toolkit.zip artifacts/
+              c12e-ci
+              pip install jinja2 requirements-parser
+              ./build.sh local-docker
   snykScan: &snykScan
     clean_workspace: false
     jobs:
@@ -131,7 +155,6 @@ pipelines:
     group: certifai
     environment_variables: *environment_variables
     secure_variables: *secure_variables
-    label_template: ${COUNT}
     materials:
       cortex-certifai-examples:
         git: git@github.com:CognitiveScale/cortex-certifai-examples.git
@@ -140,27 +163,4 @@ pipelines:
         pipeline: certifai-toolkit-rc
         stage: build
     stages:
-      - examples:
-        clean_workspace: true
-        jobs:
-          Notebooks:
-            artifacts:
-              - build:
-                source: notebooks
-            elastic_profile_id: integrationTestAgent
-            tasks:
-              - fetch:
-                  pipeline: certifai-toolkit-rc
-                  stage: build
-                  job: build
-                  source: certifai_toolkit.zip
-                  is_file: yes
-              - script: |
-                  set -eu
-                  ./initialize_env.sh
-                  set -x
-                  echo "${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
-                  cp -f certifai_toolkit.zip artifacts/
-                  c12e-ci
-                  pip install jinja2 requirements-parser
-                  ./build.sh local-docker
+      - examples: *testExamplesWithRC
