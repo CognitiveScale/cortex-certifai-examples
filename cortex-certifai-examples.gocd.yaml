@@ -114,6 +114,12 @@ common:
 pipelines:
   cortex-certifai-examples-build:
     group: certifai
+    environment_variables:
+      <<: *environment_variables
+      SNYK_ORG: "certifai-gocd"
+    secure_variables:
+      <<: *secure_variables
+      SNYK_TOKEN: "AES:PbCJwUjsSYf4Knu+NwAmhg==:2KuhQtOC4bAz6XhY573V9Ppnbjir10dz8fZBYQLAJkP8kYAkj5zu45dHx/knFCRm"
     materials:
       cortex-certifai-examples:
         git: git@github.com:CognitiveScale/cortex-certifai-examples.git
@@ -121,11 +127,7 @@ pipelines:
       certifai-toolkit:
         pipeline: certifai-toolkit
         stage: build
-    environment_variables:
-      SNYK_ORG: "certifai-gocd"
-    secure_variables:
-      SNYK_TOKEN: "AES:PbCJwUjsSYf4Knu+NwAmhg==:2KuhQtOC4bAz6XhY573V9Ppnbjir10dz8fZBYQLAJkP8kYAkj5zu45dHx/knFCRm"
-    stages: 
+    stages:
       - build: *serviceBuild
       - scan: *snykScan
       - examples:
