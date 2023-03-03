@@ -180,6 +180,7 @@ pipelines:
                     is_file: yes
                 - script: |
                     set -eu
+                    ls -la
                     ./initialize_env.sh
                     set -x
                     echo "${CERTIFAI_AZURE_DEV_SUBSCRIPTION}"
