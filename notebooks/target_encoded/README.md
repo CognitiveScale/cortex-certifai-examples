@@ -9,8 +9,7 @@
 
  - train and persist model
  - setup Certifai scan
- - deploy model as service using Azure Cloud Instance
- - trigger a remote Certifai scan using the above deployed model
+ - deploy model as service using Azure Cloud Instance and write a Scan Definition for scanning the model
 
 ## Environment Setup
 
@@ -36,9 +35,15 @@ Follow the steps below to trigger Certifai scan in the notebook
 - Initiate Certifai scan using the [evaluation notebook](./certifai_multiclass_example/certifai_multiclass_evaluation_part2.ipynb)
 
 
-## Deployment and Remote Scanning using Certifai Pro
+## Deployment and Scanning
 
-Follow the steps below to deploy the model to Azure and scan it using Certifai Pro
+Follow the steps below to deploy the model to Azure and scan the model locally
 
 - Deploy the model (as a service) in Azure using the [model deployment notebook](./certifai_multiclass_example/deploying_model_part3.ipynb)
-- Install Certifai Pro in Azure and trigger remote scan using the [remote scanning notebook](./certifai_multiclass_example/remote_scan_part4.ipynb)
+- Use the newly created Scan Definition to scan the model service locally (see `target_encoded_gcredit_multiclass_scan_def.yaml`)
+ 
+  ```
+  certifai scan -f target_encoded_gcredit_multiclass_scan_def.yaml
+  ```
+
+  Alternatively, you can scan the deployed model with [Scan Manager](https://cognitivescale.github.io/cortex-certifai/docs/enterprise/scan-manager/use-scan-manager) by uploading the scan definition.
