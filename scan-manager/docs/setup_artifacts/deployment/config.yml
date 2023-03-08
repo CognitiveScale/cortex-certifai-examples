@@ -2,31 +2,31 @@ scikit_0.23:
   deployment: scikit_0.23_deployment.yml
   default_base_image:
     name: python38_scikit
-    value: c12e/cortex-certifai-model-scikit:v4-1.3.15-121-gb6fded39
+    value: c12e/cortex-certifai-model-scikit:v4-1.3.16-25-g527dfe93
   available_base_images:
   - name: python38_scikit
-    value: c12e/cortex-certifai-model-scikit:v4-1.3.15-121-gb6fded39
+    value: c12e/cortex-certifai-model-scikit:v4-1.3.16-25-g527dfe93
 h2o_mojo:
   deployment: h2o_mojo_deployment.yml
   default_base_image:
     name: h2o_dai
-    value: c12e/cortex-certifai-model-h2o-mojo:v4-1.3.15-121-gb6fded39
+    value: c12e/cortex-certifai-model-h2o-mojo:v4-1.3.16-25-g527dfe93
   available_base_images:
   - name: h2o_dai
-    value: c12e/cortex-certifai-model-h2o-mojo:v4-1.3.15-121-gb6fded39
+    value: c12e/cortex-certifai-model-h2o-mojo:v4-1.3.16-25-g527dfe93
 r_model:
   deployment: r_model_deployment.yml
   default_base_image:
     name: r_model
-    value: c12e/cortex-certifai-model-r:v4-1.3.15-121-gb6fded39
+    value: c12e/cortex-certifai-model-r:v4-1.3.16-25-g527dfe93
   available_base_images:
   - name: r_model
-    value: c12e/cortex-certifai-model-r:v4-1.3.15-121-gb6fded39
+    value: c12e/cortex-certifai-model-r:v4-1.3.16-25-g527dfe93
 proxied_model:
   deployment: hosted_model_proxy_deployment.yml
   default_base_image:
     name: certifai-proxy
-    value: c12e/cortex-certifai-hosted-model:v4-1.3.15-121-gb6fded39
+    value: c12e/cortex-certifai-hosted-model:v4-1.3.16-25-g527dfe93
   available_base_images:
   - name: certifai-proxy
-    value: c12e/cortex-certifai-hosted-model:v4-1.3.15-121-gb6fded39
+    value: c12e/cortex-certifai-hosted-model:v4-1.3.16-25-g527dfe93
