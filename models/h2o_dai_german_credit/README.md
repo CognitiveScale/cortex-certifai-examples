@@ -3,8 +3,7 @@
 **Dataset Used** - This example uses the German Credit dataset originally sourced from [Kaggle](https://www.kaggle.com/uciml/german-credit).
 
 The prepared dataset file used in this example is available in the
-[german credit model dataset](../german_credit/german_credit_eval.csv) in this repository, or at `examples/datasets/german_credit_eval.csv` in the
-[Certifai Toolkit](https://www.cognitivescale.com/download-certifai/).
+[german credit model dataset](../german_credit/german_credit_eval.csv) in this repository, or at `examples/datasets/german_credit_eval.csv` in the Certifai Toolkit.
 
 # Train and Download the Scoring Pipeline
 

@@ -11,7 +11,7 @@
 
 ## [Pre-requisites](#pre-req)
 
-- Certifai toolkit (from [CognitiveScale website](https://www.cognitivescale.com/try-certifai/)).
+- Certifai toolkit.
 - A model (H2O MOJO pipeline or pickle).
 - H2O MOJO runtime and license file (for running H2O MOJO models).
 - A base docker image which has all the dependencies at the specific versions that were used when the model was trained.
@@ -49,7 +49,7 @@ Optional:
 
   Each command will create a folder named `generated-container-model` in your current directory with the generated code
   for the containerization of your model. The template generated from the above commands is designed to work with
-  standard [scikit-learn, XGBClassifier or XGBRegressor models](python-template), [H2O MOJO](#h2o-mojo-template),
+  standard [scikit-learn, XGBClassifier or XGBRegressor models](#python-template), [H2O MOJO](#h2o-mojo-template),
   and [R based models](#r-model-template).
 
   For an xgboost model using DMatrix, replace `-m python` with  `-m python_xgboost_dmatrix`.
