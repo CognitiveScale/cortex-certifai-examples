@@ -120,7 +120,7 @@ pipelines:
           clean_workspace: true
           jobs:
             Notebooks:
-              # Notebooks are note saved as artifacts by default, uncomment if needed for debugging
+              # Notebooks are NOT saved as artifacts by default, uncomment if needed for debugging
               #artifacts:
               #  - build:
               #      source: notebooks
