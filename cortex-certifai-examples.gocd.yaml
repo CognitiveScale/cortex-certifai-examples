@@ -120,9 +120,10 @@ pipelines:
           clean_workspace: true
           jobs:
             Notebooks:
-              artifacts:
-                - build:
-                    source: notebooks
+              # Notebooks are note saved as artifacts by default, uncomment if needed for debugging
+              #artifacts:
+              #  - build:
+              #      source: notebooks
               elastic_profile_id: integrationTestAgent
               environment_variables:
                 CERTIFAI_BRANCH: develop
