@@ -9,7 +9,7 @@
 - [R Model Template](#r-model-template)
 
 
-## [Pre-requisites](#pre-req)
+## [Pre-requisites](#pre-requisites)
 
 - Certifai toolkit.
 - A model (H2O MOJO pipeline or pickle).

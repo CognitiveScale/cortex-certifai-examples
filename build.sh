@@ -44,7 +44,8 @@ Options:
       Build base docker images for example Prediction Service templates (used by Scan Manager). Does not push to dockerhub.
 
   links
-      Test for broken links through Markdown and Jupyter Notebook examples.
+      Test for broken links through Markdown and Jupyter Notebook examples. Recommended to save output to a file, e.g.
+        './build.sh links | tee broken-links.txt'
 
   notebooks
       Run all notebook examples
@@ -208,8 +209,13 @@ function testMarkdownLinks() {
     echo "markdown-link-check already installed"
   fi
   # shellcheck disable=SC2038
-  find . -name "*.md" -not -path ".ipynb_checkpoints" -not -path "*/.ipynb_checkpoints/*" -exec echo \'{}\' \; | \
-    xargs markdown-link-check -c config.json
+  if find . -name "*.md" -not -path ".ipynb_checkpoints" -not -path "*/.ipynb_checkpoints/*" -exec echo \'{}\' \; | xargs markdown-link-check -c config.json;
+  then
+    echo "No broken links found!"
+  else
+    echo "Broken links found! Exiting..." >&2
+    exit 1
+  fi
 }
 
 function testModels() {
