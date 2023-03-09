@@ -8,6 +8,7 @@ function setGlobals() {
   PUSH_IMAGES=false
   SKIP_CONDA="${SKIP_CONDA:-false}"
   SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
+  RUN_REMOTE_EXAMPLES="${RUN_REMOTE_EXAMPLES:-false}"
   PYTHON_VERSION="3.8"
   SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
   ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
@@ -19,8 +20,14 @@ function setGlobals() {
   TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
   BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
   BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+  ENV_FILE="${ARTIFACTS_DIR}/.env"
   AWS_ENV_FILE="${ARTIFACTS_DIR}/.aws_env"
   AZURE_ENV_FILE="${ARTIFACTS_DIR}/.azure_env"
+
+  if [ -f "$ENV_FILE" ]; then
+    # shellcheck source=/dev/null.
+    source "${ENV_FILE}"
+  fi
 }
 
 function printHelp() {
@@ -58,7 +65,11 @@ Options:
 
 Environment Variables:
   SKIP_CONDA - if 'true', then use the currently activate conda environment (skip creating a new environment)
+
   SKIP_TOOLKIT - if 'true', then skip installing the Certifai toolkit in the activate conda environment
+
+  RUN_REMOTE_EXAMPLES - if 'true', then examples involving SageMaker or AzureML resources will be run.
+    This is 'false' by default to optimize third party resource costs.
 "
   echo "${usage}"
 }
@@ -260,7 +271,14 @@ function testNotebooks() {
   _installAutomatedDeps
   runIndependentNotebooks
   runMultipartNotebooks
-  runNotebooksWithEnvSetup
+  if [ "${RUN_REMOTE_EXAMPLES}" = true ]; then
+    echo "****************************************"
+    echo "Running remote examples"
+    echo "****************************************"
+    runNotebooksWithEnvSetup
+  else
+    echo "Skipping remote examples..."
+  fi
 }
 
 function _installAutomatedDeps() {
