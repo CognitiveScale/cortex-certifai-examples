@@ -1,9 +1,0 @@
-columns: ['State Code', 'Claim Amount', 'Coverage', 'Education',
-       'EmploymentStatus', 'Gender', 'Income', 'Location Code',
-       'Marital Status', 'Monthly Premium Auto', 'Months Since Last Claim',
-       'Months Since Policy Inception', 'Number of Open Complaints',
-       'Number of Policies', 'Policy', 'Claim Reason', 'Sales Channel',
-       'Vehicle Class', 'Vehicle Size']
-# outcomes: [0,1,2]
-outcomes: []
-supports_soft_scoring: false #necessary override for regression models pending fix in model wrapper

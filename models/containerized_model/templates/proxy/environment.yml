@@ -1,6 +1,0 @@
-# fully qualified HOSTED MODEL URL e.g `http://myHostedModelhostname:port/endpointUrl`
-# for example e.g `HOSTED_MODEL_URL=http://docker.for.mac.host.internal:5111/german_credit_logit/predict`
-# `HOSTED_MODEL_AUTH_HEADER_TOKEN` is optional and used as model service auth header i.e `Authorization: Bearer {HOSTED_MODEL_AUTH_HEADER_TOKEN}`
-
-HOSTED_MODEL_URL=
-HOSTED_MODEL_AUTH_HEADER_TOKEN=

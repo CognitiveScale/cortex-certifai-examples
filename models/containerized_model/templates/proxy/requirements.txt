@@ -1,4 +1,0 @@
-# add pip requirements for any additional proxy service dependencies
-# for e.g.
-
-requests>=2.12.4,<3.0

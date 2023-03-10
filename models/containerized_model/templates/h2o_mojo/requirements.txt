@@ -1,2 +1,0 @@
-# add python pip install dependencies below
-pyyaml # required by prediction service - do not remove

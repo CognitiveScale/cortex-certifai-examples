@@ -1,2 +1,0 @@
-columns: ['sepal_length', 'sepal_width', 'petal_length', 'petal_width']
-outcomes: ['Iris-setosa', 'Iris-versicolor', 'Iris-virginica']

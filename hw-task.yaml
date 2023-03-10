@@ -1,0 +1,24 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hello
+spec:
+  steps:
+    - name: echo
+      image: alpine
+      script: |
+        #!/bin/sh
+        echo "Hello World!!"
+        apk add git
+        git clone https://github.com/CognitiveScale/cortex-certifai-examples.git
+        cd cortex-certifai-examples
+        git checkout temp
+        cd models/containerized_model/generated-container-model/tekton-pipelines
+        pwd
+  workspaces: 
+    - name: output
+      description: |
+        Workspace for the task
+      optional: true
+      mountPath: task
+

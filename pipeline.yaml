@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-push
+spec:
+  params: 
+  - name: image-reference
+    type: string
+  - name: dockerfile
+    type: string
+  - name: repo-url
+    type: string
+  description: |
+    This pipeline builds deployment template and pushes the image to dockerhub
+  workspaces:
+    - name: shared-data
+  tasks:
+    - name: fetch-source
+      taskRef:
+        name: hello
+      workspaces:
+      - name: output
+        workspace: shared-data
+    # - name: fetch-source
+    #   taskRef: 
+    #     name: git-clone
+    #   workspaces:
+    #   - name: output
+    #     workspace: shared-data
+    #   params:
+    #   - name: url
+    #     value: $(params.repo-url)
+    - name: build-push
+      runAfter: ["fetch-source"]
+      taskRef:
+        name: kaniko
+      workspaces:
+      - name: source
+        workspace: shared-data
+      params:
+      - name: IMAGE
+        value: $(params.image-reference)
+      - name: DOCKERFILE
+        value: $(params.dockerfile)

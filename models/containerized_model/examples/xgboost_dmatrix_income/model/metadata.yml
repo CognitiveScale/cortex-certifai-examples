@@ -1,6 +1,0 @@
-columns: ['age', 'workclass', 'fnlwgt', 'education', 'educational-num',
-       'marital-status', 'occupation', 'relationship', 'race', 'gender',
-       'capital-gain', 'capital-loss', 'hours-per-week', 'native-country']
-outcomes: [0, 1] # 0 is <= $50K
-task_type: binary-classification
-supports_soft_scoring: true

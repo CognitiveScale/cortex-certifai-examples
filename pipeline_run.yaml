@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: build-push-pipeline-run-1
+spec:
+  pipelineRef:
+    name: build-push
+  podTemplate:
+    securityContext:
+      fsGroup: 65532
+  workspaces:
+  - name: shared-data
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+  params:
+  - name: repo-url
+    value: https://github.com/CognitiveScale/cortex-certifai-examples.git
+  - name: image-reference
+    value: c12e/cortex-certifai:test-tekton-1
+  - name: dockerfile
+    value: /cortex-certifai-examples/models/containerized_model/generated-container-model/tekton-pipelines/Dockerfile
+

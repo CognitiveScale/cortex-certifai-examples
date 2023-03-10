@@ -1,4 +1,0 @@
-# A template for prediction service metadata
-columns: []
-outcomes: []
-task_type: binary-classification  # or regression or multiclass-classification
