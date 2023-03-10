@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: hello
+spec:
+  steps:
+    - name: echo
+      image: alpine
+      script: |
+        #!/bin/sh
+        echo "Hello World!!"
+        apk add git
+        git clone https://github.com/CognitiveScale/cortex-certifai-examples.git
+        kubectl get configmap certifai-model-sdk -o jsonpath='{.binaryData.cortex-certifai-model-sdk\.zip}' | base64 --decode > certifai-model-sdk.zip
+        ls
+  workspaces: 
+    - name: output
+      description: |
+        Workspace for the task
+      optional: true
+      mountPath: task
+
