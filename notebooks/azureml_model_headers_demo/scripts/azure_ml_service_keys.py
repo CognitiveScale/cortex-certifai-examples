@@ -18,11 +18,11 @@ from sklearn.externals import joblib
 import sklearn as sklearn_version_test
 
 assert (
-    sklearn_version_test.__version__ == "0.20.3"
-), "scikit-learn version mismatch, `pip install scikit-learn==0.20.3` to install right sklearn version for this notebook"
+    sklearn_version_test.__version__ == "1.0.2"
+), "scikit-learn version mismatch, `pip install scikit-learn==1.0.2` to install right sklearn version for this notebook"
 assert (
-    np.__version__ == "1.16.2"
-), "numpy version mismatch, `pip install numpy==1.16.2` to install right numpy version for this notebook"
+    np.__version__ == "1.21.5"
+), "numpy version mismatch, `pip install numpy==1.21.5` to install right numpy version for this notebook"
 import os
 import sys
 from datetime import datetime

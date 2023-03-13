@@ -4,7 +4,13 @@ The Following example setup demonstrates how to create Certifai model evaluation
 
 ## Notebooks
 
-- `model_train_part1` : Part 1 of two part example which trains a scikit-learn logistic classifier model to predict
-  loan granted, loan denied or further inspection labels on German Credit multi-class dataset (refer to data_generation notebook in the root directory) and persists the model to disk
+- `model_train_part1`: Part 1 of 3 part example which trains a scikit-learn logistic classifier model to predict
+    loan granted, loan denied or further inspection labels on German Credit multi-class dataset (refer to
+    data_generation notebook in the root directory) and persists the model to disk.
 
-- `certifai_multiclass_evaluation_part2.ipynb` : Part 2 of two part example which sets up the Certifai multi-class evaluation scan on the logistic classifier model (trained in part 1 of the example) with evaluation dataset encoded into one-hot and target encoded features
+- `certifai_multiclass_evaluation_part2.ipynb`: Part 2 of 3 part example which sets up the Certifai multi-class
+  evaluation scan on the logistic classifier model (trained in part 1 of the example) with evaluation dataset encoded
+  into one-hot and target encoded features.
+
+- `deploying_model_part3.ipynb`: Part 3 of 3 part example which deploys the previously saved model artifacts to an
+  AzureML workspace and exposes HTTP endpoint suitable for Certifai scanning.

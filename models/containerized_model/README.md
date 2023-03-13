@@ -9,9 +9,9 @@
 - [R Model Template](#r-model-template)
 
 
-## [Pre-requisites](#pre-req)
+## [Pre-requisites](#pre-requisites)
 
-- Certifai toolkit (from [CognitiveScale website](https://www.cognitivescale.com/try-certifai/)).
+- Certifai toolkit.
 - A model (H2O MOJO pipeline or pickle).
 - H2O MOJO runtime and license file (for running H2O MOJO models).
 - A base docker image which has all the dependencies at the specific versions that were used when the model was trained.
@@ -49,7 +49,7 @@ Optional:
 
   Each command will create a folder named `generated-container-model` in your current directory with the generated code
   for the containerization of your model. The template generated from the above commands is designed to work with
-  standard [scikit-learn, XGBClassifier or XGBRegressor models](python-template), [H2O MOJO](#h2o-mojo-template),
+  standard [scikit-learn, XGBClassifier or XGBRegressor models](#python-template), [H2O MOJO](#h2o-mojo-template),
   and [R based models](#r-model-template).
 
   For an xgboost model using DMatrix, replace `-m python` with  `-m python_xgboost_dmatrix`.
@@ -131,7 +131,7 @@ Copy the `daimojo` MOJO Python runtime `linux` dependency (`.whl` file) to `ext_
 cp <path-to-linux-daimojo-file>.whl generated-container-model/ext_packages/
 ```
 
-The file will be named something like `daimojo-2.4.8-cp36-cp36m-linux_x86_64.whl`
+The file will be named something like `daimojo-2.4.8-cp37-cp37m-linux_x86_64.whl`
 
 If you do not already have this package, you can download it from the H2O Driverless AI UI, see [instructions](http://docs.h2o.ai/driverless-ai/latest-stable/docs/userguide/scoring-pipeline-cpp.html#downloading-the-scoring-pipeline-runtimes).
 

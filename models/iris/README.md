@@ -1,6 +1,6 @@
 # Iris classification example
 
-This example uses the [Iris plants dataset](https://scikit-learn.org/stable/datasets/index.html#iris-dataset)
+This example uses the [Iris plants dataset](https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html)
  provided with sklearn. This is a multi-class classification use case with no
  favorability (outcomes are not favorable or unfavorable).
 

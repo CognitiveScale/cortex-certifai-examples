@@ -73,7 +73,7 @@ You should see output similar to:
 
 This production gunicorn prediction service requires Certifai version 1.3.6 or later.
 It is supported on Linux and Mac, not Windows. To run with the development
-server, see [the H2O German Credit example](../h20_dai_german_credit/app_h2o_mojo_pipeline.py)
+server, see [the H2O German Credit example](../h2o_dai_german_credit/app_h2o_mojo_pipeline.py)
 
 7. Test that you can send requests to the prediction service, which is running
 on http://127.0.0.1:8551/predict:

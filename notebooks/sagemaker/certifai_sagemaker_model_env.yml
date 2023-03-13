@@ -1,13 +1,14 @@
-name: certifai-azure-model-env
+name: certifai-sagemaker-model-env
 dependencies:
   - python=3.8
   - pip
-  - scikit-learn=1.0.2
+  - scikit-learn=1.0.1
   - numpy=1.21.5
   - pandas
   - ipython
   - jupyter
   - matplotlib
-  - joblib=1.1.1
+  - boto3>=1.0.0,<2.0.0
   - pip:
-    - azureml-sdk==1.47.0
+    - sagemaker==2.127.0
+
