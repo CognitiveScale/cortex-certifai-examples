@@ -100,4 +100,4 @@ Follow the docs [here](https://cognitivescale.github.io/cortex-certifai/docs/too
 `certifai remote scan -f <path-to-scan-definition> -o --alias <alias>`
 
 ## Step 5 -  View Scan results
-- Follow the docs [here](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/cli-usage/console) to view scan status/results
+- Follow the docs [here](https://cognitivescale.github.io/cortex-certifai/docs/toolkit/console/console) to view scan status/results

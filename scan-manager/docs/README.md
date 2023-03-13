@@ -15,14 +15,14 @@ This document walks you through:
 ## Index
 
 - [Pre-requisites](#pre-requisites)
-  - [Templates and Files](#artifacts)
+  - [Templates and Files](#templates-and-files)
 - [Setup](#setup)
   - [Using default artifacts](#using-default-artifacts)
   - [Creating base-images](#creating-base-images)
   - [Adding base images](#adding-base-images)
   - [Updating base images](#updating-base-images)
   - [Adding templates](#adding-templates)
-  - [Deploying prediction service to a different namespace](#multiple-namespace-support)
+  - [Deploying prediction service to a different namespace](#deploying-prediction-service-to-a-different-namespace)
   - [Kubernetes Setup](#kubernetes-setup)
 
 ## [Pre-requisites](#pre-requisites)
@@ -39,7 +39,7 @@ This document walks you through:
 - (Optional) Custom model deployment artifacts for the Certifai Scan Manager. Example artifacts are included in
   the `setup_artifacts/` folder and are described in further detail below.
 
-### [Templates and Files](#artifacts)
+### [Templates and Files](#templates-and-files)
 
 This section describes the list of available editable Scan Manager templates and .yaml files that you use to set up Certifai Scan Manager.
 
@@ -70,7 +70,7 @@ If you only intend on using the default artifacts, then refer to [these instruct
 
 1. [Create and push base images](#creating-base-images) to the container registry configured for use with your cluster.
   These base images will be used for working with different model types (e.g. scikit, h2o, r, proxy).
-1. [Add the base image](#adding-base-image) created from the previous step to a model type in the `config.yaml` file. A
+1. [Add the base image](#adding-base-images) created from the previous step to a model type in the `config.yaml` file. A
   default `config.yaml` is provided inside the `setup_artifacts/deployment` directory for initial setup.
 1. [Add a deployment template](#adding-templates) file to the `setup_artifacts/deployments/` directory for a given model
   type.
@@ -251,7 +251,7 @@ To use an existing template for a new model_type:
 
 Refer to the [guide on Model Secrets](https://cognitivescale.github.io/cortex-certifai/docs/enterprise/model-secrets).
 
-### [Deploying prediction service to a different namespace](#multiple-namespace-support)
+### [Deploying prediction service to a different namespace](#deploying-prediction-service-to-a-different-namespace)
 
 We recommend using a different namespace for your model deployment. <br>
 

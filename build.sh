@@ -43,6 +43,10 @@ Options:
   local-docker
       Build base docker images for example Prediction Service templates (used by Scan Manager). Does not push to dockerhub.
 
+  links
+      Test for broken links through Markdown and Jupyter Notebook examples. Recommended to save output to a file, e.g.
+        './build.sh links | tee broken-links.txt'
+
   notebooks
       Run all notebook examples
 
@@ -180,9 +184,38 @@ function _build_template() {
 }
 
 function test() {
+  testMarkdownLinks
   testModels
   testNotebooks
   testTutorials
+}
+
+function testMarkdownLinks() {
+  # Convert all notebooks to markdown to perform broken link detection on notebooks as well as README files
+  # shellcheck disable=SC2038
+  find . -name "*.ipynb" -not -path ".ipynb_checkpoints" -not -path "*/.ipynb_checkpoints/*" -exec echo \'{}\' \; | \
+    xargs jupyter nbconvert --to markdown
+
+  # Python alternative -> https://github.com/linkchecker/linkchecker - supports markdown but intended for HTML or urls
+  # However this requires a .linkcheckerrc file (with markdown plugin) -> linkchecker -f .linkcheckerrc --check-extern .
+  if ! type "markdown-link-check" > /dev/null;
+  then
+    echo "********************"
+    echo "markdown-link-check is not installed, it will be installed globally with npm"
+    echo "https://github.com/tcort/markdown-link-check"
+    npm install -g markdown-link-check
+    echo "********************"
+  else
+    echo "markdown-link-check already installed"
+  fi
+  # shellcheck disable=SC2038
+  if find . -name "*.md" -not -path ".ipynb_checkpoints" -not -path "*/.ipynb_checkpoints/*" -exec echo \'{}\' \; | xargs markdown-link-check -c config.json;
+  then
+    echo "No broken links found!"
+  else
+    echo "Broken links found! Exiting..." >&2
+    exit 1
+  fi
 }
 
 function testModels() {
@@ -192,14 +225,6 @@ function testModels() {
   # - start the app in one process,
   # - run the test in another process
   # - assert both processes exit successfully
-}
-
-function testNotebooks() {
-  cd "${NOTEBOOK_DIR}"
-  _installAutomatedDeps
-  runIndependentNotebooks
-  runMultipartNotebooks
-  runNotebooksWithEnvSetup
 }
 
 function testTutorials() {
@@ -213,6 +238,29 @@ function testTutorials() {
   # foot"), so I would vote to not update this and, if possible, maybe even remove it.
   # remote_scan_tutorial
   #_runNotebookInPlace "${TUTORIALS_DIR}/remote_scan_tutorial/RemoteScanTutorial.ipynb"
+}
+
+# Notebook Testing:
+# Most notebook examples are have independent folders with only a single notebook, and most can be run in the same
+# environment. To support more complex scenarios notebooks are split into (3) groups - independent notebooks,
+# multipart examples, and notebooks that need a separate conda environment
+
+# Examples involving multiple notebooks explicit order
+MULTIPART_NOTEBOOKS=(patient_readmission data_statistics)
+
+# Examples requiring a new conda env or new dependencies
+NOTEBOOKS_REQUIRING_ENV_SETUP=(azureml_model_headers_demo sagemaker target_encoded xgboost-model)
+
+# Example notebook folders to skip (usually empty). Useful in avoiding
+# recomputes when a notebook bombs whilst running the script.
+EXCLUDE_SINGULAR_NOTEBOOK=()
+
+function testNotebooks() {
+  cd "${NOTEBOOK_DIR}"
+  _installAutomatedDeps
+  runIndependentNotebooks
+  runMultipartNotebooks
+  runNotebooksWithEnvSetup
 }
 
 function _installAutomatedDeps() {
@@ -229,15 +277,9 @@ function _runNotebookInPlace() {
   jupyter nbconvert --to notebook --inplace --execute "$1"
 }
 
-# Examples involving multiple notebooks explicit order
-MULTIPART_NOTEBOOKS=(patient_readmission data_statistics)
-
-# Examples requiring a new conda env or new dependencies
-NOTEBOOKS_REQUIRING_ENV_SETUP=(azureml_model_headers_demo sagemaker target_encoded xgboost-model)
-
-# Example notebook folders to skip (usually empty). Useful in avoiding
-# recomputes when a notebook bombs whilst running the script.
-EXCLUDE_SINGULAR_NOTEBOOK=()
+function _convertNotebookToMarkdown() {
+  jupyter nbconvert --to markdown "$1"
+}
 
 function runMultipartNotebooks() {
   # data_statistics
@@ -378,6 +420,11 @@ function main() {
     PUSH_IMAGES=false
     extractToolkit
     build_model_deployment_base_images
+    ;;
+   links)
+    setGlobals
+    activateConda
+    testMarkdownLinks
     ;;
    notebook)
     setGlobals
