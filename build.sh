@@ -214,7 +214,7 @@ function testMarkdownLinks() {
     echo "********************"
     echo "markdown-link-check is not installed, it will be installed globally with npm"
     echo "https://github.com/tcort/markdown-link-check"
-    npm install -g markdown-link-check
+    npm install -g markdown-link-check@3.10.3
     echo "********************"
   else
     echo "markdown-link-check already installed"
