@@ -36,7 +36,7 @@ function printHelp() {
   prog_name="$(basename "$0")"
 
   local usage
-  usage="$prog_name [options...]
+  usage="$prog_name [option]
 
 Build and test Certifai examples.
 
@@ -123,7 +123,7 @@ function extractToolkit() {
 function buildLocal() {
   PUSH_IMAGES=false
   test
-  build_model_deployment_base_images
+  buildModelDeploymentImages
 }
 
 
@@ -135,7 +135,7 @@ function buildLocal() {
 #   `<version-counter>` is a running count we maintain based on the base image, Python version, & other dependencies
 #
 # Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
-function build_model_deployment_base_images() {
+function buildModelDeploymentImages() {
   local certifai_version
   certifai_version=$(getToolkitVersion)
 
@@ -148,19 +148,20 @@ function build_model_deployment_base_images() {
   local proxy_image="c12e/cortex-certifai-hosted-model:${version}"
   local r_image="c12e/cortex-certifai-model-r:${version}"
 
-  _build_template "${scikit_image}" python
-  _build_template "${h2o_image}" h2o_mojo
-  _build_template "${proxy_image}" proxy
+  _buildTemplate "${scikit_image}" python
+  _buildTemplate "${h2o_image}" h2o_mojo
+  _buildTemplate "${proxy_image}" proxy
 
    # TODO: The base image rocker/r-apt:bionic` is outdated, but the image fails to build when using
    # `rocker/r-ver:3.6.1` or `rocker/r-ver:latest` because `r-cran-aws.s3` is not found.
-  _build_template "${r_image}" r_model rocker/r-apt:bionic
+  _buildTemplate "${r_image}" r_model rocker/r-apt:bionic
 
   echo "{\"scikit\": \"${scikit_image}\", \"h2o\": \"${h2o_image}\", \"proxy\": \"${proxy_image}\", \"r\": \"${r_image}\" }" > "${BUILD_REPORT_JSON}"
   printf "%s\n%s\n%s\n%s\n" "${scikit_image}" "${h2o_image}" "${proxy_image}" "${r_image}" > "${BUILD_REPORT}"
 }
 
-function _build_template() {
+
+function _buildTemplate() {
   # $1 image
   # $2 model-type
   # $3 base-image (optional)
@@ -431,13 +432,13 @@ function main() {
     setGlobals
     PUSH_IMAGES=true
     extractToolkit
-    build_model_deployment_base_images
+    buildModelDeploymentImages
     ;;
    local-docker)
     setGlobals
     PUSH_IMAGES=false
     extractToolkit
-    build_model_deployment_base_images
+    buildModelDeploymentImages
     ;;
    links)
     setGlobals
