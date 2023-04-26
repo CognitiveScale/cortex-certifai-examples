@@ -245,11 +245,31 @@ function buildPredictionServiceBuilderImages() {
   version="$(getToolkitVersion)-$(getExamplesGitSha)"
 
   copyPackagesForModels
+
+  # Resolve Miniconda URL (in case we're building locally on M1 vs on x86_64 in CI/CD)
+  arch=$(uname -m)
+  if [[ "$arch" == "arm64" ]]; then
+    MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+  elif [[ "$arch" == "x86_64" ]]; then
+    MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  else
+    MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    echo "Unable to determine system architecture. Defaulting to x86_64 version of Miniconda - may cause a failure in Docker build"
+  fi
+
   local py38_image="c12e/cortex-certifai-model-python38-base:${version}"
-  docker build --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" --build-arg TOOLKIT_PATH=. --build-arg PY_VERSION=3.8 -t "$py38_image" "${TEMPLATES_DIR}"
+  docker build --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
+      --build-arg TOOLKIT_PATH=. \
+      --build-arg PY_VERSION=3.8 \
+      --build-arg MINICONDA_URL=$MINICONDA_URL \
+      -t "$py38_image" "${TEMPLATES_DIR}"
 
   local py39_image="c12e/cortex-certifai-model-python39-base:${version}"
-  docker build --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" --build-arg TOOLKIT_PATH=. --build-arg PY_VERSION=3.9 -t "$py39_image" "${TEMPLATES_DIR}"
+  docker build --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
+      --build-arg TOOLKIT_PATH=. \
+      --build-arg PY_VERSION=3.9 \
+      --build-arg MINICONDA_URL=$MINICONDA_URL \
+      -t "$py39_image" "${TEMPLATES_DIR}"
 
   # Write build Report
   echo "{\"python38\": \"${py38_image}\", \"python39\": \"${py39_image}\"}" > "${BUILD_REPORT_JSON}"
