@@ -19,7 +19,6 @@ function setGlobals() {
   BASE_IMAGES_DIR="${SCRIPT_PATH}/models/containerized_model/base_images"
   NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
   TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
-  BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
   BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
   ENV_FILE="${ARTIFACTS_DIR}/.env"
   AWS_ENV_FILE="${ARTIFACTS_DIR}/.aws_env"
@@ -189,7 +188,6 @@ function buildModelDeploymentImages() {
   _buildTemplate "${r_image}" r_model rocker/r-apt:bionic
 
   echo "{\"scikit\": \"${scikit_image}\", \"h2o\": \"${h2o_image}\", \"proxy\": \"${proxy_image}\", \"r\": \"${r_image}\" }" > "${BUILD_REPORT_JSON}"
-  printf "%s\n%s\n%s\n%s\n" "${scikit_image}" "${h2o_image}" "${proxy_image}" "${r_image}" > "${BUILD_REPORT}"
 }
 
 
