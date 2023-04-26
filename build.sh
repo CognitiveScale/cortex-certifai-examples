@@ -126,6 +126,9 @@ function buildLocal() {
   buildModelDeploymentImages
 }
 
+function _installModelRequirements() {
+  pip install -r "${TEMPLATES_DIR}/requirements.txt"
+}
 
 # We have to enforce a versioning strategy in the example model templates. Part of the trouble here is that template
 # images install the Certifai packages, so we should tag them in such a way to show that version.
@@ -432,12 +435,14 @@ function main() {
     setGlobals
     PUSH_IMAGES=true
     extractToolkit
+    _installModelRequirements
     buildModelDeploymentImages
     ;;
    local-docker)
     setGlobals
     PUSH_IMAGES=false
     extractToolkit
+    _installModelRequirements
     buildModelDeploymentImages
     ;;
    links)

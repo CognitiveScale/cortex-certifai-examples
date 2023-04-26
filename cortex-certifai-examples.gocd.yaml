@@ -45,7 +45,6 @@ pipelines:
                     set -eux
                     mkdir -p artifacts
                     cp -f certifai_toolkit.zip artifacts/
-                    pip install jinja2 requirements-parser
                     ./build.sh docker
       - scan:
           clean_workspace: false
@@ -96,7 +95,6 @@ pipelines:
                     set -x
                     cp -f certifai_toolkit.zip artifacts/
                     c12e-ci
-                    pip install jinja2 requirements-parser
                     ./build.sh local-docker
           approval: manual
   cortex-certifai-examples-pr:
@@ -150,7 +148,6 @@ pipelines:
                     set -x
                     cp -f certifai_toolkit.zip artifacts/
                     c12e-ci
-                    pip install jinja2 requirements-parser
                     ./build.sh local-docker
   cortex-certifai-examples-rc:
     group: certifai
@@ -195,5 +192,4 @@ pipelines:
                     set -x
                     cp -f certifai_toolkit.zip artifacts/
                     c12e-ci
-                    pip install jinja2 requirements-parser
                     ./build.sh local-docker
