@@ -130,15 +130,21 @@ function _installModelRequirements() {
   pip install -r "${TEMPLATES_DIR}/requirements.txt"
 }
 
-# We have to enforce a versioning strategy in the example model templates. Part of the trouble here is that template
-# images install the Certifai packages, so we should tag them in such a way to show that version.
-#
-# Current tagging strategy: `<version-counter>-<toolkit-version>`
-#
-#   `<version-counter>` is a running count we maintain based on the base image, Python version, & other dependencies
-#
-# Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
+
 function buildModelDeploymentImages() {
+  # Builds Docker Images for the example Containerized Model Types (Scikit, H2O, Proxy, R). These are images are used
+  # for the default Model Types in Scan Manager in Certifai Enterprise Version 1.3.16 and earlier.
+  #
+  # We have to enforce a versioning strategy in the example model templates. Part of the trouble here is that template
+  # images install the Certifai packages, so we should tag them in such a way to show that version.
+  #
+  # Current tagging strategy: `<version-counter>-<toolkit-version>`
+  #
+  #   `<version-counter>` is a running count we maintain based on the base image, Python version, & other dependencies
+  #
+  # Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
+  #
+  # The main reason for this tagging strategy is that earlier images were tagged with 'v1', v2, etc.
   local certifai_version
   certifai_version=$(getToolkitVersion)
 
@@ -165,6 +171,8 @@ function buildModelDeploymentImages() {
 
 
 function _buildTemplate() {
+  # Generates a Containerized Model template and builds a docker image with the contents. Arguments are for the
+  # ./generate.sh script.
   # $1 image
   # $2 model-type
   # $3 base-image (optional)
