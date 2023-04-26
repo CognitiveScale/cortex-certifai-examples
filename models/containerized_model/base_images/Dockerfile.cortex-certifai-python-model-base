@@ -68,9 +68,9 @@ LABEL release=1 \
  # Create .bashrc file and folders for python/pip that belong to the non-root user
 RUN touch //.bashrc && \
     chown -R 1001 //.bashrc && chmod u+rwx //.bashrc && \
-    mkdir -p /venv/bin /.local /.cache/pip && \
-    chown -R 1001 /venv /.local /.cache/pip && \
-    chmod -R u+rwx /venv /.local /.cache/pip
+    mkdir -p /venv/bin /.local /.cache/pip /containerized_model && \
+    chown -R 1001 /venv /.local /.cache/pip /containerized_model && \
+    chmod -R u+rwx /venv /.local /.cache/pip /containerized_model
 
 USER 1001
 
