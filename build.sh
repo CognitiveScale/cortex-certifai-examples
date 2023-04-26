@@ -20,6 +20,7 @@ function setGlobals() {
   NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
   TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
   BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+  BASE_IMAGE_BUILD_REPORT_JSON="${ARTIFACTS_DIR}/baseImageBuildReport.json"
   ENV_FILE="${ARTIFACTS_DIR}/.env"
   AWS_ENV_FILE="${ARTIFACTS_DIR}/.aws_env"
   AZURE_ENV_FILE="${ARTIFACTS_DIR}/.azure_env"
@@ -280,7 +281,7 @@ function buildPredictionServiceBuilderImages() {
   fi
 
   # Write build Report
-  echo "{\"python38\": \"${py38_image}\", \"python39\": \"${py39_image}\"}" > "${BUILD_REPORT_JSON}"
+  echo "{\"python38\": \"${py38_image}\", \"python39\": \"${py39_image}\"}" > "${BASE_IMAGE_BUILD_REPORT_JSON}"
 }
 
 function test() {

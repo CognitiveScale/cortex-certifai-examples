@@ -61,11 +61,11 @@ LABEL release=1 \
   name="cortex-certifai-model-python$PY_VERSION-base" \
   vendor="CognitiveScale" \
   version=1 \
-  summary="Cortex Certifai Prediction Servie Base Image" \
-  description="Cortex Certifai Enterprise Prediction Servie Base Image" \
+  summary="Cortex Certifai Enterprise Prediction Service Base Image" \
+  description="Cortex Certifai Enterprise Prediction Service Base Image" \
   com.cognitivescale.license_terms="https://www.cognitivescale.com/legal-information/"
 
- # Create .bashrc file and folders for Python/Pip that belong to the non-root user
+ # Create .bashrc file and folders for python/pip that belong to the non-root user
 RUN touch //.bashrc && \
     chown -R 1001 //.bashrc && chmod u+rwx //.bashrc && \
     mkdir -p /venv/bin /.local /.cache/pip && \
@@ -74,8 +74,8 @@ RUN touch //.bashrc && \
 
 USER 1001
 
-# Set flag to use default logging and configuration in Certifai containers. This avoid letting the application
-# write to the filesystem.
+# Set flag to use default logging and configuration in Certifai containers. This avoids letting the application write
+# to the filesystem for logs.
 ENV CFI_RESTRICTED_FS_ACCESS="true"
 
 # Add Python to path
