@@ -271,6 +271,14 @@ function buildPredictionServiceBuilderImages() {
       --build-arg MINICONDA_URL=$MINICONDA_URL \
       -t "$py39_image" "${TEMPLATES_DIR}"
 
+  if [ "${PUSH_IMAGES}" = true ]; then
+    echo "Pushing images.."
+    docker push "$py38_image"
+    docker push "$py39_image"
+  else
+    echo "Skipping push.."
+  fi
+
   # Write build Report
   echo "{\"python38\": \"${py38_image}\", \"python39\": \"${py39_image}\"}" > "${BUILD_REPORT_JSON}"
 }
