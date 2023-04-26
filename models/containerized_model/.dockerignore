@@ -1,0 +1,19 @@
+# This .dockerignore file acts as an allow-list instead of a deny-list, to avoid examples being copied into a
+# container as well as to avoid requiring updates to this file with each new example. This is especially the case
+# because 'containerized_models/' has examples both at the same level in the and beneath it filesystem
+#
+# Ignore everything
+#* 
+#containerized_model/examples
+#
+## Allow required parts of 'containerized_models' folder
+#!containerized_model
+#!containerized_model/templates/*
+#!containerized_model/generate.sh
+#!containerized_model/*.md
+#!containerized_model/*.py
+#!packages
+
+
+base_images
+examples
