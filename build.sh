@@ -159,7 +159,7 @@ function _installModelRequirements() {
 
 
 function buildModelDeploymentImages() {
-  # Builds Docker Images for the example Containerized Model Types (Scikit, H2O, Proxy, R). These are images are used
+  # Builds Docker images for the example Containerized Model Types (Scikit, H2O, Proxy, R). These are images are used
   # for the default Model Types in Scan Manager in Certifai Enterprise Version 1.3.16 and earlier.
   #
   # We have to enforce a versioning strategy in the example model templates. Part of the trouble here is that template
@@ -169,7 +169,11 @@ function buildModelDeploymentImages() {
   #
   #   `<version-counter>` is a running count we maintain based on the base image, Python version, & other dependencies
   #
-  # Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
+  # Examples:
+  #   c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
+  #   c12e/cortex-certifai-model-h2o-mojo:v4-1.3.17-19-g66a6ae33
+  #   c12e/cortex-certifai-hosted-model:v4-1.3.17-19-g66a6ae33
+  #   c12e/cortex-certifai-model-r:v4-1.3.17-19-g66a6ae33
   #
   # The main reason for this tagging strategy is that earlier images were tagged with 'v1', v2, etc.
   local certifai_version
@@ -194,7 +198,6 @@ function buildModelDeploymentImages() {
 
   echo "{\"scikit\": \"${scikit_image}\", \"h2o\": \"${h2o_image}\", \"proxy\": \"${proxy_image}\", \"r\": \"${r_image}\" }" > "${BUILD_REPORT_JSON}"
 }
-
 
 function _buildTemplate() {
   # Generates a Containerized Model template and builds a docker image with the contents. Arguments are for the
@@ -232,24 +235,28 @@ function _buildTemplate() {
   fi
 }
 
-
 function buildPredictionServiceBaseImages() {
-  # Builds a Docker Image for generating Containerized Model templates. These images are used as base images for
-  # Prediction Service in Scan Manager in Certifai Enterprise Version 1.3.17+.
+  # Builds Docker images that act as a base image for generating Containerized Model templates. These are used as base
+  # images for Prediction Service in Scan Manager in Certifai Enterprise Version 1.3.17+.
   #
   # We have to enforce a tagging strategy for these images, which will include the Certifai Common & Certifai Model SDK
   # packages along with the `containerized_models/` source code.
   #
-  # Current tagging strategy: `<certifai-toolkit-version>-<GIT_SHA>`
+  # Current tagging strategy is: `<language>-<certifai-version>-<GIT_SHA>`
   #
   #   `<GIT_SHA>` refers to the commit in this repository that the image was built from
   #
-  # Example: c12e/cortex-certifai-model-python38:1.3.11-120-g5d13c272-7ba7324
+  # Examples:
+  #     c12e/cortex-certifai-model-scikit:base-py38-1.3.17-19-g66a6ae33-d389e12
+  #     c12e/cortex-certifai-model-scikit:base-py39-1.3.17-19-g66a6ae33-d389e12
+  # TODO: Support non-python model types (https://github.com/CognitiveScale/certifai/issues/4775)
   local version
   version="$(getToolkitVersion)-$(getExamplesGitSha)"
 
-  copyPackagesForModels
+  local pythonImageRepo
+  pythonImageRepo="c12e/cortex-certifai-model-scikit"
 
+  copyPackagesForModels
   # Resolve docker build architecture and miniconda url for images
   if [[ "${BUILD_ARM}" == "true" ]]; then
     TARGET_PLATFORM="linux/arm64"
@@ -259,14 +266,14 @@ function buildPredictionServiceBaseImages() {
     MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
   fi
 
-  local py38_image="c12e/cortex-certifai-model-python38-base:${version}"
+  local py38_image="${pythonImageRepo}:base-py38-${version}"
   docker build --platform=$TARGET_PLATFORM --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
       --build-arg TOOLKIT_PATH=. \
       --build-arg PY_VERSION=3.8 \
       --build-arg MINICONDA_URL=$MINICONDA_URL \
       -t "$py38_image" "${TEMPLATES_DIR}"
 
-  local py39_image="c12e/cortex-certifai-model-python39-base:${version}"
+  local py39_image="${pythonImageRepo}:base-py39-${version}"
   docker build --platform=$TARGET_PLATFORM --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
       --build-arg TOOLKIT_PATH=. \
       --build-arg PY_VERSION=3.9 \
