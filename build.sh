@@ -6,6 +6,7 @@ set -eu
 function setGlobals() {
   set -x
   PUSH_IMAGES=false
+  BUILD_ARM=false
   SKIP_CONDA="${SKIP_CONDA:-false}"
   SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
   RUN_REMOTE_EXAMPLES="${RUN_REMOTE_EXAMPLES:-false}"
@@ -46,16 +47,16 @@ Options:
       Run all notebook, tutorial, and model examples
 
   docker
-      Build and push base docker images for example Prediction Service templates (used by Scan Manager).
+      Build and push Docker images for example containerized model templates
 
   local-docker
-      Build base docker images for example Prediction Service templates (used by Scan Manager). Does not push to dockerhub.
+      Build Docker images for example containerized model templates
 
   docker-builder
-      Build and push base docker images for creating Prediction Services Docker Images (used by scan Manager).
+      Build and push base Docker images for Prediction Services
 
   local-docker-builder
-      Build base docker images for creating Prediction Services Docker Images (used by scan Manager). Does not push to dockerhub.
+    Build base Docker images for Prediction Services
 
   links
       Test for broken links through Markdown and Jupyter Notebook examples. Recommended to save output to a file, e.g.
@@ -77,6 +78,9 @@ Environment Variables:
 
   RUN_REMOTE_EXAMPLES - if 'true', then examples involving SageMaker or AzureML resources will be run.
     This is 'false' by default to optimize third party resource costs.
+
+  BUILD_ARM - if 'true', then Prediction Service Base Docker Images will be built with the 'linux/arm64' platform.
+    False by default (images are built with 'linux/amd64' platform).
 "
   echo "${usage}"
 }
@@ -229,10 +233,9 @@ function _buildTemplate() {
 }
 
 
-# NOTE: There are images used in Certifai Enterprise version 1.3.17 and later.
-function buildPredictionServiceBuilderImages() {
+function buildPredictionServiceBaseImages() {
   # Builds a Docker Image for generating Containerized Model templates. These images are used as base images for
-  # Prediction Service Images in Scan Manager in Certifai Enterprise Version 1.3.17 and later.
+  # Prediction Service in Scan Manager in Certifai Enterprise Version 1.3.17+.
   #
   # We have to enforce a tagging strategy for these images, which will include the Certifai Common & Certifai Model SDK
   # packages along with the `containerized_models/` source code.
@@ -247,26 +250,24 @@ function buildPredictionServiceBuilderImages() {
 
   copyPackagesForModels
 
-  # Resolve Miniconda URL (in case we're building locally on M1 vs on x86_64 in CI/CD)
-  arch=$(uname -m)
-  if [[ "$arch" == "arm64" ]]; then
+  # Resolve docker build architecture and miniconda url for images
+  if [[ "${BUILD_ARM}" == "true" ]]; then
+    TARGET_PLATFORM="linux/arm64"
     MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
-  elif [[ "$arch" == "x86_64" ]]; then
-    MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
   else
+    TARGET_PLATFORM="linux/amd64"
     MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-    echo "Unable to determine system architecture. Defaulting to x86_64 version of Miniconda - may cause a failure in Docker build"
   fi
 
   local py38_image="c12e/cortex-certifai-model-python38-base:${version}"
-  docker build --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
+  docker build --platform=$TARGET_PLATFORM --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
       --build-arg TOOLKIT_PATH=. \
       --build-arg PY_VERSION=3.8 \
       --build-arg MINICONDA_URL=$MINICONDA_URL \
       -t "$py38_image" "${TEMPLATES_DIR}"
 
   local py39_image="c12e/cortex-certifai-model-python39-base:${version}"
-  docker build --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
+  docker build --platform=$TARGET_PLATFORM --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
       --build-arg TOOLKIT_PATH=. \
       --build-arg PY_VERSION=3.9 \
       --build-arg MINICONDA_URL=$MINICONDA_URL \
@@ -536,14 +537,14 @@ function main() {
     PUSH_IMAGES=true
     extractToolkit
     _installModelRequirements
-    buildPredictionServiceBuilderImages
+    buildPredictionServiceBaseImages
     ;;
    local-docker-builder)
     setGlobals
     PUSH_IMAGES=false
     extractToolkit
     _installModelRequirements
-    buildPredictionServiceBuilderImages
+    buildPredictionServiceBaseImages
     ;;
    links)
     setGlobals
