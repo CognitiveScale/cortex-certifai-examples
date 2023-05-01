@@ -6,7 +6,7 @@ set -eu
 function setGlobals() {
   set -x
   PUSH_IMAGES=false
-  BUILD_ARM=false
+  BUILD_ARM="${BUILD_ARM:-false}"
   SKIP_CONDA="${SKIP_CONDA:-false}"
   SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
   RUN_REMOTE_EXAMPLES="${RUN_REMOTE_EXAMPLES:-false}"
