@@ -17,7 +17,8 @@ function usage() {
     printf "\tPrediction Service (prediction_service.py) file path     [-p | --prediction-service-file]\n"
     printf "\tBase docker image to be used to build the image          [-b | --base-docker-image]\n"
     printf "\tDirectory to be created                                  [-d | --dir]\n"
-    printf "\tModel type for template e.g h2o_mojo                     [-m | --model-type]\n"
+    printf "\tModel type for template. Options include 'python',       [-m | --model-type]\n"
+    printf "\t  'h2o_mojo', 'r_model', and 'proxy'\n"
     printf "\tModel (.pkl) file path                                   [-l | --model]\n"
     printf "\tPrint help                                               [-h | --help]\n"
 }
