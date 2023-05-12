@@ -137,7 +137,7 @@ function copyPackagesForModels() {
     exit 1
   fi
   # Copy ONLY the Common package & Model SDK packages into a relative directory (specifically for models).
-  rm -rdf "${TEMPLATES_DIR}/packages/all"
+  rm -rf "${TEMPLATES_DIR}/packages/all"
   mkdir -p "${TEMPLATES_DIR}/packages/all"
   cp "${PACKAGES_DIR}/all/cortex-certifai-common"* "${TEMPLATES_DIR}/packages/all"
   cp "${PACKAGES_DIR}/all/cortex-certifai-model-sdk"*  "${TEMPLATES_DIR}/packages/all"
