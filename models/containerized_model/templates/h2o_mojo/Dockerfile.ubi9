@@ -1,0 +1,17 @@
+#
+# Copyright (c) 2023. Cognitive Scale Inc. All rights reserved.
+# Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
+#
+FROM {{BASE_DOCKER_IMAGE}}
+
+COPY requirements.txt /tmp/
+RUN pip install -r /tmp/requirements.txt
+
+COPY src /src
+COPY model /model
+COPY license /license
+
+# Set working directory
+WORKDIR /
+
+ENTRYPOINT ["python", "src/prediction_service.py"]

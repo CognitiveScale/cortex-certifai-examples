@@ -1,5 +1,5 @@
 """
-Copyright (c) 2020. Cognitive Scale Inc. All rights reserved.
+Copyright (c) 2023. Cognitive Scale Inc. All rights reserved.
 Licensed under CognitiveScale Example Code License https://github.com/CognitiveScale/cortex-certifai-examples/blob/master/LICENSE.md
 """
 import argparse
@@ -67,6 +67,12 @@ def main():
                 'exec_permission': False,
             },
             'Dockerfile': {
+                'exec_permission': False,
+                'kwargs': {
+                    'BASE_DOCKER_IMAGE': args.base_docker_image
+                }
+            },
+            'Dockerfile.ubi9': {
                 'exec_permission': False,
                 'kwargs': {
                     'BASE_DOCKER_IMAGE': args.base_docker_image

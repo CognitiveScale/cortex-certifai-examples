@@ -6,6 +6,7 @@ set -eu
 function setGlobals() {
   set -x
   PUSH_IMAGES=false
+  BUILD_ARM="${BUILD_ARM:-false}"
   SKIP_CONDA="${SKIP_CONDA:-false}"
   SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
   RUN_REMOTE_EXAMPLES="${RUN_REMOTE_EXAMPLES:-false}"
@@ -16,10 +17,11 @@ function setGlobals() {
   TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
   PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
   TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
+  BASE_IMAGES_DIR="${SCRIPT_PATH}/models/containerized_model/base_images"
   NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
   TUTORIALS_DIR="${SCRIPT_PATH}/tutorials"
-  BUILD_REPORT="${ARTIFACTS_DIR}/buildReport.txt"
   BUILD_REPORT_JSON="${ARTIFACTS_DIR}/buildReport.json"
+  BASE_IMAGE_BUILD_REPORT_JSON="${ARTIFACTS_DIR}/baseImageBuildReport.json"
   ENV_FILE="${ARTIFACTS_DIR}/.env"
   AWS_ENV_FILE="${ARTIFACTS_DIR}/.aws_env"
   AZURE_ENV_FILE="${ARTIFACTS_DIR}/.azure_env"
@@ -45,10 +47,16 @@ Options:
       Run all notebook, tutorial, and model examples
 
   docker
-      Build and push base docker images for example Prediction Service templates (used by Scan Manager).
+      Build and push Docker images for example containerized model templates
 
   local-docker
-      Build base docker images for example Prediction Service templates (used by Scan Manager). Does not push to dockerhub.
+      Build Docker images for example containerized model templates
+
+  docker-builder
+      Build and push base Docker images for Prediction Services
+
+  local-docker-builder
+    Build base Docker images for Prediction Services
 
   links
       Test for broken links through Markdown and Jupyter Notebook examples. Recommended to save output to a file, e.g.
@@ -70,6 +78,9 @@ Environment Variables:
 
   RUN_REMOTE_EXAMPLES - if 'true', then examples involving SageMaker or AzureML resources will be run.
     This is 'false' by default to optimize third party resource costs.
+
+  BUILD_ARM - if 'true', then Prediction Service Base Docker Images will be built with the 'linux/arm64' platform.
+    False by default (images are built with 'linux/amd64' platform).
 "
   echo "${usage}"
 }
@@ -120,22 +131,51 @@ function extractToolkit() {
   unzip -qq -d "${TOOLKIT_WORK_DIR}" "${TOOLKIT_PATH}"
 }
 
+function copyPackagesForModels() {
+  if [ ! -f "${TOOLKIT_PATH}" ]; then
+    echo "Certifai toolkit (ZIP) not found found! Toolkit is expected to be at ${TOOLKIT_PATH}"
+    exit 1
+  fi
+  # Copy ONLY the Common package & Model SDK packages into a relative directory (specifically for models).
+  rm -rdf "${TEMPLATES_DIR}/packages/all"
+  mkdir -p "${TEMPLATES_DIR}/packages/all"
+  cp "${PACKAGES_DIR}/all/cortex-certifai-common"* "${TEMPLATES_DIR}/packages/all"
+  cp "${PACKAGES_DIR}/all/cortex-certifai-model-sdk"*  "${TEMPLATES_DIR}/packages/all"
+}
+
+function getExamplesGitSha() {
+  git describe --long --always
+}
+
 function buildLocal() {
   PUSH_IMAGES=false
   test
   buildModelDeploymentImages
 }
 
+function _installModelRequirements() {
+  pip install -r "${TEMPLATES_DIR}/requirements.txt"
+}
 
-# We have to enforce a versioning strategy in the example model templates. Part of the trouble here is that template
-# images install the Certifai packages, so we should tag them in such a way to show that version.
-#
-# Current tagging strategy: `<version-counter>-<toolkit-version>`
-#
-#   `<version-counter>` is a running count we maintain based on the base image, Python version, & other dependencies
-#
-# Example: c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
+
 function buildModelDeploymentImages() {
+  # Builds Docker images for the example Containerized Model Types (Scikit, H2O, Proxy, R). These are images are used
+  # for the default Model Types in Scan Manager in Certifai Enterprise Version 1.3.16 and earlier.
+  #
+  # We have to enforce a versioning strategy in the example model templates. Part of the trouble here is that template
+  # images install the Certifai packages, so we should tag them in such a way to show that version.
+  #
+  # Current tagging strategy: `<version-counter>-<certifai-toolkit-version>`
+  #
+  #   `<version-counter>` is a running count we maintain based on the base image, Python version, & other dependencies
+  #
+  # Examples:
+  #   c12e/cortex-certifai-model-scikit:v3-1.3.11-120-g5d13c272
+  #   c12e/cortex-certifai-model-h2o-mojo:v4-1.3.17-19-g66a6ae33
+  #   c12e/cortex-certifai-hosted-model:v4-1.3.17-19-g66a6ae33
+  #   c12e/cortex-certifai-model-r:v4-1.3.17-19-g66a6ae33
+  #
+  # The main reason for this tagging strategy is that earlier images were tagged with 'v1', v2, etc.
   local certifai_version
   certifai_version=$(getToolkitVersion)
 
@@ -157,11 +197,11 @@ function buildModelDeploymentImages() {
   _buildTemplate "${r_image}" r_model rocker/r-apt:bionic
 
   echo "{\"scikit\": \"${scikit_image}\", \"h2o\": \"${h2o_image}\", \"proxy\": \"${proxy_image}\", \"r\": \"${r_image}\" }" > "${BUILD_REPORT_JSON}"
-  printf "%s\n%s\n%s\n%s\n" "${scikit_image}" "${h2o_image}" "${proxy_image}" "${r_image}" > "${BUILD_REPORT}"
 }
 
-
 function _buildTemplate() {
+  # Generates a Containerized Model template and builds a docker image with the contents. Arguments are for the
+  # ./generate.sh script.
   # $1 image
   # $2 model-type
   # $3 base-image (optional)
@@ -193,6 +233,63 @@ function _buildTemplate() {
   else
     echo "Skipping push.."
   fi
+}
+
+function buildPredictionServiceBaseImages() {
+  # Builds Docker images that act as a base image for generating Containerized Model templates. These are used as base
+  # images for Prediction Service in Scan Manager in Certifai Enterprise Version 1.3.17+.
+  #
+  # We have to enforce a tagging strategy for these images, which will include the Certifai Common & Certifai Model SDK
+  # packages along with the `containerized_models/` source code.
+  #
+  # Current tagging strategy is: `<language>-<certifai-version>-<GIT_SHA>`
+  #
+  #   `<GIT_SHA>` refers to the commit in this repository that the image was built from
+  #
+  # Examples:
+  #     c12e/cortex-certifai-model-scikit:base-py38-1.3.17-19-g66a6ae33-d389e12
+  #     c12e/cortex-certifai-model-scikit:base-py39-1.3.17-19-g66a6ae33-d389e12
+  # TODO: Support non-python model types (https://github.com/CognitiveScale/certifai/issues/4775)
+  local version
+  version="$(getToolkitVersion)-$(getExamplesGitSha)"
+
+  local pythonImageRepo
+  pythonImageRepo="c12e/cortex-certifai-model-scikit"
+
+  copyPackagesForModels
+  # Resolve docker build architecture and miniconda url for images
+  if [[ "${BUILD_ARM}" == "true" ]]; then
+    TARGET_PLATFORM="linux/arm64"
+    MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh
+  else
+    TARGET_PLATFORM="linux/amd64"
+    MINICONDA_URL=https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+  fi
+
+  local py38_image="${pythonImageRepo}:base-py38-${version}"
+  docker build --platform=$TARGET_PLATFORM --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
+      --build-arg TOOLKIT_PATH=. \
+      --build-arg PY_VERSION=3.8 \
+      --build-arg MINICONDA_URL=$MINICONDA_URL \
+      -t "$py38_image" "${TEMPLATES_DIR}"
+
+  local py39_image="${pythonImageRepo}:base-py39-${version}"
+  docker build --platform=$TARGET_PLATFORM --pull --rm -f "${BASE_IMAGES_DIR}/Dockerfile.cortex-certifai-python-model-base" \
+      --build-arg TOOLKIT_PATH=. \
+      --build-arg PY_VERSION=3.9 \
+      --build-arg MINICONDA_URL=$MINICONDA_URL \
+      -t "$py39_image" "${TEMPLATES_DIR}"
+
+  if [ "${PUSH_IMAGES}" = true ]; then
+    echo "Pushing images.."
+    docker push "$py38_image"
+    docker push "$py39_image"
+  else
+    echo "Skipping push.."
+  fi
+
+  # Write build Report
+  echo "{\"python38\": \"${py38_image}\", \"python39\": \"${py39_image}\"}" > "${BASE_IMAGE_BUILD_REPORT_JSON}"
 }
 
 function test() {
@@ -432,13 +529,29 @@ function main() {
     setGlobals
     PUSH_IMAGES=true
     extractToolkit
+    _installModelRequirements
     buildModelDeploymentImages
     ;;
    local-docker)
     setGlobals
     PUSH_IMAGES=false
     extractToolkit
+    _installModelRequirements
     buildModelDeploymentImages
+    ;;
+   docker-builder)
+    setGlobals
+    PUSH_IMAGES=true
+    extractToolkit
+    _installModelRequirements
+    buildPredictionServiceBaseImages
+    ;;
+   local-docker-builder)
+    setGlobals
+    PUSH_IMAGES=false
+    extractToolkit
+    _installModelRequirements
+    buildPredictionServiceBaseImages
     ;;
    links)
     setGlobals
