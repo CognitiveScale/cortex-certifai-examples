@@ -65,12 +65,12 @@ LABEL release=1 \
   description="Cortex Certifai Enterprise Prediction Service Base Image" \
   com.cognitivescale.license_terms="https://www.cognitivescale.com/legal-information/"
 
- # Create .bashrc file and folders for python/pip that belong to the non-root user
+ # Create .bashrc file and required folders for python, pip, and code that belong to the non-root user
 RUN touch //.bashrc && \
     chown -R 1001 //.bashrc && chmod u+rwx //.bashrc && \
-    mkdir -p /venv/bin /.local /.cache/pip /containerized_model && \
-    chown -R 1001 /venv /.local /.cache/pip /containerized_model && \
-    chmod -R u+rwx /venv /.local /.cache/pip /containerized_model
+    mkdir -p /venv/bin /.local /.cache/pip /containerized_model /src /model /license && \
+    chown -R 1001 /venv /.local /.cache/pip /containerized_model /src /model /license && \
+    chmod -R u+rwx /venv /.local /.cache/pip /containerized_model /src /model /license
 
 USER 1001
 
