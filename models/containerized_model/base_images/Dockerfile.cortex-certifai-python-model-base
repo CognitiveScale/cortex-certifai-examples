@@ -29,7 +29,7 @@ ENV PATH=/conda/bin:$PATH
 ARG TOOLKIT_PATH=certifai_toolkit
 COPY $TOOLKIT_PATH/packages/all/cortex-certifai-common* \
      $TOOLKIT_PATH/packages/all/cortex-certifai-model-sdk* \
-     requirements.txt /tmp
+     requirements.txt /tmp/
 
 # Create Python env and install conda-pack
 ARG PY_VERSION=3.8
