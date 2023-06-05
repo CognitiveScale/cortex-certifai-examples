@@ -22,3 +22,4 @@ with Certifai Scan Manager.
 ## Certifai Documentation
 
 Refer to the Cortex Certifai documentation: https://cognitivescale.github.io/cortex-certifai/docs/about for detailed information about Cortex Certifai.
+
