@@ -66,19 +66,14 @@ LABEL release=1 \
   com.cognitivescale.license_terms="https://www.cognitivescale.com/legal-information/"
 
 
-# TODO: The container needs to run as Non-Root User, but that causes Permissions issues when running the Tekton
-# pipeline due to the mounted volume having root permissions. This needs to be resolved before release, because
-# this image will not pass a security scan.
-#
-#
 # Create .bashrc file and required folders for python, pip, and code that belong to the non-root user
-#RUN touch //.bashrc && \
-#    chown -R 1001 //.bashrc && chmod u+rwx //.bashrc && \
-#    mkdir -p /venv/bin /.local /.cache/pip /containerized_model /src /model /license && \
-#    chown -R 1001 /venv /.local /.cache/pip /containerized_model /src /model /license && \
-#    chmod -R u+rwx /venv /.local /.cache/pip /containerized_model /src /model /license
-#
-#USER 1001
+RUN touch //.bashrc && \
+    chown -R 1001 //.bashrc && chmod u+rwx //.bashrc && \
+    mkdir -p /venv/bin /.local /.cache/pip /containerized_model /src /model /license && \
+    chown -R 1001 /venv /.local /.cache/pip /containerized_model /src /model /license && \
+    chmod -R u+rwx /venv /.local /.cache/pip /containerized_model /src /model /license
+
+USER 1001
 
 # Set flag to use default logging and configuration in Certifai containers. This avoids letting the application write
 # to the filesystem for logs.
