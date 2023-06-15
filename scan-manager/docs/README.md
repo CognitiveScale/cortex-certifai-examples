@@ -49,7 +49,7 @@ artifacts include deployment templates and .yaml config file(s); and are provide
 
 The `deployment` folder contains:
 - Deployment templates: `.yaml` templates that provide the configuration templates for deploying each of the specified model types on Kubernetes:
-    - `scikit_0.23`: Uses a `python3.8` base image with `scikit-learn v0.23` pre-installed.
+    - `python`: Uses a `python3.8` base image with `scikit-learn` pre-installed.
     - `h2o_mojo`: Uses a `python3.8` base image with `daimojo-2.4.8-cp36` whl pre-installed.
     - `r_model`: Uses `rocker/r-ver:latest` base image with `r-cran-randomforest` pre-installed.
     - `hosted_model`: Uses a `python3.8` base image for wrapping an already hosted model service.

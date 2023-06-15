@@ -1,11 +1,13 @@
-scikit_0.23:
-  deployment: scikit_0.23_deployment.yml
+python:
+  deployment: python_deployment.yml
   default_base_image:
     name: python38_scikit
-    value: c12e/cortex-certifai-model-scikit:v4-1.3.16-25-g527dfe93
+    value: c12e/cortex-certifai-model-scikit:base-py38-1.3.17-63-g2ecf19f0-d357535
   available_base_images:
   - name: python38_scikit
-    value: c12e/cortex-certifai-model-scikit:v4-1.3.16-25-g527dfe93
+    value: c12e/cortex-certifai-model-scikit:base-py38-1.3.17-63-g2ecf19f0-d357535
+  - name: python39_scikit
+    value: c12e/cortex-certifai-model-scikit:base-py39-1.3.17-63-g2ecf19f0-d357535
 h2o_mojo:
   deployment: h2o_mojo_deployment.yml
   default_base_image:
