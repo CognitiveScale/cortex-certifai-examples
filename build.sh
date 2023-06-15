@@ -328,12 +328,33 @@ function testMarkdownLinks() {
 }
 
 function testModels() {
-  echo "TODO: automate subset of model examples - "
-  # for each
-  # - train the models
-  # - start the app in one process,
-  # - run the test in another process
-  # - assert both processes exit successfully
+  MODELS_DIR="${SCRIPT_PATH}/models"
+  # run tests for each individual example
+  cd "$MODELS_DIR"/german_credit/
+  python -m unittest -v test.py
+
+  cd "$MODELS_DIR"/german_credit_pandas
+  pip install sklearn-pandas
+  python -m unittest -v test.py
+
+  cd "$MODELS_DIR"/income_prediction
+  pip install xgboost
+  python -m unittest -v test.py
+
+  cd "$MODELS_DIR"/iris
+  pip install xgboost
+  python -m unittest -v test.py
+
+  cd "$MODELS_DIR"/patient_readmission
+  python -m unittest -v test.py
+
+  # Go back to root directory
+  cd  "$SCRIPT_PATH"
+
+  # TODO: see https://github.com/CognitiveScale/certifai/issues/4870
+  # - h2o_dai_german_credit
+  # - h2o_dai_regression_auto_insurance
+  # - r-models
 }
 
 function testTutorials() {
@@ -557,6 +578,12 @@ function main() {
     setGlobals
     activateConda
     testMarkdownLinks
+    ;;
+   models)
+    setGlobals
+    activateConda
+    installToolkit
+    testModels
     ;;
    notebook)
     setGlobals

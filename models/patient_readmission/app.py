@@ -14,4 +14,5 @@ with open('readmission_mlp.pkl', 'rb') as f:
     encoder = saved.get('encoder', None)
 
 app = SimpleModelWrapper(model=model, encoder=encoder)
-app.run(production=True)
+#app.run(production=True)
+app.run()
