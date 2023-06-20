@@ -30,12 +30,12 @@ The following files must exist in this folder:
 * certifai_toolkit/ - certifai toolkit v1.3.6 or above
 
 The current conda environment has been setup with:
-* python 3.6 (if 3.7 or 3.8, update PYTHON_VERSION in `run_test.sh`)
+* python 3.8 (otherwise, update PYTHON_VERSION in `run_test.sh`)
 * pip install -U Jinja2
 
 To train and test the models:
 * Certifai toolkit installed in the current conda environment
-* conda install -c conda-forge xgboost==1.2.0
+* conda install -c conda-forge xgboost==1.7.2
 
 To build/run the prediction services: Docker
 
@@ -70,3 +70,5 @@ storage by changing the environment.yml.
 
 The tests exit on any error, printing out the prediction service log
 and deleting the running prediction service container.
+
+For more options, run: `sh run_test.sh -h`

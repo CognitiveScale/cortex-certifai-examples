@@ -351,7 +351,7 @@ function testModels() {
   # Go back to root directory
   cd  "$SCRIPT_PATH"
 
-  # TODO: see https://github.com/CognitiveScale/certifai/issues/4870
+  # TODO: Run other examples (see https://github.com/CognitiveScale/certifai/issues/4870)
   # - h2o_dai_german_credit
   # - h2o_dai_regression_auto_insurance
   # - r-models

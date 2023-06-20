@@ -1,4 +1,4 @@
 # add python pip install dependencies below
 pyyaml # required by prediction service - do not remove
 scikit-learn==1.0.2
-#xgboost==1.2.0  # uncomment if using xgboost and pin to same version as model
+#xgboost==1.7.2  # uncomment if using xgboost and pin to same version as model
