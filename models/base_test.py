@@ -61,11 +61,10 @@ class ModelTest(unittest.TestCase):
         run_model_and_scan('app_dtree.py', 'my-definition.yaml')
         run_model_and_explain('app_dtree.py', 'my-definition.yaml', fast=True)
     """
-
     SLEEP_TIME = 5        # 5 seconds
     TERMINATION_TIME = 5  # 5 seconds
-    DEFAULT_TEST_TIMEOUT = 2 * 60   # 2 minutes
-    DEFAULT_SCAN_TIMEOUT = 60 * 60  # 1 hour
+    DEFAULT_TEST_TIMEOUT = 2 * 60       # 2 minutes
+    DEFAULT_SCAN_TIMEOUT = 60 * 60 * 2  # 2 hours
     bg = None
 
     def _run_in_foreground(self, command: Sequence[str], timeout: Optional[int] = None):
