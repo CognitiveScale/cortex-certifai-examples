@@ -16,6 +16,7 @@ function setGlobals() {
   TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
   TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
   PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
+  CONTAINERIZED_EXAMPLES_DIR="${SCRIPT_PATH}/models/containerized_model/examples"
   TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
   BASE_IMAGES_DIR="${SCRIPT_PATH}/models/containerized_model/base_images"
   NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
@@ -292,9 +293,10 @@ function buildPredictionServiceBaseImages() {
   echo "{\"python38\": \"${py38_image}\", \"python39\": \"${py39_image}\"}" > "${BASE_IMAGE_BUILD_REPORT_JSON}"
 }
 
-function test() {
+function testAll() {
   testMarkdownLinks
   testModels
+  testContainerizedModels
   testNotebooks
   testTutorials
 }
@@ -355,6 +357,20 @@ function testModels() {
   # - h2o_dai_german_credit
   # - h2o_dai_regression_auto_insurance
   # - r-models
+}
+
+function testContainerizedModels() {
+  # run base of set of containerized model examples locally (with docker)
+  cd "$CONTAINERIZED_EXAMPLES_DIR"
+  TOOLKIT_PATH="$TOOLKIT_WORK_DIR" ./run_test.sh "local"
+
+  # TODO: Add 'RUN_H2O=true' to test other examples (see https://github.com/CognitiveScale/certifai/issues/4870)
+  # - h2o_dai_german_credit
+  # - h2o_dai_regression_auto_insurance
+  # - r-models
+
+  # Go back to root directory
+  cd  "$SCRIPT_PATH"
 }
 
 function testTutorials() {
@@ -543,7 +559,7 @@ function main() {
     setGlobals
     activateConda
     installToolkit
-    test
+    testAll
     rm -rf "${TOOLKIT_WORK_DIR}"
     ;;
    docker)
@@ -584,6 +600,7 @@ function main() {
     activateConda
     installToolkit
     testModels
+    testContainerizedModels
     ;;
    notebook)
     setGlobals
