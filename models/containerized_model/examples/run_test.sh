@@ -282,11 +282,11 @@ function main() {
   set -exv
   set_globals
   install_toolkit
-  check_minio_installed
   if [ "$target" == "local" ]; then
     echo "Running local prediction service tests"
   elif [ "$target" == "minikube" ]; then
     echo "Running minikube prediction service tests"
+    check_minio_installed
     minikube_setup
   elif [ "$target" == "-h" ] || [ "$target" == "--help" ]; then
     printUsage
