@@ -63,8 +63,9 @@ class ModelTest(unittest.TestCase):
     """
     SLEEP_TIME = 5        # 5 seconds
     TERMINATION_TIME = 5  # 5 seconds
-    DEFAULT_TEST_TIMEOUT = 2 * 60       # 2 minutes
-    DEFAULT_SCAN_TIMEOUT = 60 * 60 * 2  # 2 hours
+    DEFAULT_TEST_TIMEOUT = 2 * 60                     # 2 minutes
+    DEFAULT_SCAN_TIMEOUT = 60 * 60 * 1                # 1 hour
+    PRECALCULATE_TIMEOUT = DEFAULT_SCAN_TIMEOUT * 3   # 3 hours
     bg = None
 
     def _run_in_foreground(self, command: Sequence[str], timeout: Optional[int] = None):
@@ -130,7 +131,7 @@ class ModelTest(unittest.TestCase):
             if fast:
                 # Run the precalculate step prior to the fast explain
                 pre_calc_command = ["certifai", "explain", "-f", definition, "--precalculate"]
-                self._run_in_foreground(pre_calc_command, timeout=self.DEFAULT_SCAN_TIMEOUT)
+                self._run_in_foreground(pre_calc_command, timeout=self.PRECALCULATE_TIMEOUT)
                 command = ["certifai", "explain", "-f", definition, "--fast"]
             else:
                 command = ["certifai", "explain", "-f", definition]
