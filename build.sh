@@ -559,6 +559,7 @@ function main() {
     setGlobals
     activateConda
     installToolkit
+    _installModelRequirements
     testAll
     rm -rf "${TOOLKIT_WORK_DIR}"
     ;;
@@ -600,6 +601,7 @@ function main() {
     activateConda
     installToolkit
     testModels
+    _installModelRequirements
     testContainerizedModels
     ;;
    notebook)
