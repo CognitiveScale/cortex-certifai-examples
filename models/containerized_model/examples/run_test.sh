@@ -37,7 +37,7 @@ function base_setup() {
   model_file=$3
   echo "***Generating ${model_type}***"
   rm -rf "${GEN_DIR}"
-  sh "${THIS_DIR}/../generate.sh" -i "${image_name}":latest -m "${model_type}" -d "${GEN_DIR}" -t "$TOOLKIT_PATH"
+  "${THIS_DIR}/../generate.sh" -i "${image_name}":latest -m "${model_type}" -d "${GEN_DIR}" -t "$TOOLKIT_PATH"
 
   all_dir=${GEN_DIR}/packages/all
   mkdir -p "${all_dir}"
