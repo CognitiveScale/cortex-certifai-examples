@@ -155,6 +155,7 @@ function buildLocal() {
 }
 
 function _installModelRequirements() {
+  pip install sklearn-pandas xgboost
   pip install -r "${TEMPLATES_DIR}/requirements.txt"
 }
 
@@ -336,15 +337,12 @@ function testModels() {
   python -m unittest -v test.py
 
   cd "$MODELS_DIR"/german_credit_pandas
-  pip install sklearn-pandas
   python -m unittest -v test.py
 
   cd "$MODELS_DIR"/income_prediction
-  pip install xgboost
   python -m unittest -v test.py
 
   cd "$MODELS_DIR"/iris
-  pip install xgboost
   python -m unittest -v test.py
 
   cd "$MODELS_DIR"/patient_readmission
