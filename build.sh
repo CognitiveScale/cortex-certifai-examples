@@ -295,8 +295,8 @@ function buildPredictionServiceBaseImages() {
 
 function testAll() {
   testMarkdownLinks
-  testModels
   testContainerizedModels
+  testModels
   testNotebooks
   testTutorials
 }
