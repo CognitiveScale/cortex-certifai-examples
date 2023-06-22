@@ -296,10 +296,11 @@ function buildPredictionServiceBaseImages() {
 
 function testAll() {
   testMarkdownLinks
-  testContainerizedModels
   testModels
   testNotebooks
   testTutorials
+  # Requires Docker/Minikube - so skipped in pipeline
+  #testContainerizedModels
 }
 
 function testMarkdownLinks() {
@@ -598,9 +599,8 @@ function main() {
     setGlobals
     activateConda
     installToolkit
-    testModels
     _installModelRequirements
-    testContainerizedModels
+    testModels
     ;;
    notebook)
     setGlobals
