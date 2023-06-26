@@ -11,6 +11,8 @@ function setGlobals() {
   SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
   RUN_REMOTE_EXAMPLES="${RUN_REMOTE_EXAMPLES:-false}"
   PYTHON_VERSION="3.8"
+  SK_PANDAS_VERSION="sklearn-pandas==2.2.0"
+  XGBOOST_VERSION="xgboost==1.7.2"
   SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
   ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
   TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
@@ -155,7 +157,7 @@ function buildLocal() {
 }
 
 function _installModelRequirements() {
-  pip install sklearn-pandas xgboost
+  pip install "$SK_PANDAS_VERSION"  "$XGBOOST_VERSION"
   pip install -r "${TEMPLATES_DIR}/requirements.txt"
 }
 
@@ -548,7 +550,7 @@ function _sagemakerNotebook() {
 function _xgboostModel() {
   # xgboost-model
   cd "${NOTEBOOK_DIR}"
-  pip install xgboost
+  pip install "$XGBOOST_VERSION"
   _runNotebookInPlace "${NOTEBOOK_DIR}/xgboost-model/xgboostDmatrixExample.ipynb"
 }
 
@@ -565,6 +567,7 @@ function main() {
    docker)
     setGlobals
     PUSH_IMAGES=true
+    activateConda
     extractToolkit
     _installModelRequirements
     buildModelDeploymentImages
@@ -572,6 +575,7 @@ function main() {
    local-docker)
     setGlobals
     PUSH_IMAGES=false
+    activateConda
     extractToolkit
     _installModelRequirements
     buildModelDeploymentImages
@@ -579,6 +583,7 @@ function main() {
    docker-builder)
     setGlobals
     PUSH_IMAGES=true
+    activateConda
     extractToolkit
     _installModelRequirements
     buildPredictionServiceBaseImages
@@ -586,6 +591,7 @@ function main() {
    local-docker-builder)
     setGlobals
     PUSH_IMAGES=false
+    activateConda
     extractToolkit
     _installModelRequirements
     buildPredictionServiceBaseImages
