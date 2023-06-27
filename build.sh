@@ -157,8 +157,11 @@ function buildLocal() {
 }
 
 function _installModelRequirements() {
-  pip install "$SK_PANDAS_VERSION"  "$XGBOOST_VERSION"
   pip install -r "${TEMPLATES_DIR}/requirements.txt"
+}
+
+function _installLocalModelRequirements() {
+  pip install "$SK_PANDAS_VERSION" "$XGBOOST_VERSION"
 }
 
 
@@ -561,13 +564,13 @@ function main() {
     activateConda
     installToolkit
     _installModelRequirements
+    _installLocalModelRequirements
     testAll
     rm -rf "${TOOLKIT_WORK_DIR}"
     ;;
    docker)
     setGlobals
     PUSH_IMAGES=true
-    activateConda
     extractToolkit
     _installModelRequirements
     buildModelDeploymentImages
@@ -575,7 +578,6 @@ function main() {
    local-docker)
     setGlobals
     PUSH_IMAGES=false
-    activateConda
     extractToolkit
     _installModelRequirements
     buildModelDeploymentImages
@@ -583,7 +585,6 @@ function main() {
    docker-builder)
     setGlobals
     PUSH_IMAGES=true
-    activateConda
     extractToolkit
     _installModelRequirements
     buildPredictionServiceBaseImages
@@ -591,7 +592,6 @@ function main() {
    local-docker-builder)
     setGlobals
     PUSH_IMAGES=false
-    activateConda
     extractToolkit
     _installModelRequirements
     buildPredictionServiceBaseImages
@@ -606,6 +606,7 @@ function main() {
     activateConda
     installToolkit
     _installModelRequirements
+    _installLocalModelRequirements
     testModels
     ;;
    notebook)
