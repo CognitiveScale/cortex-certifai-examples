@@ -11,11 +11,14 @@ function setGlobals() {
   SKIP_TOOLKIT="${SKIP_TOOLKIT:-false}"
   RUN_REMOTE_EXAMPLES="${RUN_REMOTE_EXAMPLES:-false}"
   PYTHON_VERSION="3.8"
+  SK_PANDAS_VERSION="sklearn-pandas==2.2.0"
+  XGBOOST_VERSION="xgboost==1.7.2"
   SCRIPT_PATH="$( cd "$(dirname "$0")" >/dev/null 2>&1 || exit ; pwd -P )"
   ARTIFACTS_DIR="${SCRIPT_PATH}/artifacts"
   TOOLKIT_PATH="${ARTIFACTS_DIR}/certifai_toolkit.zip"
   TOOLKIT_WORK_DIR="${ARTIFACTS_DIR}/toolkit"
   PACKAGES_DIR="${TOOLKIT_WORK_DIR}/packages"
+  CONTAINERIZED_EXAMPLES_DIR="${SCRIPT_PATH}/models/containerized_model/examples"
   TEMPLATES_DIR="${SCRIPT_PATH}/models/containerized_model"
   BASE_IMAGES_DIR="${SCRIPT_PATH}/models/containerized_model/base_images"
   NOTEBOOK_DIR="${SCRIPT_PATH}/notebooks"
@@ -157,6 +160,10 @@ function _installModelRequirements() {
   pip install -r "${TEMPLATES_DIR}/requirements.txt"
 }
 
+function _installLocalModelRequirements() {
+  pip install "$SK_PANDAS_VERSION" "$XGBOOST_VERSION"
+}
+
 
 function buildModelDeploymentImages() {
   # Builds Docker images for the example Containerized Model Types (Scikit, H2O, Proxy, R). These are images are used
@@ -292,11 +299,13 @@ function buildPredictionServiceBaseImages() {
   echo "{\"python38\": \"${py38_image}\", \"python39\": \"${py39_image}\"}" > "${BASE_IMAGE_BUILD_REPORT_JSON}"
 }
 
-function test() {
+function testAll() {
   testMarkdownLinks
   testModels
   testNotebooks
   testTutorials
+  # Requires Docker/Minikube - so skipped in pipeline
+  #testContainerizedModels
 }
 
 function testMarkdownLinks() {
@@ -328,12 +337,44 @@ function testMarkdownLinks() {
 }
 
 function testModels() {
-  echo "TODO: automate subset of model examples - "
-  # for each
-  # - train the models
-  # - start the app in one process,
-  # - run the test in another process
-  # - assert both processes exit successfully
+  MODELS_DIR="${SCRIPT_PATH}/models"
+  # run tests for each individual example
+  cd "$MODELS_DIR"/german_credit/
+  python -m unittest -v test.py
+
+  cd "$MODELS_DIR"/german_credit_pandas
+  python -m unittest -v test.py
+
+  cd "$MODELS_DIR"/income_prediction
+  python -m unittest -v test.py
+
+  cd "$MODELS_DIR"/iris
+  python -m unittest -v test.py
+
+  cd "$MODELS_DIR"/patient_readmission
+  python -m unittest -v test.py
+
+  # Go back to root directory
+  cd  "$SCRIPT_PATH"
+
+  # TODO: Run other examples (see https://github.com/CognitiveScale/certifai/issues/4870)
+  # - h2o_dai_german_credit
+  # - h2o_dai_regression_auto_insurance
+  # - r-models
+}
+
+function testContainerizedModels() {
+  # run base of set of containerized model examples locally (with docker)
+  cd "$CONTAINERIZED_EXAMPLES_DIR"
+  TOOLKIT_PATH="$TOOLKIT_WORK_DIR" ./run_test.sh "local"
+
+  # TODO: Add 'RUN_H2O=true' to test other examples (see https://github.com/CognitiveScale/certifai/issues/4870)
+  # - h2o_dai_german_credit
+  # - h2o_dai_regression_auto_insurance
+  # - r-models
+
+  # Go back to root directory
+  cd  "$SCRIPT_PATH"
 }
 
 function testTutorials() {
@@ -512,7 +553,7 @@ function _sagemakerNotebook() {
 function _xgboostModel() {
   # xgboost-model
   cd "${NOTEBOOK_DIR}"
-  pip install xgboost
+  pip install "$XGBOOST_VERSION"
   _runNotebookInPlace "${NOTEBOOK_DIR}/xgboost-model/xgboostDmatrixExample.ipynb"
 }
 
@@ -522,7 +563,9 @@ function main() {
     setGlobals
     activateConda
     installToolkit
-    test
+    _installModelRequirements
+    _installLocalModelRequirements
+    testAll
     rm -rf "${TOOLKIT_WORK_DIR}"
     ;;
    docker)
@@ -557,6 +600,14 @@ function main() {
     setGlobals
     activateConda
     testMarkdownLinks
+    ;;
+   models)
+    setGlobals
+    activateConda
+    installToolkit
+    _installModelRequirements
+    _installLocalModelRequirements
+    testModels
     ;;
    notebook)
     setGlobals

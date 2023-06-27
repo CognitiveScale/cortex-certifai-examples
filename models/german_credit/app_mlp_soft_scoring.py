@@ -24,4 +24,5 @@ app = SimpleModelWrapper(supports_soft_scores=True, model=model, encoder=encoder
                          endpoint_url='/german_credit_mlp/predict')
 
 # to start production ready gunicorn server use `production=True`
-app.run(production=True)
+#app.run(production=True)
+app.run()

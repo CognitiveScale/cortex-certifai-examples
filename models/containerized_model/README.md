@@ -242,7 +242,7 @@ Add respective cloud storage credentials and `MODEL_PATH` to `generated-containe
 ### Step 5 - Add extra-dependencies (optional)
 
 The dependencies work out of the box with a standard scikit-learn model,
-providing the model was trained with version 0.23.2 of scikit-learn. If
+providing the model was trained with a version `1.0.2` of scikit-learn. If
 you are using a different version, you should update
 `generated-container-model/requirements.txt`.
 

@@ -11,12 +11,6 @@ Specifically, it shows how to use the Certifai toolkit to:
  * generate explanations for the model's predictions using the CLI
  * set up fast-explanation, for generating large numbers of explanations at scale
 
-*Note*:  Fast explanation is currently a beta feature.  To enable it you will need to
-edit your `~/.certifai/certifai_conf.ini` file to add:
-```
-[scanner]
-support_fast_explanations_beta = True
-```
 ## Wrap a single model as a service
 
 1. Make sure you have activated your Certifai toolkit environment:
