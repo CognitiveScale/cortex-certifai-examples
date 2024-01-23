@@ -6,6 +6,16 @@ scikit_0.23:
   available_base_images:
   - name: python38_scikit
     value: c12e/cortex-certifai-model-scikit:v4-1.3.16-25-g527dfe93
+catboost_1.2.2:
+  deployment: catboost_deployment.yml
+  default_base_image:
+    name: python38_catboost
+    value: c12e/certifai:catboost-dep-base
+  available_base_images:
+  - name: python36_csx_catboost
+    value: c12e/certifai:csxcatboostlatest
+  - name: python38_catboost
+    value: c12e/certifai:catboost-dep-base
 h2o_mojo:
   deployment: h2o_mojo_deployment.yml
   default_base_image:
