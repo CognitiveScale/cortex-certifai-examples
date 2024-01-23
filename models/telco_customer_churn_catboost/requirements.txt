@@ -1,0 +1,7 @@
+# add python pip install dependencies below
+pyyaml==5.4.1 # required by prediction service - do not remove
+scikit-learn==1.0.2
+#xgboost==1.2.0  # uncomment if using xgboost and pin to same version as model
+pandas==1.4.4
+aiohttp==3.9.1
+catboost==1.2.2
