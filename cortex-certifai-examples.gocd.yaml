@@ -19,10 +19,11 @@ pipelines:
       CERTIFAI_DEV_AWS_ROLE_ARN: "arn:aws:iam::711601140448:role/AWSGlueServiceSageMakerNotebookRole-cortex-certifai-examples"
       RUN_REMOTE_EXAMPLES: "false"
       SNYK_ORG: "certifai-gocd"
-    secure_variables:
-      CERTIFAI_AZURE_DEV_SECRET_KEY: "AES:f2FepXuwMp5+lavjQRbUmg==:QIJMUPnHkcGNZqKOHZfnGIychqumGuxrviBfGzMrsckMDzpTaCbrOv/VouWMb+s8"
-      CERTIFAI_DEV_AWS_SECRET_KEY: "AES:xVSD9Lr/T4YtP7pUd9kilQ==:590Y/Bz4G8DrCYaVOVu2lY0IkPcDEMFjGHPILP3UBNTBWlxwoFp/VuHK5zxVi527"
-      SNYK_TOKEN: "AES:PbCJwUjsSYf4Knu+NwAmhg==:2KuhQtOC4bAz6XhY573V9Ppnbjir10dz8fZBYQLAJkP8kYAkj5zu45dHx/knFCRm"
+    # secure_variables:
+      # Mayank: Commenting these variables since we changed GOCD, so these have to be re-encrypted. Don't need it for now, but might be useful later
+      # CERTIFAI_AZURE_DEV_SECRET_KEY: "AES:f2FepXuwMp5+lavjQRbUmg==:QIJMUPnHkcGNZqKOHZfnGIychqumGuxrviBfGzMrsckMDzpTaCbrOv/VouWMb+s8"
+      # CERTIFAI_DEV_AWS_SECRET_KEY: "AES:xVSD9Lr/T4YtP7pUd9kilQ==:590Y/Bz4G8DrCYaVOVu2lY0IkPcDEMFjGHPILP3UBNTBWlxwoFp/VuHK5zxVi527"
+      # SNYK_TOKEN: "AES:PbCJwUjsSYf4Knu+NwAmhg==:2KuhQtOC4bAz6XhY573V9Ppnbjir10dz8fZBYQLAJkP8kYAkj5zu45dHx/knFCRm"
     stages:
       - buildModelBaseImages:
           clean_workspace: true
